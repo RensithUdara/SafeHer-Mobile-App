@@ -70,15 +70,18 @@ class SafePlaceModel {
       ),
       phoneNumber: json['phone_number'],
       website: json['website'],
-      openingHours: json['opening_hours'] != null 
+      openingHours: json['opening_hours'] != null
           ? Map<String, String>.from(json['opening_hours'])
           : null,
       rating: json['rating']?.toDouble(),
       reviewCount: json['review_count'] ?? 0,
       isVerified: json['is_verified'] ?? false,
       isPublic: json['is_public'] ?? false,
-      savedAt: DateTime.parse(json['saved_at'] ?? DateTime.now().toIso8601String()),
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      savedAt:
+          DateTime.parse(json['saved_at'] ?? DateTime.now().toIso8601String()),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null,
       notes: json['notes'],
       additionalInfo: json['additional_info'],
     );
@@ -147,17 +150,19 @@ class SafePlaceModel {
       ),
       phoneNumber: map['phone_number'],
       website: map['website'],
-      openingHours: map['opening_hours'] != null 
+      openingHours: map['opening_hours'] != null
           ? Map<String, String>.from(map['opening_hours'])
           : null,
       rating: map['rating']?.toDouble(),
       reviewCount: map['review_count'] ?? 0,
       isVerified: map['is_verified'] == 1,
       isPublic: map['is_public'] == 1,
-      savedAt: DateTime.parse(map['saved_at'] ?? DateTime.now().toIso8601String()),
-      updatedAt: map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
+      savedAt:
+          DateTime.parse(map['saved_at'] ?? DateTime.now().toIso8601String()),
+      updatedAt:
+          map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
       notes: map['notes'],
-      additionalInfo: map['additional_info'] != null 
+      additionalInfo: map['additional_info'] != null
           ? Map<String, dynamic>.from(map['additional_info'])
           : null,
     );
@@ -198,28 +203,29 @@ class SafePlaceModel {
   // Check if place is currently open
   bool get isCurrentlyOpen {
     if (openingHours == null) return true;
-    
+
     final now = DateTime.now();
     final dayName = _getDayName(now.weekday);
     final currentHours = openingHours![dayName];
-    
+
     if (currentHours == null || currentHours.toLowerCase() == 'closed') {
       return false;
     }
-    
-    if (currentHours.toLowerCase() == '24/7' || currentHours.toLowerCase() == 'always open') {
+
+    if (currentHours.toLowerCase() == '24/7' ||
+        currentHours.toLowerCase() == 'always open') {
       return true;
     }
-    
+
     // Parse opening hours (format: "09:00-17:00")
     try {
       final parts = currentHours.split('-');
       if (parts.length != 2) return true;
-      
+
       final openTime = _parseTime(parts[0].trim());
       final closeTime = _parseTime(parts[1].trim());
       final currentTime = TimeOfDay(hour: now.hour, minute: now.minute);
-      
+
       return _isTimeBetween(currentTime, openTime, closeTime);
     } catch (e) {
       return true; // Default to open if parsing fails
@@ -228,14 +234,22 @@ class SafePlaceModel {
 
   String _getDayName(int weekday) {
     switch (weekday) {
-      case 1: return 'monday';
-      case 2: return 'tuesday';
-      case 3: return 'wednesday';
-      case 4: return 'thursday';
-      case 5: return 'friday';
-      case 6: return 'saturday';
-      case 7: return 'sunday';
-      default: return 'monday';
+      case 1:
+        return 'monday';
+      case 2:
+        return 'tuesday';
+      case 3:
+        return 'wednesday';
+      case 4:
+        return 'thursday';
+      case 5:
+        return 'friday';
+      case 6:
+        return 'saturday';
+      case 7:
+        return 'sunday';
+      default:
+        return 'monday';
     }
   }
 
@@ -251,7 +265,7 @@ class SafePlaceModel {
     final currentMinutes = current.hour * 60 + current.minute;
     final startMinutes = start.hour * 60 + start.minute;
     final endMinutes = end.hour * 60 + end.minute;
-    
+
     if (startMinutes <= endMinutes) {
       return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
     } else {
