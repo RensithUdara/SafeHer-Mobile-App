@@ -233,11 +233,11 @@ class _AppTextFieldState extends State<AppTextField> {
             border: widget.border ??
                 OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.outline),
+                  borderSide: const BorderSide(color: AppColors.border),
                 ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.outline),
+              borderSide: const BorderSide(color: AppColors.border),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
