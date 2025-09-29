@@ -109,7 +109,7 @@ class AppButton extends StatelessWidget {
 
     return Text(
       text,
-      style: AppTextStyles.buttonText,
+      style: AppTextStyles.buttonMedium,
     );
   }
 }
