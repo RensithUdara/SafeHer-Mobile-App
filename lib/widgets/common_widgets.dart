@@ -109,7 +109,7 @@ class AppButton extends StatelessWidget {
 
     return Text(
       text,
-      style: AppTextStyles.buttonText,
+      style: AppTextStyles.buttonMedium,
     );
   }
 }
@@ -187,7 +187,7 @@ class _AppTextFieldState extends State<AppTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: AppTextStyles.labelText,
+            style: AppTextStyles.label,
           ),
           const SizedBox(height: 8),
         ],
@@ -207,7 +207,7 @@ class _AppTextFieldState extends State<AppTextField> {
           maxLength: widget.maxLength,
           textCapitalization: widget.textCapitalization,
           focusNode: widget.focusNode,
-          style: AppTextStyles.bodyText,
+          style: AppTextStyles.bodyMedium,
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: AppTextStyles.hintText,
