@@ -187,7 +187,7 @@ class _AppTextFieldState extends State<AppTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: AppTextStyles.labelText,
+            style: AppTextStyles.label,
           ),
           const SizedBox(height: 8),
         ],
