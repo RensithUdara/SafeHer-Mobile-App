@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../utils/constants.dart';
 
 class ValidationHelper {
@@ -7,12 +8,12 @@ class ValidationHelper {
     if (value == null || value.trim().isEmpty) {
       return 'Email is required';
     }
-    
+
     final emailRegExp = RegExp(ValidationPatterns.email);
     if (!emailRegExp.hasMatch(value.trim())) {
       return ErrorMessages.invalidEmail;
     }
-    
+
     return null;
   }
 
@@ -21,29 +22,30 @@ class ValidationHelper {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
-    
+
     if (value.length < 8) {
       return 'Password must be at least 8 characters long';
     }
-    
+
     final passwordRegExp = RegExp(ValidationPatterns.password);
     if (!passwordRegExp.hasMatch(value)) {
       return ErrorMessages.weakPassword;
     }
-    
+
     return null;
   }
 
   // Confirm password validation
-  static String? validateConfirmPassword(String? password, String? confirmPassword) {
+  static String? validateConfirmPassword(
+      String? password, String? confirmPassword) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
       return 'Confirm password is required';
     }
-    
+
     if (password != confirmPassword) {
       return ErrorMessages.passwordMismatch;
     }
-    
+
     return null;
   }
 
@@ -52,12 +54,12 @@ class ValidationHelper {
     if (value == null || value.trim().isEmpty) {
       return 'Phone number is required';
     }
-    
+
     final phoneRegExp = RegExp(ValidationPatterns.phone);
     if (!phoneRegExp.hasMatch(value.trim())) {
       return ErrorMessages.invalidPhone;
     }
-    
+
     return null;
   }
 
@@ -66,16 +68,16 @@ class ValidationHelper {
     if (value == null || value.trim().isEmpty) {
       return 'Name is required';
     }
-    
+
     if (value.trim().length < 2) {
       return 'Name must be at least 2 characters long';
     }
-    
+
     final nameRegExp = RegExp(ValidationPatterns.name);
     if (!nameRegExp.hasMatch(value.trim())) {
       return 'Name can only contain letters and spaces';
     }
-    
+
     return null;
   }
 
@@ -84,12 +86,12 @@ class ValidationHelper {
     if (value == null || value.isEmpty) {
       return 'PIN is required';
     }
-    
+
     final pinRegExp = RegExp(ValidationPatterns.pin);
     if (!pinRegExp.hasMatch(value)) {
       return ErrorMessages.invalidPin;
     }
-    
+
     return null;
   }
 
@@ -102,7 +104,8 @@ class ValidationHelper {
   }
 
   // Minimum length validation
-  static String? validateMinLength(String? value, int minLength, String fieldName) {
+  static String? validateMinLength(
+      String? value, int minLength, String fieldName) {
     if (value == null || value.length < minLength) {
       return '$fieldName must be at least $minLength characters long';
     }
@@ -110,7 +113,8 @@ class ValidationHelper {
   }
 
   // Maximum length validation
-  static String? validateMaxLength(String? value, int maxLength, String fieldName) {
+  static String? validateMaxLength(
+      String? value, int maxLength, String fieldName) {
     if (value != null && value.length > maxLength) {
       return '$fieldName cannot exceed $maxLength characters';
     }
@@ -121,10 +125,10 @@ class ValidationHelper {
   static String? validateEmergencyContact(String? name, String? phone) {
     final nameError = validateName(name);
     if (nameError != null) return nameError;
-    
+
     final phoneError = validatePhone(phone);
     if (phoneError != null) return phoneError;
-    
+
     return null;
   }
 }
@@ -134,7 +138,7 @@ class FormatHelper {
   static String formatPhoneNumber(String phoneNumber) {
     // Remove all non-digit characters
     String digits = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (digits.length == 10) {
       // US format: (123) 456-7890
       return '(${digits.substring(0, 3)}) ${digits.substring(3, 6)}-${digits.substring(6)}';
@@ -142,7 +146,7 @@ class FormatHelper {
       // US format with country code: +1 (123) 456-7890
       return '+1 (${digits.substring(1, 4)}) ${digits.substring(4, 7)}-${digits.substring(7)}';
     }
-    
+
     return phoneNumber; // Return original if no standard format applies
   }
 
@@ -157,7 +161,7 @@ class FormatHelper {
     final minute = time.minute;
     final period = hour >= 12 ? 'PM' : 'AM';
     final displayHour = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-    
+
     return '${displayHour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $period';
   }
 
@@ -170,7 +174,7 @@ class FormatHelper {
   static String formatRelativeTime(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays > 0) {
       return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
     } else if (difference.inHours > 0) {
@@ -194,7 +198,8 @@ class FormatHelper {
 
   // Format emergency contact relationship
   static String formatRelationship(String relationship) {
-    return relationship.substring(0, 1).toUpperCase() + relationship.substring(1).toLowerCase();
+    return relationship.substring(0, 1).toUpperCase() +
+        relationship.substring(1).toLowerCase();
   }
 
   // Format coordinates
@@ -364,25 +369,24 @@ class LocationHelper {
   // Check if coordinates are valid
   static bool isValidCoordinate(double? latitude, double? longitude) {
     if (latitude == null || longitude == null) return false;
-    return latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
+    return latitude >= -90 &&
+        latitude <= 90 &&
+        longitude >= -180 &&
+        longitude <= 180;
   }
 
   // Calculate distance between two points
   static double calculateDistance(
-    double lat1, double lon1, 
-    double lat2, double lon2
-  ) {
+      double lat1, double lon1, double lat2, double lon2) {
     // Haversine formula implementation would go here
     return 0.0; // Placeholder
   }
 
   // Check if location is within bounds
-  static bool isWithinBounds(
-    double latitude, double longitude,
-    double centerLat, double centerLon,
-    double radiusMeters
-  ) {
-    final distance = calculateDistance(latitude, longitude, centerLat, centerLon);
+  static bool isWithinBounds(double latitude, double longitude,
+      double centerLat, double centerLon, double radiusMeters) {
+    final distance =
+        calculateDistance(latitude, longitude, centerLat, centerLon);
     return distance <= radiusMeters;
   }
 
@@ -398,7 +402,8 @@ class LocationHelper {
 
 class DialogHelper {
   // Show loading dialog
-  static Future<void> showLoadingDialog(BuildContext context, {String? message}) {
+  static Future<void> showLoadingDialog(BuildContext context,
+      {String? message}) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
