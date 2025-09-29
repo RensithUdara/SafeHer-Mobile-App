@@ -210,7 +210,7 @@ class _AppTextFieldState extends State<AppTextField> {
           style: AppTextStyles.bodyMedium,
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: AppTextStyles.hintText,
+            hintStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.textHint),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.obscureText
                 ? IconButton(
