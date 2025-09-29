@@ -5,7 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum LocationAccuracy {
+enum SafeHerLocationAccuracy {
   lowest,
   low,
   medium,
@@ -75,7 +75,7 @@ class LocationService {
 
   // Get current location
   Future<Position?> getCurrentLocation({
-    LocationAccuracy accuracy = LocationAccuracy.high,
+    SafeHerLocationAccuracy accuracy = SafeHerLocationAccuracy.high,
     Duration? timeout,
   }) async {
     try {
@@ -104,7 +104,7 @@ class LocationService {
 
   // Start location tracking
   Future<StreamSubscription<Position>> startLocationTracking({
-    LocationAccuracy accuracy = LocationAccuracy.high,
+    SafeHerLocationAccuracy accuracy = SafeHerLocationAccuracy.high,
     int distanceFilter = 10, // meters
     int timeInterval = 5000, // milliseconds
     required Function(Position) onLocationUpdate,
@@ -331,18 +331,18 @@ class LocationService {
     );
   }
 
-  // Convert LocationAccuracy enum to Geolocator LocationAccuracy
-  LocationAccuracy _getLocationAccuracy(LocationAccuracy accuracy) {
+  // Convert SafeHerLocationAccuracy enum to Geolocator LocationAccuracy
+  LocationAccuracy _getLocationAccuracy(SafeHerLocationAccuracy accuracy) {
     switch (accuracy) {
-      case LocationAccuracy.lowest:
+      case SafeHerLocationAccuracy.lowest:
         return LocationAccuracy.lowest;
-      case LocationAccuracy.low:
+      case SafeHerLocationAccuracy.low:
         return LocationAccuracy.low;
-      case LocationAccuracy.medium:
+      case SafeHerLocationAccuracy.medium:
         return LocationAccuracy.medium;
-      case LocationAccuracy.high:
+      case SafeHerLocationAccuracy.high:
         return LocationAccuracy.high;
-      case LocationAccuracy.best:
+      case SafeHerLocationAccuracy.best:
         return LocationAccuracy.best;
     }
   }
