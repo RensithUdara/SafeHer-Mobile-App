@@ -5,7 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum LocationAccuracy {
+enum SafeHerLocationAccuracy {
   lowest,
   low,
   medium,
@@ -75,7 +75,7 @@ class LocationService {
 
   // Get current location
   Future<Position?> getCurrentLocation({
-    LocationAccuracy accuracy = LocationAccuracy.high,
+    SafeHerLocationAccuracy accuracy = SafeHerLocationAccuracy.high,
     Duration? timeout,
   }) async {
     try {
