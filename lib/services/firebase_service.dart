@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import '../models/user_model.dart';
-import '../models/emergency_contact_model.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 import '../models/emergency_alert_model.dart';
+import '../models/emergency_contact_model.dart';
 import '../models/journey_model.dart';
 import '../models/safe_place_model.dart';
+import '../models/user_model.dart';
 
 class FirebaseService {
   static final FirebaseService _instance = FirebaseService._internal();
@@ -19,10 +20,14 @@ class FirebaseService {
 
   // Collections
   CollectionReference get _usersCollection => _firestore.collection('users');
-  CollectionReference get _emergencyAlertsCollection => _firestore.collection('emergency_alerts');
-  CollectionReference get _communityReportsCollection => _firestore.collection('community_reports');
-  CollectionReference get _sharedLocationsCollection => _firestore.collection('shared_locations');
-  CollectionReference get _safeZonesCollection => _firestore.collection('safe_zones');
+  CollectionReference get _emergencyAlertsCollection =>
+      _firestore.collection('emergency_alerts');
+  CollectionReference get _communityReportsCollection =>
+      _firestore.collection('community_reports');
+  CollectionReference get _sharedLocationsCollection =>
+      _firestore.collection('shared_locations');
+  CollectionReference get _safeZonesCollection =>
+      _firestore.collection('safe_zones');
 
   // Initialize Firebase services
   Future<void> initialize() async {
@@ -59,7 +64,9 @@ class FirebaseService {
   // User operations
   Future<void> saveUser(UserModel user) async {
     try {
-      await _usersCollection.doc(user.id).set(user.toJson(), SetOptions(merge: true));
+      await _usersCollection
+          .doc(user.id)
+          .set(user.toJson(), SetOptions(merge: true));
     } catch (e) {
       throw Exception('Failed to save user: $e');
     }
@@ -89,7 +96,7 @@ class FirebaseService {
     try {
       // Delete all user-related data
       final batch = _firestore.batch();
-      
+
       // Delete user document
       batch.delete(_usersCollection.doc(userId));
 
@@ -141,7 +148,8 @@ class FirebaseService {
     }
   }
 
-  Future<List<EmergencyAlertModel>> getUserEmergencyAlerts(String userId) async {
+  Future<List<EmergencyAlertModel>> getUserEmergencyAlerts(
+      String userId) async {
     try {
       final query = await _emergencyAlertsCollection
           .where('user_id', isEqualTo: userId)
@@ -161,9 +169,8 @@ class FirebaseService {
   // Journey operations
   Future<String> saveJourney(JourneyModel journey) async {
     try {
-      final docRef = await _firestore
-          .collection('journeys')
-          .add(journey.toJson());
+      final docRef =
+          await _firestore.collection('journeys').add(journey.toJson());
       return docRef.id;
     } catch (e) {
       throw Exception('Failed to save journey: $e');
@@ -327,11 +334,13 @@ class FirebaseService {
     SafePlaceType? placeType,
   }) async {
     try {
-      Query query = _firestore.collection('safe_places')
+      Query query = _firestore
+          .collection('safe_places')
           .where('is_public', isEqualTo: true);
 
       if (placeType != null) {
-        query = query.where('place_type', isEqualTo: placeType.toString().split('.').last);
+        query = query.where('place_type',
+            isEqualTo: placeType.toString().split('.').last);
       }
 
       final querySnapshot = await query.limit(50).get();
