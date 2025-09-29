@@ -1,12 +1,14 @@
 import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   NotificationService._internal();
@@ -21,8 +23,9 @@ class NotificationService {
 
   // Initialize local notifications
   Future<void> _initializeLocalNotifications() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -125,29 +128,36 @@ class NotificationService {
       );
 
       await _localNotifications
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(emergencyChannel);
 
       await _localNotifications
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(safetyChannel);
 
       await _localNotifications
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(locationChannel);
 
       await _localNotifications
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(journeyChannel);
 
       await _localNotifications
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(communityChannel);
     }
   }
 
   // Show emergency notification
-  Future<void> showEmergencyNotification(String title, String body, {
+  Future<void> showEmergencyNotification(
+    String title,
+    String body, {
     String? payload,
     bool ongoing = true,
     bool autoCancel = false,
@@ -195,7 +205,9 @@ class NotificationService {
   }
 
   // Show safety notification
-  Future<void> showSafetyNotification(String title, String body, {
+  Future<void> showSafetyNotification(
+    String title,
+    String body, {
     String? payload,
   }) async {
     const androidDetails = AndroidNotificationDetails(
@@ -231,7 +243,9 @@ class NotificationService {
   }
 
   // Show journey notification
-  Future<void> showJourneyNotification(String title, String body, {
+  Future<void> showJourneyNotification(
+    String title,
+    String body, {
     String? payload,
   }) async {
     const androidDetails = AndroidNotificationDetails(
@@ -267,7 +281,9 @@ class NotificationService {
   }
 
   // Show community alert notification
-  Future<void> showCommunityAlert(String title, String body, {
+  Future<void> showCommunityAlert(
+    String title,
+    String body, {
     String? payload,
   }) async {
     const androidDetails = AndroidNotificationDetails(
@@ -303,7 +319,8 @@ class NotificationService {
   }
 
   // Show location tracking notification (persistent)
-  Future<void> showLocationTrackingNotification(String title, String body) async {
+  Future<void> showLocationTrackingNotification(
+      String title, String body) async {
     const androidDetails = AndroidNotificationDetails(
       'location_tracking',
       'Location Tracking',
@@ -374,7 +391,8 @@ class NotificationService {
       notificationDetails,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
@@ -472,7 +490,7 @@ class NotificationService {
   // Handle foreground messages
   void _handleForegroundMessage(RemoteMessage message) {
     print('Handling foreground message: ${message.messageId}');
-    
+
     // Show local notification for foreground messages
     if (message.notification != null) {
       showSafetyNotification(
