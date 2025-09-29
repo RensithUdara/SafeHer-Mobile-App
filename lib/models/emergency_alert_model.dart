@@ -62,8 +62,11 @@ class EmergencyAlertModel {
       address: json['address'],
       message: json['message'],
       contactsNotified: List<String>.from(json['contacts_notified'] ?? []),
-      timestamp: DateTime.parse(json['timestamp'] ?? DateTime.now().toIso8601String()),
-      resolvedAt: json['resolved_at'] != null ? DateTime.parse(json['resolved_at']) : null,
+      timestamp:
+          DateTime.parse(json['timestamp'] ?? DateTime.now().toIso8601String()),
+      resolvedAt: json['resolved_at'] != null
+          ? DateTime.parse(json['resolved_at'])
+          : null,
       additionalData: json['additional_data'],
     );
   }
@@ -100,7 +103,7 @@ class EmergencyAlertModel {
       'contacts_notified': contactsNotified.join(','),
       'timestamp': timestamp.toIso8601String(),
       'resolved_at': resolvedAt?.toIso8601String(),
-      'additional_data': additionalData != null ? additionalData.toString() : null,
+      'additional_data': additionalData?.toString(),
     };
   }
 
@@ -121,12 +124,15 @@ class EmergencyAlertModel {
       longitude: (map['longitude'] ?? 0.0).toDouble(),
       address: map['address'],
       message: map['message'],
-      contactsNotified: map['contacts_notified'] != null 
+      contactsNotified: map['contacts_notified'] != null
           ? map['contacts_notified'].toString().split(',')
           : [],
-      timestamp: DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
-      resolvedAt: map['resolved_at'] != null ? DateTime.parse(map['resolved_at']) : null,
-      additionalData: map['additional_data'] != null 
+      timestamp:
+          DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
+      resolvedAt: map['resolved_at'] != null
+          ? DateTime.parse(map['resolved_at'])
+          : null,
+      additionalData: map['additional_data'] != null
           ? Map<String, dynamic>.from(map['additional_data'])
           : null,
     );
