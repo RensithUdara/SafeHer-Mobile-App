@@ -34,7 +34,6 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isEnabled = enabled && !isLoading && onPressed != null;
 
     final effectiveBackgroundColor = backgroundColor ??
@@ -102,7 +101,7 @@ class AppButton extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             text,
-            style: AppTextStyles.buttonText,
+            style: AppTextStyles.buttonMedium,
           ),
         ],
       );
