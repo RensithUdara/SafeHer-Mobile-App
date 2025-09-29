@@ -1,19 +1,17 @@
-import 'package:flutter/material.dart';
-
 // App Information
 class AppConstants {
   static const String appName = 'SafeHer';
   static const String appVersion = '1.0.0';
   static const String appDescription = 'Women\'s Safety Mobile Application';
-  
+
   // API & Firebase
   static const String baseUrl = 'https://api.safeher.com';
   static const String firebaseWebApiKey = 'your-firebase-web-api-key';
-  
+
   // Database
   static const String databaseName = 'safeher.db';
   static const int databaseVersion = 1;
-  
+
   // Shared Preferences Keys
   static const String isFirstLaunch = 'is_first_launch';
   static const String userId = 'user_id';
@@ -27,13 +25,13 @@ class AppConstants {
   static const String lastKnownLongitude = 'last_known_longitude';
   static const String darkMode = 'dark_mode';
   static const String language = 'language';
-  
+
   // Emergency
   static const String emergencyNumber = '911';
   static const String policeNumber = '911';
   static const String ambulanceNumber = '911';
   static const String fireNumber = '911';
-  
+
   // Country-specific emergency numbers
   static const Map<String, Map<String, String>> emergencyNumbers = {
     'US': {
@@ -67,43 +65,43 @@ class AppConstants {
       'fire': '911',
     },
   };
-  
+
   // Location
   static const double defaultLocationAccuracy = 10.0; // meters
   static const int locationUpdateInterval = 5000; // milliseconds
   static const int backgroundLocationInterval = 60000; // milliseconds
   static const double geofenceRadius = 100.0; // meters
   static const double dangerZoneRadius = 500.0; // meters
-  
+
   // Journey
   static const int journeyTimeoutMinutes = 30;
   static const int journeyCheckInterval = 60; // seconds
   static const double routeDeviationThreshold = 200.0; // meters
-  
+
   // Notifications
   static const int emergencyNotificationId = 1001;
   static const int safetyNotificationId = 1002;
   static const int journeyNotificationId = 1003;
   static const int communityNotificationId = 1004;
   static const int locationTrackingNotificationId = 1005;
-  
+
   // File sizes and limits
   static const int maxImageSizeBytes = 5 * 1024 * 1024; // 5MB
   static const int maxAudioSizeBytes = 10 * 1024 * 1024; // 10MB
   static const int maxVideoSizeBytes = 50 * 1024 * 1024; // 50MB
   static const int maxEmergencyContacts = 10;
   static const int maxSafePlaces = 50;
-  
+
   // Timeouts
   static const int networkTimeoutSeconds = 30;
   static const int emergencyResponseTimeoutSeconds = 10;
   static const int locationTimeoutSeconds = 15;
-  
+
   // Animation durations
   static const int shortAnimationDuration = 200;
   static const int mediumAnimationDuration = 500;
   static const int longAnimationDuration = 1000;
-  
+
   // Security
   static const int pinLength = 4;
   static const int maxLoginAttempts = 5;
@@ -158,8 +156,9 @@ class AssetPaths {
   static const String sosButton = 'assets/images/sos_button.png';
   static const String fakeCallAvatar = 'assets/images/fake_call_avatar.png';
   static const String safetyTips = 'assets/images/safety_tips.png';
-  static const String profilePlaceholder = 'assets/images/profile_placeholder.png';
-  
+  static const String profilePlaceholder =
+      'assets/images/profile_placeholder.png';
+
   // Icons
   static const String homeIcon = 'assets/icons/home.svg';
   static const String sosIcon = 'assets/icons/sos.svg';
@@ -171,14 +170,14 @@ class AssetPaths {
   static const String phoneIcon = 'assets/icons/phone.svg';
   static const String shieldIcon = 'assets/icons/shield.svg';
   static const String alertIcon = 'assets/icons/alert.svg';
-  
+
   // Animations
   static const String loadingAnimation = 'assets/animations/loading.json';
   static const String sosAnimation = 'assets/animations/sos.json';
   static const String safeAnimation = 'assets/animations/safe.json';
   static const String dangerAnimation = 'assets/animations/danger.json';
   static const String locationAnimation = 'assets/animations/location.json';
-  
+
   // Sounds
   static const String emergencyAlarm = 'assets/sounds/emergency_alarm.mp3';
   static const String notificationSound = 'assets/sounds/notification.mp3';
@@ -188,36 +187,52 @@ class AssetPaths {
 
 // Error Messages
 class ErrorMessages {
-  static const String networkError = 'Network connection failed. Please check your internet connection.';
-  static const String serverError = 'Server error occurred. Please try again later.';
-  static const String unknownError = 'An unknown error occurred. Please try again.';
-  static const String locationError = 'Unable to get your location. Please enable location services.';
-  static const String permissionDenied = 'Permission denied. Please grant the necessary permissions.';
-  static const String authenticationFailed = 'Authentication failed. Please check your credentials.';
-  static const String userNotFound = 'User not found. Please check your email address.';
+  static const String networkError =
+      'Network connection failed. Please check your internet connection.';
+  static const String serverError =
+      'Server error occurred. Please try again later.';
+  static const String unknownError =
+      'An unknown error occurred. Please try again.';
+  static const String locationError =
+      'Unable to get your location. Please enable location services.';
+  static const String permissionDenied =
+      'Permission denied. Please grant the necessary permissions.';
+  static const String authenticationFailed =
+      'Authentication failed. Please check your credentials.';
+  static const String userNotFound =
+      'User not found. Please check your email address.';
   static const String invalidEmail = 'Please enter a valid email address.';
   static const String invalidPhone = 'Please enter a valid phone number.';
-  static const String weakPassword = 'Password is too weak. Please choose a stronger password.';
+  static const String weakPassword =
+      'Password is too weak. Please choose a stronger password.';
   static const String passwordMismatch = 'Passwords do not match.';
   static const String invalidPin = 'Invalid PIN. Please enter a 4-digit PIN.';
-  static const String emergencyContactLimit = 'You can only add up to 10 emergency contacts.';
-  static const String safePlaceLimit = 'You can only save up to 50 safe places.';
-  static const String fileTooBig = 'File size is too large. Please choose a smaller file.';
-  static const String invalidFileType = 'Invalid file type. Please choose a valid file.';
+  static const String emergencyContactLimit =
+      'You can only add up to 10 emergency contacts.';
+  static const String safePlaceLimit =
+      'You can only save up to 50 safe places.';
+  static const String fileTooBig =
+      'File size is too large. Please choose a smaller file.';
+  static const String invalidFileType =
+      'Invalid file type. Please choose a valid file.';
 }
 
 // Success Messages
 class SuccessMessages {
   static const String loginSuccess = 'Login successful!';
   static const String registrationSuccess = 'Registration successful!';
-  static const String passwordResetSent = 'Password reset link sent to your email.';
+  static const String passwordResetSent =
+      'Password reset link sent to your email.';
   static const String passwordChanged = 'Password changed successfully!';
   static const String profileUpdated = 'Profile updated successfully!';
   static const String contactAdded = 'Emergency contact added successfully!';
-  static const String contactUpdated = 'Emergency contact updated successfully!';
-  static const String contactDeleted = 'Emergency contact deleted successfully!';
+  static const String contactUpdated =
+      'Emergency contact updated successfully!';
+  static const String contactDeleted =
+      'Emergency contact deleted successfully!';
   static const String safePlaceAdded = 'Safe place added successfully!';
-  static const String emergencyAlertSent = 'Emergency alert sent to your contacts!';
+  static const String emergencyAlertSent =
+      'Emergency alert sent to your contacts!';
   static const String journeyStarted = 'Safe journey tracking started!';
   static const String journeyCompleted = 'Journey completed successfully!';
   static const String locationShared = 'Location shared with your contacts!';
@@ -226,11 +241,13 @@ class SuccessMessages {
 
 // Validation Patterns
 class ValidationPatterns {
-  static const String email = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+  static const String email =
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
   static const String phone = r'^\+?[\d\s\-\(\)]{10,}$';
   static const String name = r'^[a-zA-Z\s]{2,50}$';
   static const String pin = r'^\d{4}$';
-  static const String password = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
+  static const String password =
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
 }
 
 // API Endpoints
@@ -359,7 +376,8 @@ class DefaultValues {
   static const double defaultLatitude = 37.7749; // San Francisco
   static const double defaultLongitude = -122.4194;
   static const int defaultJourneyTimeout = 60; // minutes
-  static const String defaultEmergencyMessage = 'I am in an emergency situation and need immediate help!';
+  static const String defaultEmergencyMessage =
+      'I am in an emergency situation and need immediate help!';
   static const String defaultFakeCallerName = 'Mom';
   static const String defaultFakeCallerNumber = '+1-555-0123';
 }
