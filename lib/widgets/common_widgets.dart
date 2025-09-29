@@ -229,7 +229,7 @@ class _AppTextFieldState extends State<AppTextField> {
             contentPadding: widget.contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             filled: widget.filled,
-            fillColor: widget.fillColor ?? AppColors.surfaceVariant,
+            fillColor: widget.fillColor ?? AppColors.grey100,
             border: widget.border ??
                 OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
