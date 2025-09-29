@@ -30,8 +30,10 @@ class UserModel {
       phone: json['phone'],
       profilePhotoPath: json['profile_photo_path'],
       emergencyPin: json['emergency_pin'],
-      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
-      updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
+      createdAt: DateTime.parse(
+          json['created_at'] ?? DateTime.now().toIso8601String()),
+      updatedAt: DateTime.parse(
+          json['updated_at'] ?? DateTime.now().toIso8601String()),
       isActive: json['is_active'] ?? true,
     );
   }
@@ -75,8 +77,10 @@ class UserModel {
       phone: map['phone'],
       profilePhotoPath: map['profile_photo_path'],
       emergencyPin: map['emergency_pin'],
-      createdAt: DateTime.parse(map['created_at'] ?? DateTime.now().toIso8601String()),
-      updatedAt: DateTime.parse(map['updated_at'] ?? DateTime.now().toIso8601String()),
+      createdAt:
+          DateTime.parse(map['created_at'] ?? DateTime.now().toIso8601String()),
+      updatedAt:
+          DateTime.parse(map['updated_at'] ?? DateTime.now().toIso8601String()),
       isActive: map['is_active'] == 1,
     );
   }
