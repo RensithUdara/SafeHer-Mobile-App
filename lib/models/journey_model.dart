@@ -60,17 +60,20 @@ class JourneyModel {
       endLatitude: json['end_latitude']?.toDouble(),
       endLongitude: json['end_longitude']?.toDouble(),
       endAddress: json['end_address'],
-      startTime: DateTime.parse(json['start_time'] ?? DateTime.now().toIso8601String()),
-      endTime: json['end_time'] != null ? DateTime.parse(json['end_time']) : null,
-      estimatedArrival: json['estimated_arrival'] != null ? DateTime.parse(json['estimated_arrival']) : null,
+      startTime: DateTime.parse(
+          json['start_time'] ?? DateTime.now().toIso8601String()),
+      endTime:
+          json['end_time'] != null ? DateTime.parse(json['end_time']) : null,
+      estimatedArrival: json['estimated_arrival'] != null
+          ? DateTime.parse(json['estimated_arrival'])
+          : null,
       status: JourneyStatus.values.firstWhere(
         (e) => e.toString().split('.').last == json['status'],
         orElse: () => JourneyStatus.planned,
       ),
-      routeCoordinates: json['route_coordinates'] != null 
-          ? List<Map<String, double>>.from(
-              json['route_coordinates'].map((coord) => Map<String, double>.from(coord))
-            )
+      routeCoordinates: json['route_coordinates'] != null
+          ? List<Map<String, double>>.from(json['route_coordinates']
+              .map((coord) => Map<String, double>.from(coord)))
           : [],
       sharedWith: List<String>.from(json['shared_with'] ?? []),
       isPublic: json['is_public'] ?? false,
@@ -119,8 +122,10 @@ class JourneyModel {
       'end_time': endTime?.toIso8601String(),
       'estimated_arrival': estimatedArrival?.toIso8601String(),
       'status': status.toString().split('.').last,
-      'route_coordinates': routeCoordinates.isNotEmpty 
-          ? routeCoordinates.map((coord) => '${coord['lat']},${coord['lng']}').join(';')
+      'route_coordinates': routeCoordinates.isNotEmpty
+          ? routeCoordinates
+              .map((coord) => '${coord['lat']},${coord['lng']}')
+              .join(';')
           : null,
       'shared_with': sharedWith.join(','),
       'is_public': isPublic ? 1 : 0,
@@ -132,7 +137,8 @@ class JourneyModel {
   // Create from SQLite Map
   factory JourneyModel.fromMap(Map<String, dynamic> map) {
     List<Map<String, double>> coordinates = [];
-    if (map['route_coordinates'] != null && map['route_coordinates'].toString().isNotEmpty) {
+    if (map['route_coordinates'] != null &&
+        map['route_coordinates'].toString().isNotEmpty) {
       final coordStrings = map['route_coordinates'].toString().split(';');
       coordinates = coordStrings.map((coord) {
         final parts = coord.split(',');
@@ -153,20 +159,24 @@ class JourneyModel {
       endLatitude: map['end_latitude']?.toDouble(),
       endLongitude: map['end_longitude']?.toDouble(),
       endAddress: map['end_address'],
-      startTime: DateTime.parse(map['start_time'] ?? DateTime.now().toIso8601String()),
+      startTime:
+          DateTime.parse(map['start_time'] ?? DateTime.now().toIso8601String()),
       endTime: map['end_time'] != null ? DateTime.parse(map['end_time']) : null,
-      estimatedArrival: map['estimated_arrival'] != null ? DateTime.parse(map['estimated_arrival']) : null,
+      estimatedArrival: map['estimated_arrival'] != null
+          ? DateTime.parse(map['estimated_arrival'])
+          : null,
       status: JourneyStatus.values.firstWhere(
         (e) => e.toString().split('.').last == map['status'],
         orElse: () => JourneyStatus.planned,
       ),
       routeCoordinates: coordinates,
-      sharedWith: map['shared_with'] != null && map['shared_with'].toString().isNotEmpty
-          ? map['shared_with'].toString().split(',')
-          : [],
+      sharedWith:
+          map['shared_with'] != null && map['shared_with'].toString().isNotEmpty
+              ? map['shared_with'].toString().split(',')
+              : [],
       isPublic: map['is_public'] == 1,
       notes: map['notes'],
-      settings: map['settings'] != null 
+      settings: map['settings'] != null
           ? Map<String, dynamic>.from(map['settings'])
           : null,
     );
