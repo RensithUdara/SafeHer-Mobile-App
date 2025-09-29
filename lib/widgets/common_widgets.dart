@@ -207,7 +207,7 @@ class _AppTextFieldState extends State<AppTextField> {
           maxLength: widget.maxLength,
           textCapitalization: widget.textCapitalization,
           focusNode: widget.focusNode,
-          style: AppTextStyles.bodyText,
+          style: AppTextStyles.bodyMedium,
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: AppTextStyles.hintText,
