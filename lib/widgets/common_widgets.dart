@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../utils/theme.dart';
 
 class AppButton extends StatelessWidget {
@@ -16,7 +17,7 @@ class AppButton extends StatelessWidget {
   final bool enabled;
 
   const AppButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.isLoading = false,
@@ -29,22 +30,22 @@ class AppButton extends StatelessWidget {
     this.borderRadius,
     this.icon,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isEnabled = enabled && !isLoading && onPressed != null;
-    
-    final effectiveBackgroundColor = backgroundColor ?? 
+
+    final effectiveBackgroundColor = backgroundColor ??
         (isOutlined ? Colors.transparent : AppColors.primary);
-    final effectiveTextColor = textColor ?? 
-        (isOutlined ? AppColors.primary : Colors.white);
-    
+    final effectiveTextColor =
+        textColor ?? (isOutlined ? AppColors.primary : Colors.white);
+
     return SizedBox(
       width: width,
       height: height ?? 50,
-      child: isOutlined 
+      child: isOutlined
           ? OutlinedButton(
               onPressed: isEnabled ? onPressed : null,
               style: OutlinedButton.styleFrom(
@@ -56,7 +57,8 @@ class AppButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius ?? BorderRadius.circular(12),
                 ),
-                padding: padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: padding ??
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
               child: _buildButtonContent(),
             )
@@ -72,7 +74,8 @@ class AppButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius ?? BorderRadius.circular(12),
                 ),
-                padding: padding ?? const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: padding ??
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
               child: _buildButtonContent(),
             ),
@@ -138,7 +141,7 @@ class AppTextField extends StatefulWidget {
   final FocusNode? focusNode;
 
   const AppTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.initialValue,
@@ -162,7 +165,7 @@ class AppTextField extends StatefulWidget {
     this.filled = true,
     this.textCapitalization = TextCapitalization.none,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -210,7 +213,7 @@ class _AppTextFieldState extends State<AppTextField> {
             hintText: widget.hint,
             hintStyle: AppTextStyles.hintText,
             prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.obscureText 
+            suffixIcon: widget.obscureText
                 ? IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -223,29 +226,30 @@ class _AppTextFieldState extends State<AppTextField> {
                     },
                   )
                 : widget.suffixIcon,
-            contentPadding: widget.contentPadding ?? 
+            contentPadding: widget.contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             filled: widget.filled,
             fillColor: widget.fillColor ?? AppColors.surfaceVariant,
-            border: widget.border ?? OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.outline),
-            ),
+            border: widget.border ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: AppColors.outline),
+                ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: AppColors.outline),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.primary, width: 2),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.error),
+              borderSide: const BorderSide(color: AppColors.error),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.error, width: 2),
+              borderSide: const BorderSide(color: AppColors.error, width: 2),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -269,7 +273,7 @@ class AppCard extends StatelessWidget {
   final Border? border;
 
   const AppCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.margin,
@@ -278,7 +282,7 @@ class AppCard extends StatelessWidget {
     this.borderRadius,
     this.onTap,
     this.border,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -381,11 +385,11 @@ class AppLoadingIndicator extends StatelessWidget {
   final double? size;
 
   const AppLoadingIndicator({
-    Key? key,
+    super.key,
     this.message,
     this.color,
     this.size,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -428,14 +432,14 @@ class AppEmptyState extends StatelessWidget {
   final VoidCallback? onActionPressed;
 
   const AppEmptyState({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.icon,
     this.illustration,
     this.actionText,
     this.onActionPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -493,12 +497,12 @@ class AppErrorWidget extends StatelessWidget {
   final VoidCallback? onActionPressed;
 
   const AppErrorWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.actionText,
     this.onActionPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +512,7 @@ class AppErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.error_outline,
               size: 80,
               color: AppColors.error,
@@ -553,12 +557,12 @@ class AppDivider extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
 
   const AppDivider({
-    Key? key,
+    super.key,
     this.height,
     this.thickness,
     this.color,
     this.margin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -591,9 +595,10 @@ class AppBottomSheet {
       isScrollControlled: isScrollControlled,
       backgroundColor: backgroundColor ?? AppColors.surface,
       elevation: elevation ?? 8,
-      shape: shape ?? const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      shape: shape ??
+          const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
       builder: (context) => child,
     );
   }
@@ -608,14 +613,14 @@ class AppSearchBar extends StatefulWidget {
   final bool autofocus;
 
   const AppSearchBar({
-    Key? key,
+    super.key,
     this.hint,
     this.onChanged,
     this.onSubmitted,
     this.onClear,
     this.controller,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AppSearchBar> createState() => _AppSearchBarState();
@@ -669,13 +674,13 @@ class _AppSearchBarState extends State<AppSearchBar> {
         decoration: InputDecoration(
           hintText: widget.hint ?? 'Search...',
           hintStyle: AppTextStyles.hintText,
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.search,
             color: AppColors.textSecondary,
           ),
           suffixIcon: _hasText
               ? IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.clear,
                     color: AppColors.textSecondary,
                   ),
