@@ -1,16 +1,18 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:torch_light/torch_light.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
-import 'package:torch_light/torch_light.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../database/database_helper.dart';
 import '../models/emergency_alert_model.dart';
 import '../models/emergency_contact_model.dart';
 import '../models/user_model.dart';
-import '../database/database_helper.dart';
 import 'firebase_service.dart';
 import 'location_service.dart';
 import 'notification_service.dart';
@@ -28,7 +30,7 @@ class EmergencyService {
   final FirebaseService _firebaseService = FirebaseService();
   final LocationService _locationService = LocationService();
   final NotificationService _notificationService = NotificationService();
-  
+
   Timer? _sosTimer;
   Timer? _alarmTimer;
   bool _isEmergencyActive = false;
@@ -79,7 +81,8 @@ class EmergencyService {
         latitude: position.latitude,
         longitude: position.longitude,
         address: address,
-        message: customMessage ?? 'SOS Emergency Alert - I need immediate help!',
+        message:
+            customMessage ?? 'SOS Emergency Alert - I need immediate help!',
         timestamp: DateTime.now(),
       );
 
@@ -257,7 +260,6 @@ class EmergencyService {
 
       // Notify contacts that emergency is cancelled
       await _notifyEmergencyCancelled(alertId);
-
     } catch (e) {
       throw Exception('Failed to cancel emergency: $e');
     }
@@ -280,7 +282,6 @@ class EmergencyService {
       Timer(Duration(seconds: durationSeconds), () {
         _dismissFakeCall();
       });
-
     } catch (e) {
       throw Exception('Failed to make fake call: $e');
     }
@@ -296,7 +297,8 @@ class EmergencyService {
   }
 
   // Get emergency contacts
-  Future<List<EmergencyContactModel>> getEmergencyContacts(String userId) async {
+  Future<List<EmergencyContactModel>> getEmergencyContacts(
+      String userId) async {
     try {
       final contacts = await _dbHelper.query(
         'emergency_contacts_table',
@@ -305,7 +307,9 @@ class EmergencyService {
         orderBy: 'priority_level ASC',
       );
 
-      return contacts.map((contact) => EmergencyContactModel.fromMap(contact)).toList();
+      return contacts
+          .map((contact) => EmergencyContactModel.fromMap(contact))
+          .toList();
     } catch (e) {
       throw Exception('Failed to get emergency contacts: $e');
     }
@@ -370,14 +374,15 @@ class EmergencyService {
   String? get activeEmergencyId => _activeEmergencyId;
 
   // Private helper methods
-  Future<void> _notifyEmergencyContacts(String userId, EmergencyAlertModel alert) async {
+  Future<void> _notifyEmergencyContacts(
+      String userId, EmergencyAlertModel alert) async {
     try {
       final contacts = await getEmergencyContacts(userId);
-      
+
       for (final contact in contacts) {
         // Send SMS if possible
         await _sendEmergencySMS(contact, alert);
-        
+
         // Make call to highest priority contacts
         if (contact.priorityLevel <= 2) {
           await _makeEmergencyCall(contact.phoneNumber);
@@ -388,10 +393,12 @@ class EmergencyService {
     }
   }
 
-  Future<void> _sendEmergencySMS(EmergencyContactModel contact, EmergencyAlertModel alert) async {
+  Future<void> _sendEmergencySMS(
+      EmergencyContactModel contact, EmergencyAlertModel alert) async {
     try {
-      final message = '${alert.message}\n\nLocation: ${alert.address ?? 'Unknown'}\nMap: https://maps.google.com/?q=${alert.latitude},${alert.longitude}\n\nSent from SafeHer app';
-      
+      final message =
+          '${alert.message}\n\nLocation: ${alert.address ?? 'Unknown'}\nMap: https://maps.google.com/?q=${alert.latitude},${alert.longitude}\n\nSent from SafeHer app';
+
       final uri = Uri(
         scheme: 'sms',
         path: contact.phoneNumber,
@@ -432,7 +439,26 @@ class EmergencyService {
     try {
       if (await Vibration.hasVibrator() ?? false) {
         // Vibrate in SOS pattern: 3 short, 3 long, 3 short
-        final pattern = [0, 200, 100, 200, 100, 200, 100, 600, 100, 600, 100, 600, 100, 200, 100, 200, 100, 200];
+        final pattern = [
+          0,
+          200,
+          100,
+          200,
+          100,
+          200,
+          100,
+          600,
+          100,
+          600,
+          100,
+          600,
+          100,
+          200,
+          100,
+          200,
+          100,
+          200
+        ];
         Vibration.vibrate(pattern: pattern, repeat: 0); // Repeat until stopped
       }
     } catch (e) {
@@ -453,10 +479,11 @@ class EmergencyService {
 
   void _flashSOSPattern() {
     int count = 0;
-    Timer.periodic(Duration(milliseconds: 200), (timer) {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (count >= 18) {
         timer.cancel();
-        Timer(Duration(seconds: 2), () => _flashSOSPattern()); // Repeat after 2 seconds
+        Timer(const Duration(seconds: 2),
+            () => _flashSOSPattern()); // Repeat after 2 seconds
         return;
       }
 
@@ -465,8 +492,10 @@ class EmergencyService {
         _toggleFlashlight();
       } else if (count < 12) {
         // Long flashes (3 times)
-        if (count % 2 == 0) TorchLight.enableTorch();
-        else TorchLight.disableTorch();
+        if (count % 2 == 0)
+          TorchLight.enableTorch();
+        else
+          TorchLight.disableTorch();
       } else {
         // Short flashes again (3 times)
         _toggleFlashlight();
@@ -478,7 +507,7 @@ class EmergencyService {
   void _toggleFlashlight() async {
     try {
       await TorchLight.enableTorch();
-      Timer(Duration(milliseconds: 100), () => TorchLight.disableTorch());
+      Timer(const Duration(milliseconds: 100), () => TorchLight.disableTorch());
     } catch (e) {
       print('Error toggling flashlight: $e');
     }
@@ -497,7 +526,7 @@ class EmergencyService {
     try {
       _sosTimer?.cancel();
       _alarmTimer?.cancel();
-      
+
       await Vibration.cancel();
       await TorchLight.disableTorch();
       await _notificationService.stopEmergencyAlarm();
@@ -515,7 +544,8 @@ class EmergencyService {
     }
   }
 
-  Future<void> _showFakeCallOverlay(String callerName, String callerNumber) async {
+  Future<void> _showFakeCallOverlay(
+      String callerName, String callerNumber) async {
     // This would show a fake incoming call screen
     // Implementation depends on your UI framework
   }
@@ -533,7 +563,8 @@ class EmergencyService {
     // Dismiss fake call UI
   }
 
-  void _handleJourneyLocationUpdate(Position position, String alertId, DateTime expectedArrival) {
+  void _handleJourneyLocationUpdate(
+      Position position, String alertId, DateTime expectedArrival) {
     // Check if journey is overdue or if user deviates from expected route
     // Trigger alert if necessary
   }
