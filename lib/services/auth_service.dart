@@ -1,10 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import '../models/user_model.dart';
+
+import 'package:crypto/crypto.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../database/database_helper.dart';
+import '../models/user_model.dart';
 import 'firebase_service.dart';
 
 enum AuthStatus {
@@ -47,7 +49,8 @@ class AuthService {
   }) async {
     try {
       // Create user with Firebase Auth
-      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -84,7 +87,8 @@ class AuthService {
     required String password,
   }) async {
     try {
-      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -108,7 +112,8 @@ class AuthService {
       if (googleUser == null) return null;
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -117,7 +122,8 @@ class AuthService {
       );
 
       // Sign in to Firebase with the Google credential
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
 
       // Check if this is a new user
       final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
@@ -157,11 +163,11 @@ class AuthService {
       }
 
       // Create a credential from the access token
-      final OAuthCredential facebookAuthCredential = 
+      final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
       // Sign in to Firebase with the Facebook credential
-      final UserCredential userCredential = 
+      final UserCredential userCredential =
           await _auth.signInWithCredential(facebookAuthCredential);
 
       // Check if this is a new user
