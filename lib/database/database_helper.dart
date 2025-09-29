@@ -337,7 +337,6 @@ class DatabaseHelper {
         'safeher_backup_${DateTime.now().millisecondsSinceEpoch}.db');
 
     final File sourceFile = File(sourcePath);
-    final File backupFile = File(backupPath);
 
     if (await sourceFile.exists()) {
       await sourceFile.copy(backupPath);
