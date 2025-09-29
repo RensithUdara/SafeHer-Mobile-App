@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 enum LocationAccuracy {
   lowest,
@@ -17,7 +18,8 @@ class LocationService {
   StreamSubscription<Position>? _positionStreamSubscription;
   Position? _lastKnownPosition;
   Timer? _backgroundTimer;
-  final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   LocationService._internal();
 
@@ -30,7 +32,8 @@ class LocationService {
 
   // Initialize notifications for background tracking
   Future<void> _initializeNotifications() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -184,9 +187,11 @@ class LocationService {
   }
 
   // Get address from coordinates
-  Future<String?> getAddressFromCoordinates(double latitude, double longitude) async {
+  Future<String?> getAddressFromCoordinates(
+      double latitude, double longitude) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         final placemark = placemarks.first;
         return '${placemark.street}, ${placemark.locality}, ${placemark.administrativeArea}';
