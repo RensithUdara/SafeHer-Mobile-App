@@ -189,9 +189,9 @@ class _LoginScreenState extends State<LoginScreen>
                                 return null;
                               },
                             ),
-                            
+
                             const SizedBox(height: 20),
-                            
+
                             // Password Field
                             AppTextField(
                               controller: _passwordController,
@@ -202,8 +202,8 @@ class _LoginScreenState extends State<LoginScreen>
                               textInputAction: TextInputAction.done,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword 
-                                      ? Icons.visibility_outlined 
+                                  _obscurePassword
+                                      ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: AppColors.textSecondary,
                                 ),
@@ -223,7 +223,8 @@ class _LoginScreenState extends State<LoginScreen>
                                 return null;
                               },
                               onSubmitted: (_) => _handleLogin(authController),
-                            ),                            const SizedBox(height: 16),
+                            ),
+                            const SizedBox(height: 16),
 
                             // Remember Me & Forgot Password
                             Row(
