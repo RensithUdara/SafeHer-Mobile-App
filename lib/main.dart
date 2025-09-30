@@ -1,40 +1,37 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:provider/provider.dart';
-import 'package:get/get.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 
 // Controllers
 import 'controllers/auth_controller.dart';
 import 'controllers/emergency_controller.dart';
-import 'controllers/location_controller.dart';
 import 'controllers/journey_controller.dart';
-
+import 'controllers/location_controller.dart';
+import 'database/database_helper.dart';
 // Services
 import 'services/firebase_service.dart';
-import 'services/notification_service.dart';
 import 'services/location_service.dart';
-import 'database/database_helper.dart';
-
-// Utils
-import 'utils/theme.dart';
+import 'services/notification_service.dart';
 import 'utils/constants.dart';
 import 'utils/routes.dart';
-
-// Views
-import 'views/splash_screen.dart';
-import 'views/onboarding_screen.dart';
+// Utils
+import 'utils/theme.dart';
 import 'views/auth/login_screen.dart';
 import 'views/auth/signup_screen.dart';
-import 'views/home/home_screen.dart';
-import 'views/emergency/emergency_screen.dart';
-import 'views/journey/journey_screen.dart';
 import 'views/contacts/emergency_contacts_screen.dart';
+import 'views/emergency/emergency_screen.dart';
+import 'views/home/home_screen.dart';
+import 'views/journey/journey_screen.dart';
+import 'views/onboarding_screen.dart';
 import 'views/profile/profile_screen.dart';
+// Views
+import 'views/splash_screen.dart';
 
 // Background task callback
 @pragma('vm:entry-point')
@@ -47,26 +44,26 @@ void callbackDispatcher() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Firebase
   await Firebase.initializeApp();
-  
+
   // Initialize Firebase Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-  
+
   // Initialize database
   await DatabaseHelper.instance.database;
-  
+
   // Initialize notification service
   await NotificationService.initialize();
-  
+
   // Initialize background work manager
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
-  
+
   // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -74,7 +71,7 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  
+
   runApp(const SafeHerApp());
 }
 
