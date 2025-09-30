@@ -1,18 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/auth_controller.dart';
-import '../../controllers/location_controller.dart';
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/journey_controller.dart';
-import '../../models/emergency_contact_model.dart';
+import '../../controllers/location_controller.dart';
 import '../../utils/theme.dart';
-import '../../utils/constants.dart';
-import '../../widgets/common_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _initializeServices() async {
-    final locationController = Provider.of<LocationController>(context, listen: false);
+    final locationController =
+        Provider.of<LocationController>(context, listen: false);
     if (!locationController.locationPermissionGranted) {
       await locationController.getCurrentLocation();
     }
@@ -83,8 +79,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Consumer3<AuthController, LocationController, EmergencyController>(
-          builder: (context, authController, locationController, emergencyController, child) {
+        child:
+            Consumer3<AuthController, LocationController, EmergencyController>(
+          builder: (context, authController, locationController,
+              emergencyController, child) {
             return CustomScrollView(
               slivers: [
                 // App Bar
@@ -114,11 +112,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: Image.asset(
                                 'assets/images/pattern_bg.png',
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) => Container(),
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(),
                               ),
                             ),
                           ),
-                          
+
                           // Content
                           Padding(
                             padding: const EdgeInsets.all(20),
@@ -132,10 +131,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     CircleAvatar(
                                       radius: 25,
                                       backgroundColor: Colors.white,
-                                      child: authController.currentUserModel?.profilePhotoPath != null
+                                      child: authController.currentUserModel
+                                                  ?.profilePhotoPath !=
+                                              null
                                           ? CachedNetworkImage(
-                                              imageUrl: authController.currentUserModel!.profilePhotoPath!,
-                                              imageBuilder: (context, imageProvider) => Container(
+                                              imageUrl: authController
+                                                  .currentUserModel!
+                                                  .profilePhotoPath!,
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   image: DecorationImage(
@@ -145,15 +150,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 ),
                                               ),
                                             )
-                                          : const Icon(Icons.person, color: AppColors.primary, size: 30),
+                                          : const Icon(Icons.person,
+                                              color: AppColors.primary,
+                                              size: 30),
                                     ),
-                                    
+
                                     const SizedBox(width: 15),
-                                    
+
                                     // Greeting
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             _getGreeting(),
@@ -163,7 +171,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Text(
-                                            authController.currentUserModel?.name ?? 'User',
+                                            authController
+                                                    .currentUserModel?.name ??
+                                                'User',
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 18,
@@ -173,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ],
                                       ),
                                     ),
-                                    
+
                                     // Notification Bell
                                     IconButton(
                                       onPressed: () {
@@ -187,17 +197,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     ),
                                   ],
                                 ),
-                                
+
                                 const SizedBox(height: 15),
-                                
+
                                 // Location Status
                                 Row(
                                   children: [
                                     Icon(
-                                      locationController.locationPermissionGranted
+                                      locationController
+                                              .locationPermissionGranted
                                           ? Icons.location_on
                                           : Icons.location_off,
-                                      color: locationController.locationPermissionGranted
+                                      color: locationController
+                                              .locationPermissionGranted
                                           ? AppColors.safe
                                           : AppColors.warning,
                                       size: 16,
@@ -205,7 +217,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     const SizedBox(width: 5),
                                     Expanded(
                                       child: Text(
-                                        locationController.currentAddress.isNotEmpty
+                                        locationController
+                                                .currentAddress.isNotEmpty
                                             ? locationController.currentAddress
                                             : 'Location unavailable',
                                         style: const TextStyle(
@@ -234,32 +247,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     delegate: SliverChildListDelegate([
                       // Emergency Status Card
                       _buildEmergencyStatusCard(emergencyController),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       // Quick Actions
                       _buildQuickActions(context),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       // Safety Features
                       _buildSafetyFeatures(context),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       // Journey Status
                       _buildJourneyStatus(context),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       // Emergency Contacts Quick Access
                       _buildEmergencyContacts(emergencyController),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       // Safety Tips
                       _buildSafetyTips(),
-                      
+
                       const SizedBox(height: 100), // Bottom padding for FAB
                     ]),
                   ),
@@ -269,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           },
         ),
       ),
-      
+
       // Floating Action Button - SOS Button
       floatingActionButton: Consumer<EmergencyController>(
         builder: (context, emergencyController, child) {
@@ -277,19 +290,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             animation: _pulseAnimation,
             builder: (context, child) {
               return Transform.scale(
-                scale: emergencyController.isEmergencyActive 
-                    ? _pulseAnimation.value 
+                scale: emergencyController.isEmergencyActive
+                    ? _pulseAnimation.value
                     : 1.0,
                 child: FloatingActionButton.extended(
-                  onPressed: () => _showEmergencyDialog(context, emergencyController),
-                  backgroundColor: emergencyController.isEmergencyActive 
-                      ? AppColors.error 
+                  onPressed: () =>
+                      _showEmergencyDialog(context, emergencyController),
+                  backgroundColor: emergencyController.isEmergencyActive
+                      ? AppColors.error
                       : AppColors.emergency,
                   foregroundColor: Colors.white,
                   elevation: 8,
                   icon: Icon(
-                    emergencyController.isEmergencyActive 
-                        ? Icons.stop 
+                    emergencyController.isEmergencyActive
+                        ? Icons.stop
                         : Icons.warning,
                     size: 24,
                   ),
@@ -321,13 +335,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: emergencyController.isEmergencyActive 
-            ? AppColors.emergencyLight 
+        color: emergencyController.isEmergencyActive
+            ? AppColors.emergencyLight
             : AppColors.safeLight,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: emergencyController.isEmergencyActive 
-              ? AppColors.emergency 
+          color: emergencyController.isEmergencyActive
+              ? AppColors.emergency
               : AppColors.safe,
           width: 2,
         ),
@@ -335,11 +349,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Row(
         children: [
           Icon(
-            emergencyController.isEmergencyActive 
-                ? Icons.warning 
+            emergencyController.isEmergencyActive
+                ? Icons.warning
                 : Icons.shield,
-            color: emergencyController.isEmergencyActive 
-                ? AppColors.emergency 
+            color: emergencyController.isEmergencyActive
+                ? AppColors.emergency
                 : AppColors.safe,
             size: 30,
           ),
@@ -349,12 +363,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  emergencyController.isEmergencyActive 
-                      ? 'Emergency Active' 
+                  emergencyController.isEmergencyActive
+                      ? 'Emergency Active'
                       : 'You\'re Safe',
                   style: TextStyle(
-                    color: emergencyController.isEmergencyActive 
-                        ? AppColors.emergency 
+                    color: emergencyController.isEmergencyActive
+                        ? AppColors.emergency
                         : AppColors.safe,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -362,10 +376,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  emergencyController.isEmergencyActive 
-                      ? 'Emergency services notified' 
+                  emergencyController.isEmergencyActive
+                      ? 'Emergency services notified'
                       : 'All systems operational',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 14,
                   ),
@@ -496,7 +510,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             _buildFeatureCard(
               icon: Icons.people,
               title: 'Emergency Contacts',
-              subtitle: '${context.read<EmergencyController>().emergencyContacts.length} contacts',
+              subtitle:
+                  '${context.read<EmergencyController>().emergencyContacts.length} contacts',
               onTap: () => Get.toNamed('/emergency-contacts'),
             ),
             _buildFeatureCard(
@@ -586,15 +601,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 children: [
                   Icon(
                     Icons.navigation,
                     color: AppColors.info,
                     size: 24,
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
+                  SizedBox(width: 10),
+                  Text(
                     'Active Journey',
                     style: TextStyle(
                       fontSize: 16,
@@ -656,7 +671,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.person_add,
               color: AppColors.warning,
               size: 40,
@@ -723,7 +738,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () => emergencyController.quickCallContact(contact),
+                      onTap: () =>
+                          emergencyController.quickCallContact(contact),
                       child: CircleAvatar(
                         radius: 25,
                         backgroundColor: AppColors.primary,
@@ -788,36 +804,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ],
           ),
           child: Column(
-            children: tips.map((tip) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.lightbulb_outline,
-                    color: AppColors.warning,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      tip,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
+            children: tips
+                .map((tip) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(
+                            Icons.lightbulb_outline,
+                            color: AppColors.warning,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              tip,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            )).toList(),
+                    ))
+                .toList(),
           ),
         ),
       ],
     );
   }
 
-  void _showEmergencyDialog(BuildContext context, EmergencyController emergencyController) {
+  void _showEmergencyDialog(
+      BuildContext context, EmergencyController emergencyController) {
     if (emergencyController.isEmergencyActive) {
       // Stop emergency
       emergencyController.stopEmergency();
