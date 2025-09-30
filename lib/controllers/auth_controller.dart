@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../database/database_helper.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 import '../services/firebase_service.dart';
-import '../database/database_helper.dart';
-import '../utils/constants.dart';
 
 class AuthController extends ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -48,7 +47,7 @@ class AuthController extends ChangeNotifier {
     try {
       // Check if user is already logged in
       _currentUser = FirebaseAuth.instance.currentUser;
-      
+
       if (_currentUser != null) {
         await _loadUserModel();
       }
@@ -56,7 +55,6 @@ class AuthController extends ChangeNotifier {
       // Check if it's first time opening the app
       final prefs = await SharedPreferences.getInstance();
       _isFirstTime = prefs.getBool('is_first_time') ?? true;
-      
     } catch (e) {
       _setError('Failed to initialize authentication: ${e.toString()}');
     } finally {
@@ -66,7 +64,7 @@ class AuthController extends ChangeNotifier {
 
   Future<void> _loadUserModel() async {
     if (_currentUser == null) return;
-    
+
     try {
       // First try to load from Firestore
       final userData = await _firebaseService.getUserData(_currentUser!.uid);
@@ -102,7 +100,7 @@ class AuthController extends ChangeNotifier {
 
       if (userCredential?.user != null) {
         _currentUser = userCredential!.user;
-        
+
         // Create user model
         final userModel = UserModel(
           id: _currentUser!.uid,
@@ -115,10 +113,10 @@ class AuthController extends ChangeNotifier {
 
         // Save to Firestore
         await _firebaseService.saveUserData(userModel);
-        
+
         // Save to local database
         await _databaseHelper.insertUser(userModel);
-        
+
         _currentUserModel = userModel;
         notifyListeners();
         return true;
@@ -167,19 +165,21 @@ class AuthController extends ChangeNotifier {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return false;
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
       if (userCredential.user != null) {
         _currentUser = userCredential.user;
-        
+
         // Check if user exists in database
         await _loadUserModel();
-        
+
         // If new user, create user model
         if (_currentUserModel == null) {
           final userModel = UserModel(
@@ -196,7 +196,7 @@ class AuthController extends ChangeNotifier {
           await _databaseHelper.insertUser(userModel);
           _currentUserModel = userModel;
         }
-        
+
         notifyListeners();
         return true;
       }
@@ -215,19 +215,19 @@ class AuthController extends ChangeNotifier {
 
     try {
       final LoginResult result = await FacebookAuth.instance.login();
-      
+
       if (result.status == LoginStatus.success) {
-        final OAuthCredential facebookAuthCredential = 
+        final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(result.accessToken!.token);
-        
+
         final userCredential = await FirebaseAuth.instance
             .signInWithCredential(facebookAuthCredential);
-            
+
         if (userCredential.user != null) {
           _currentUser = userCredential.user;
-          
+
           await _loadUserModel();
-          
+
           if (_currentUserModel == null) {
             final userModel = UserModel(
               id: _currentUser!.uid,
@@ -243,7 +243,7 @@ class AuthController extends ChangeNotifier {
             await _databaseHelper.insertUser(userModel);
             _currentUserModel = userModel;
           }
-          
+
           notifyListeners();
           return true;
         }
@@ -289,7 +289,8 @@ class AuthController extends ChangeNotifier {
         name: name ?? _currentUserModel!.name,
         email: _currentUserModel!.email,
         phone: phone ?? _currentUserModel!.phone,
-        profilePhotoPath: profilePhotoPath ?? _currentUserModel!.profilePhotoPath,
+        profilePhotoPath:
+            profilePhotoPath ?? _currentUserModel!.profilePhotoPath,
         emergencyPin: _currentUserModel!.emergencyPin,
         createdAt: _currentUserModel!.createdAt,
         updatedAt: DateTime.now(),
@@ -298,10 +299,10 @@ class AuthController extends ChangeNotifier {
 
       // Update in Firestore
       await _firebaseService.saveUserData(updatedUser);
-      
+
       // Update in local database
       await _databaseHelper.updateUser(updatedUser);
-      
+
       _currentUserModel = updatedUser;
       notifyListeners();
       return true;
@@ -332,7 +333,7 @@ class AuthController extends ChangeNotifier {
 
       await _firebaseService.saveUserData(updatedUser);
       await _databaseHelper.updateUser(updatedUser);
-      
+
       _currentUserModel = updatedUser;
       notifyListeners();
       return true;
@@ -349,7 +350,7 @@ class AuthController extends ChangeNotifier {
       await _authService.signOut();
       await GoogleSignIn().signOut();
       await FacebookAuth.instance.logOut();
-      
+
       _currentUser = null;
       _currentUserModel = null;
       notifyListeners();
@@ -377,16 +378,16 @@ class AuthController extends ChangeNotifier {
 
     try {
       final userId = _currentUser!.uid;
-      
+
       // Delete user data from Firestore
       await _firebaseService.deleteUserData(userId);
-      
+
       // Delete from local database
       await _databaseHelper.deleteUser(userId);
-      
+
       // Delete Firebase Auth account
       await _currentUser!.delete();
-      
+
       _currentUser = null;
       _currentUserModel = null;
       notifyListeners();
