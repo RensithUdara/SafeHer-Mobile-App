@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/theme.dart';
-import '../utils/routes.dart';
+
 import '../utils/constants.dart';
+import '../utils/routes.dart';
+import '../utils/theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -20,31 +21,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     OnboardingPage(
       image: Icons.shield_outlined,
       title: 'Your Personal Safety Guardian',
-      description: 'SafeHer is designed to keep you safe during your daily travels. With one-tap emergency alerts and real-time location sharing.',
+      description:
+          'SafeHer is designed to keep you safe during your daily travels. With one-tap emergency alerts and real-time location sharing.',
       backgroundColor: AppColors.primary,
     ),
     OnboardingPage(
       image: Icons.emergency_outlined,
       title: 'Instant SOS Emergency Alert',
-      description: 'One tap to alert your emergency contacts and authorities. Automatic location sharing and voice recording for evidence.',
+      description:
+          'One tap to alert your emergency contacts and authorities. Automatic location sharing and voice recording for evidence.',
       backgroundColor: AppColors.error,
     ),
     OnboardingPage(
       image: Icons.location_on_outlined,
       title: 'Live Journey Tracking',
-      description: 'Share your real-time location with trusted contacts. Get alerts if you deviate from your route or don\'t reach safely.',
+      description:
+          'Share your real-time location with trusted contacts. Get alerts if you deviate from your route or don\'t reach safely.',
       backgroundColor: AppColors.info,
     ),
     OnboardingPage(
       image: Icons.people_outline,
       title: 'Trusted Emergency Contacts',
-      description: 'Add your family and friends as emergency contacts. They\'ll be notified instantly if you need help.',
+      description:
+          'Add your family and friends as emergency contacts. They\'ll be notified instantly if you need help.',
       backgroundColor: AppColors.success,
     ),
     OnboardingPage(
       image: Icons.security_outlined,
       title: 'Community Safety Features',
-      description: 'Report unsafe areas, view community alerts, and access safety resources. Together we create safer communities.',
+      description:
+          'Report unsafe areas, view community alerts, and access safety resources. Together we create safer communities.',
       backgroundColor: AppColors.secondary,
     ),
   ];
@@ -105,7 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               return _buildPage(_pages[index]);
             },
           ),
-          
+
           // Skip Button (top right)
           if (_currentPage < _pages.length - 1)
             Positioned(
@@ -125,7 +131,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
             ),
-          
+
           // Bottom Navigation
           Positioned(
             bottom: 0,
@@ -156,9 +162,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: _buildPageIndicators(),
                     ),
-                    
+
                     const SizedBox(height: 30),
-                    
+
                     // Navigation Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +173,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         if (_currentPage > 0)
                           TextButton(
                             onPressed: _previousPage,
-                            child: Row(
+                            child: const Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
@@ -175,7 +181,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   size: 16,
                                   color: AppColors.grey600,
                                 ),
-                                const SizedBox(width: 5),
+                                SizedBox(width: 5),
                                 Text(
                                   'Previous',
                                   style: TextStyle(
@@ -188,12 +194,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           )
                         else
                           const SizedBox.shrink(),
-                        
+
                         // Next/Get Started Button
                         ElevatedButton(
                           onPressed: _nextPage,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: _pages[_currentPage].backgroundColor,
+                            backgroundColor:
+                                _pages[_currentPage].backgroundColor,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 30,
@@ -207,9 +214,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                _currentPage == _pages.length - 1 
-                                  ? 'Get Started' 
-                                  : 'Next',
+                                _currentPage == _pages.length - 1
+                                    ? 'Get Started'
+                                    : 'Next',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -250,7 +257,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Column(
             children: [
               const SizedBox(height: 100),
-              
+
               // Image/Icon
               Container(
                 width: 200,
@@ -265,9 +272,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   color: Colors.white,
                 ),
               ),
-              
+
               const SizedBox(height: 60),
-              
+
               // Title
               Text(
                 page.title,
@@ -279,9 +286,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: 1.2,
                 ),
               ),
-              
+
               const SizedBox(height: 30),
-              
+
               // Description
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -295,7 +302,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
               ),
-              
+
               const Spacer(),
             ],
           ),
@@ -312,9 +319,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         width: _currentPage == index ? 20 : 8,
         height: 8,
         decoration: BoxDecoration(
-          color: _currentPage == index 
-            ? _pages[_currentPage].backgroundColor
-            : AppColors.grey300,
+          color: _currentPage == index
+              ? _pages[_currentPage].backgroundColor
+              : AppColors.grey300,
           borderRadius: BorderRadius.circular(4),
         ),
       ),
