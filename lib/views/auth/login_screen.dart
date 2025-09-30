@@ -175,8 +175,8 @@ class _LoginScreenState extends State<LoginScreen>
                             AppTextField(
                               controller: _emailController,
                               label: 'Email Address',
-                              hintText: 'Enter your email',
-                              prefixIcon: Icons.email_outlined,
+                              hint: 'Enter your email',
+                              prefixIcon: const Icon(Icons.email_outlined),
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               validator: (value) {
@@ -189,21 +189,21 @@ class _LoginScreenState extends State<LoginScreen>
                                 return null;
                               },
                             ),
-
+                            
                             const SizedBox(height: 20),
-
+                            
                             // Password Field
-                            CustomTextField(
+                            AppTextField(
                               controller: _passwordController,
                               label: 'Password',
-                              hintText: 'Enter your password',
-                              prefixIcon: Icons.lock_outlined,
+                              hint: 'Enter your password',
+                              prefixIcon: const Icon(Icons.lock_outlined),
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_outlined
+                                  _obscurePassword 
+                                      ? Icons.visibility_outlined 
                                       : Icons.visibility_off_outlined,
                                   color: AppColors.textSecondary,
                                 ),
@@ -223,9 +223,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 return null;
                               },
                               onSubmitted: (_) => _handleLogin(authController),
-                            ),
-
-                            const SizedBox(height: 16),
+                            ),                            const SizedBox(height: 16),
 
                             // Remember Me & Forgot Password
                             Row(
@@ -278,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen>
                             const SizedBox(height: 30),
 
                             // Login Button
-                            CustomButton(
+                            AppButton(
                               text: 'Sign In',
                               isLoading: authController.isLoading,
                               onPressed: () => _handleLogin(authController),
