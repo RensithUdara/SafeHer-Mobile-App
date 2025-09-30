@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/location_service.dart';
-import '../services/firebase_service.dart';
 import '../database/database_helper.dart';
 import '../models/safe_place_model.dart';
+import '../services/firebase_service.dart';
+import '../services/location_service.dart';
 
 class LocationController extends ChangeNotifier {
   final LocationService _locationService = LocationService();
@@ -61,7 +61,7 @@ class LocationController extends ChangeNotifier {
   Future<bool> _checkPermissions() async {
     try {
       final status = await Permission.location.status;
-      
+
       if (status.isDenied) {
         final result = await Permission.location.request();
         _locationPermissionGranted = result.isGranted;
@@ -109,12 +109,12 @@ class LocationController extends ChangeNotifier {
           position.latitude,
           position.longitude,
         );
-        
+
         // Save last known location
         final prefs = await SharedPreferences.getInstance();
         await prefs.setDouble('last_latitude', position.latitude);
         await prefs.setDouble('last_longitude', position.longitude);
-        
+
         notifyListeners();
         return true;
       }
@@ -127,12 +127,15 @@ class LocationController extends ChangeNotifier {
   }
 
   // Get address from coordinates
-  Future<void> _getAddressFromCoordinates(double latitude, double longitude) async {
+  Future<void> _getAddressFromCoordinates(
+      double latitude, double longitude) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        _currentAddress = '${place.street}, ${place.locality}, ${place.administrativeArea}';
+        _currentAddress =
+            '${place.street}, ${place.locality}, ${place.administrativeArea}';
       }
     } catch (e) {
       debugPrint('Error getting address: $e');
@@ -150,13 +153,13 @@ class LocationController extends ChangeNotifier {
     try {
       _isTracking = true;
       notifyListeners();
-      
+
       await _locationService.startLocationTracking((position) {
         _currentPosition = position;
         _getAddressFromCoordinates(position.latitude, position.longitude);
         notifyListeners();
       });
-      
+
       return true;
     } catch (e) {
       _setError('Failed to start location tracking: ${e.toString()}');
@@ -178,7 +181,8 @@ class LocationController extends ChangeNotifier {
   }
 
   // Share location with emergency contacts
-  Future<bool> shareLocationWithContacts(List<String> contactIds, {int? durationMinutes}) async {
+  Future<bool> shareLocationWithContacts(List<String> contactIds,
+      {int? durationMinutes}) async {
     if (_currentPosition == null) {
       await getCurrentLocation();
       if (_currentPosition == null) {
@@ -200,14 +204,14 @@ class LocationController extends ChangeNotifier {
       };
 
       await _firebaseService.shareLocation(locationData);
-      
+
       // Set timer to stop sharing if duration is specified
       if (durationMinutes != null) {
         Future.delayed(Duration(minutes: durationMinutes), () {
           stopLocationSharing();
         });
       }
-      
+
       return true;
     } catch (e) {
       _setError('Failed to share location: ${e.toString()}');
@@ -247,10 +251,10 @@ class LocationController extends ChangeNotifier {
 
       // Save to local database
       await _databaseHelper.insertSafePlace(safePlace);
-      
+
       // Save to Firebase
       await _firebaseService.saveSafePlace(safePlace);
-      
+
       _safePlaces.add(safePlace);
       notifyListeners();
       return true;
@@ -277,7 +281,7 @@ class LocationController extends ChangeNotifier {
     try {
       await _databaseHelper.deleteSafePlace(placeId);
       await _firebaseService.deleteSafePlace(placeId.toString());
-      
+
       _safePlaces.removeWhere((place) => place.placeId == placeId);
       notifyListeners();
       return true;
@@ -290,7 +294,7 @@ class LocationController extends ChangeNotifier {
   // Get distance to safe place
   double getDistanceToSafePlace(SafePlaceModel safePlace) {
     if (_currentPosition == null) return double.infinity;
-    
+
     return Geolocator.distanceBetween(
       _currentPosition!.latitude,
       _currentPosition!.longitude,
@@ -302,10 +306,10 @@ class LocationController extends ChangeNotifier {
   // Find nearest safe place
   SafePlaceModel? getNearestSafePlace() {
     if (_safePlaces.isEmpty || _currentPosition == null) return null;
-    
+
     SafePlaceModel? nearest;
     double minDistance = double.infinity;
-    
+
     for (final place in _safePlaces) {
       final distance = getDistanceToSafePlace(place);
       if (distance < minDistance) {
@@ -313,19 +317,19 @@ class LocationController extends ChangeNotifier {
         nearest = place;
       }
     }
-    
+
     return nearest;
   }
 
   // Check if in safe zone
   bool isInSafeZone({double radiusMeters = 100}) {
     if (_currentPosition == null || _safePlaces.isEmpty) return false;
-    
+
     for (final place in _safePlaces) {
       final distance = getDistanceToSafePlace(place);
       if (distance <= radiusMeters) return true;
     }
-    
+
     return false;
   }
 
@@ -362,7 +366,8 @@ class LocationController extends ChangeNotifier {
       notifyListeners();
       return _backgroundLocationEnabled;
     } catch (e) {
-      _setError('Failed to request background location permission: ${e.toString()}');
+      _setError(
+          'Failed to request background location permission: ${e.toString()}');
       return false;
     }
   }
@@ -378,7 +383,7 @@ class LocationController extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       final latitude = prefs.getDouble('last_latitude');
       final longitude = prefs.getDouble('last_longitude');
-      
+
       if (latitude != null && longitude != null) {
         return Position(
           latitude: latitude,
