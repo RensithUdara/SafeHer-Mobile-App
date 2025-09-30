@@ -1,17 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:vibration/vibration.dart';
 import 'package:torch_light/torch_light.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vibration/vibration.dart';
+
+import '../database/database_helper.dart';
 import '../models/emergency_alert_model.dart';
 import '../models/emergency_contact_model.dart';
+import '../services/emergency_service.dart';
 import '../services/location_service.dart';
 import '../services/notification_service.dart';
-import '../services/emergency_service.dart';
-import '../database/database_helper.dart';
 import '../utils/constants.dart';
 
 class EmergencyController extends ChangeNotifier {
@@ -24,7 +25,7 @@ class EmergencyController extends ChangeNotifier {
   bool _isLoading = false;
   bool _isTorchOn = false;
   bool _isRecording = false;
-  
+
   Position? _currentPosition;
   List<EmergencyContactModel> _emergencyContacts = [];
   EmergencyAlertModel? _activeAlert;
@@ -61,15 +62,15 @@ class EmergencyController extends ChangeNotifier {
 
       // Get current location
       _currentPosition = await _locationService.getCurrentLocation();
-      
+
       // Create emergency alert
       _activeAlert = EmergencyAlertModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         userId: FirebaseAuth.instance.currentUser?.uid ?? '',
         alertType: EmergencyAlertType.sos,
-        location: _currentPosition != null 
-          ? GeoPoint(_currentPosition!.latitude, _currentPosition!.longitude)
-          : null,
+        location: _currentPosition != null
+            ? GeoPoint(_currentPosition!.latitude, _currentPosition!.longitude)
+            : null,
         timestamp: DateTime.now(),
         status: EmergencyAlertStatus.active,
       );
@@ -86,7 +87,7 @@ class EmergencyController extends ChangeNotifier {
 
       // Start emergency sequence
       await _startEmergencySequence();
-      
+
       _setLoading(false);
     } catch (e) {
       _setLoading(false);
@@ -124,7 +125,7 @@ class EmergencyController extends ChangeNotifier {
   Future<void> deactivateEmergency() async {
     try {
       _setLoading(true);
-      
+
       if (_activeAlert != null) {
         // Update alert status
         _activeAlert = _activeAlert!.copyWith(
@@ -194,7 +195,8 @@ class EmergencyController extends ChangeNotifier {
           data: {
             'type': 'emergency_alert',
             'alert_id': _activeAlert?.id ?? '',
-            'location': '${_currentPosition!.latitude},${_currentPosition!.longitude}',
+            'location':
+                '${_currentPosition!.latitude},${_currentPosition!.longitude}',
           },
         );
       }
@@ -222,7 +224,7 @@ class EmergencyController extends ChangeNotifier {
   Future<void> callEmergencyServices() async {
     const String emergencyNumber = AppConstants.emergencyNumber;
     final Uri phoneUri = Uri(scheme: 'tel', path: emergencyNumber);
-    
+
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri);
     }
@@ -231,7 +233,7 @@ class EmergencyController extends ChangeNotifier {
   // Call Emergency Contact
   Future<void> callEmergencyContact(EmergencyContactModel contact) async {
     final Uri phoneUri = Uri(scheme: 'tel', path: contact.phoneNumber);
-    
+
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri);
     }
@@ -293,7 +295,7 @@ class EmergencyController extends ChangeNotifier {
     try {
       final db = await DatabaseHelper().database;
       final userId = FirebaseAuth.instance.currentUser?.uid;
-      
+
       if (userId != null) {
         final List<Map<String, dynamic>> contacts = await db.query(
           'emergency_contacts_table',
@@ -305,7 +307,7 @@ class EmergencyController extends ChangeNotifier {
         _emergencyContacts = contacts
             .map((contact) => EmergencyContactModel.fromLocalJson(contact))
             .toList();
-        
+
         notifyListeners();
       }
     } catch (e) {
@@ -317,11 +319,11 @@ class EmergencyController extends ChangeNotifier {
   Future<bool> addEmergencyContact(EmergencyContactModel contact) async {
     try {
       _setLoading(true);
-      
+
       // Save to local database
       final db = await DatabaseHelper().database;
       await db.insert('emergency_contacts_table', contact.toLocalJson());
-      
+
       // Save to Firestore
       await _firestore
           .collection('users')
@@ -332,7 +334,7 @@ class EmergencyController extends ChangeNotifier {
 
       // Reload contacts
       await loadEmergencyContacts();
-      
+
       _setLoading(false);
       return true;
     } catch (e) {
@@ -346,7 +348,7 @@ class EmergencyController extends ChangeNotifier {
   Future<bool> updateEmergencyContact(EmergencyContactModel contact) async {
     try {
       _setLoading(true);
-      
+
       // Update local database
       final db = await DatabaseHelper().database;
       await db.update(
@@ -355,7 +357,7 @@ class EmergencyController extends ChangeNotifier {
         where: 'id = ?',
         whereArgs: [contact.id],
       );
-      
+
       // Update Firestore
       await _firestore
           .collection('users')
@@ -366,7 +368,7 @@ class EmergencyController extends ChangeNotifier {
 
       // Reload contacts
       await loadEmergencyContacts();
-      
+
       _setLoading(false);
       return true;
     } catch (e) {
@@ -380,7 +382,7 @@ class EmergencyController extends ChangeNotifier {
   Future<bool> deleteEmergencyContact(String contactId) async {
     try {
       _setLoading(true);
-      
+
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId != null) {
         // Delete from local database
@@ -390,7 +392,7 @@ class EmergencyController extends ChangeNotifier {
           where: 'id = ?',
           whereArgs: [contactId],
         );
-        
+
         // Delete from Firestore
         await _firestore
             .collection('users')
@@ -402,7 +404,7 @@ class EmergencyController extends ChangeNotifier {
         // Reload contacts
         await loadEmergencyContacts();
       }
-      
+
       _setLoading(false);
       return true;
     } catch (e) {
