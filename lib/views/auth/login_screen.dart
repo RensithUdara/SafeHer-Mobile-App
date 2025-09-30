@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../utils/theme.dart';
@@ -20,10 +20,10 @@ class _LoginScreenState extends State<LoginScreen>
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   bool _obscurePassword = true;
   bool _rememberMe = false;
-  
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 40),
-                    
+
                     // Logo and Title Section
                     FadeTransition(
                       opacity: _fadeAnimation,
@@ -110,9 +110,9 @@ class _LoginScreenState extends State<LoginScreen>
                               },
                             ),
                           ),
-                          
+
                           const SizedBox(height: 20),
-                          
+
                           // App Name
                           const Text(
                             'SafeHer',
@@ -122,11 +122,11 @@ class _LoginScreenState extends State<LoginScreen>
                               color: AppColors.primary,
                             ),
                           ),
-                          
+
                           const SizedBox(height: 8),
-                          
+
                           // Subtitle
-                          Text(
+                          const Text(
                             'Your Safety, Our Priority',
                             style: TextStyle(
                               fontSize: 16,
@@ -136,9 +136,9 @@ class _LoginScreenState extends State<LoginScreen>
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 50),
-                    
+
                     // Login Form
                     SlideTransition(
                       position: _slideAnimation,
@@ -157,10 +157,10 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            
+
                             const SizedBox(height: 8),
-                            
-                            Text(
+
+                            const Text(
                               'Sign in to continue',
                               style: TextStyle(
                                 fontSize: 16,
@@ -168,9 +168,9 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            
+
                             const SizedBox(height: 40),
-                            
+
                             // Email Field
                             AppTextField(
                               controller: _emailController,
@@ -189,9 +189,9 @@ class _LoginScreenState extends State<LoginScreen>
                                 return null;
                               },
                             ),
-                            
+
                             const SizedBox(height: 20),
-                            
+
                             // Password Field
                             CustomTextField(
                               controller: _passwordController,
@@ -202,8 +202,8 @@ class _LoginScreenState extends State<LoginScreen>
                               textInputAction: TextInputAction.done,
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword 
-                                      ? Icons.visibility_outlined 
+                                  _obscurePassword
+                                      ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: AppColors.textSecondary,
                                 ),
@@ -224,9 +224,9 @@ class _LoginScreenState extends State<LoginScreen>
                               },
                               onSubmitted: (_) => _handleLogin(authController),
                             ),
-                            
+
                             const SizedBox(height: 16),
-                            
+
                             // Remember Me & Forgot Password
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -245,12 +245,13 @@ class _LoginScreenState extends State<LoginScreen>
                                         },
                                         activeColor: AppColors.primary,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                         ),
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    Text(
+                                    const Text(
                                       'Remember me',
                                       style: TextStyle(
                                         fontSize: 14,
@@ -259,9 +260,9 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                   ],
                                 ),
-                                
                                 TextButton(
-                                  onPressed: () => Get.toNamed('/forgot-password'),
+                                  onPressed: () =>
+                                      Get.toNamed('/forgot-password'),
                                   child: const Text(
                                     'Forgot Password?',
                                     style: TextStyle(
@@ -273,16 +274,16 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                               ],
                             ),
-                            
+
                             const SizedBox(height: 30),
-                            
+
                             // Login Button
                             CustomButton(
                               text: 'Sign In',
                               isLoading: authController.isLoading,
                               onPressed: () => _handleLogin(authController),
                             ),
-                            
+
                             // Error Message
                             if (authController.errorMessage != null) ...[
                               const SizedBox(height: 16),
@@ -297,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.error_outline,
                                       color: AppColors.error,
                                       size: 20,
@@ -306,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     Expanded(
                                       child: Text(
                                         authController.errorMessage!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: AppColors.error,
                                           fontSize: 14,
                                         ),
@@ -316,17 +317,17 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                               ),
                             ],
-                            
+
                             const SizedBox(height: 30),
-                            
+
                             // Divider
-                            Row(
+                            const Row(
                               children: [
                                 Expanded(
                                   child: Divider(color: AppColors.grey300),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
                                   child: Text(
                                     'Or continue with',
                                     style: TextStyle(
@@ -340,9 +341,9 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                               ],
                             ),
-                            
+
                             const SizedBox(height: 30),
-                            
+
                             // Social Login Buttons
                             Row(
                               children: [
@@ -350,7 +351,8 @@ class _LoginScreenState extends State<LoginScreen>
                                   child: _buildSocialButton(
                                     icon: 'assets/icons/google.png',
                                     label: 'Google',
-                                    onPressed: () => _handleGoogleLogin(authController),
+                                    onPressed: () =>
+                                        _handleGoogleLogin(authController),
                                     isLoading: authController.isLoading,
                                   ),
                                 ),
@@ -359,7 +361,8 @@ class _LoginScreenState extends State<LoginScreen>
                                   child: _buildSocialButton(
                                     icon: 'assets/icons/facebook.png',
                                     label: 'Facebook',
-                                    onPressed: () => _handleFacebookLogin(authController),
+                                    onPressed: () =>
+                                        _handleFacebookLogin(authController),
                                     isLoading: authController.isLoading,
                                   ),
                                 ),
@@ -369,16 +372,16 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                     ),
-                    
+
                     const Spacer(),
-                    
+
                     // Sign Up Link
                     FadeTransition(
                       opacity: _fadeAnimation,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             'Don\'t have an account? ',
                             style: TextStyle(
                               fontSize: 14,
@@ -399,7 +402,7 @@ class _LoginScreenState extends State<LoginScreen>
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -477,7 +480,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (success) {
       // Add haptic feedback
       HapticFeedback.lightImpact();
-      
+
       // Navigate to main screen
       Get.offAllNamed('/main-navigation');
     }
@@ -485,9 +488,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   Future<void> _handleGoogleLogin(AuthController authController) async {
     authController.clearError();
-    
+
     final success = await authController.signInWithGoogle();
-    
+
     if (success) {
       HapticFeedback.lightImpact();
       Get.offAllNamed('/main-navigation');
@@ -496,9 +499,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   Future<void> _handleFacebookLogin(AuthController authController) async {
     authController.clearError();
-    
+
     final success = await authController.signInWithFacebook();
-    
+
     if (success) {
       HapticFeedback.lightImpact();
       Get.offAllNamed('/main-navigation');
