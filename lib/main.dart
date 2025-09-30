@@ -1,37 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:workmanager/workmanager.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-void main() {
-  runApp(const MyApp());
+// Controllers
+import 'controllers/auth_controller.dart';
+import 'controllers/emergency_controller.dart';
+import 'controllers/location_controller.dart';
+import 'controllers/journey_controller.dart';
+
+// Services
+import 'services/firebase_service.dart';
+import 'services/notification_service.dart';
+import 'services/location_service.dart';
+import 'database/database_helper.dart';
+
+// Utils
+import 'utils/theme.dart';
+import 'utils/constants.dart';
+import 'utils/routes.dart';
+
+// Views
+import 'views/splash_screen.dart';
+import 'views/onboarding_screen.dart';
+import 'views/auth/login_screen.dart';
+import 'views/auth/signup_screen.dart';
+import 'views/home/home_screen.dart';
+import 'views/emergency/emergency_screen.dart';
+import 'views/journey/journey_screen.dart';
+import 'views/contacts/emergency_contacts_screen.dart';
+import 'views/profile/profile_screen.dart';
+
+// Background task callback
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+    // Handle background location tracking and emergency monitoring
+    return Future.value(true);
+  });
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
+  await Firebase.initializeApp();
+  
+  // Initialize Firebase Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  
+  // Initialize database
+  await DatabaseHelper.instance.database;
+  
+  // Initialize notification service
+  await NotificationService.initialize();
+  
+  // Initialize background work manager
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+  
+  // Set system UI overlay style
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
+  
+  runApp(const SafeHerApp());
+}
 
-  // This widget is the root of your application.
+class SafeHerApp extends StatelessWidget {
+  const SafeHerApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => EmergencyController()),
+        ChangeNotifierProvider(create: (_) => LocationController()),
+        ChangeNotifierProvider(create: (_) => JourneyController()),
+      ],
+      child: GetMaterialApp(
+        title: 'SafeHer',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+        ],
+        initialRoute: AppRoutes.splash,
+        getPages: AppRoutes.pages,
+        home: const SplashScreen(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
