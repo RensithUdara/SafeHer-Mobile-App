@@ -571,7 +571,7 @@ class AppDivider extends StatelessWidget {
       child: Divider(
         height: height ?? 1,
         thickness: thickness ?? 1,
-  color: color ?? AppColors.border,
+        color: color ?? AppColors.border,
       ),
     );
   }
@@ -661,9 +661,9 @@ class _AppSearchBarState extends State<AppSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-  color: AppColors.grey100,
+        color: AppColors.grey100,
         borderRadius: BorderRadius.circular(12),
-  border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.border),
       ),
       child: TextField(
         controller: _controller,
@@ -673,7 +673,8 @@ class _AppSearchBarState extends State<AppSearchBar> {
         style: AppTextStyles.bodyMedium,
         decoration: InputDecoration(
           hintText: widget.hint ?? 'Search...',
-          hintStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.textHint),
+          hintStyle:
+              AppTextStyles.bodySmall.copyWith(color: AppColors.textHint),
           prefixIcon: const Icon(
             Icons.search,
             color: AppColors.textSecondary,
