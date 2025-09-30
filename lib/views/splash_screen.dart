@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../controllers/auth_controller.dart';
-import '../utils/theme.dart';
-import '../utils/routes.dart';
 import '../utils/constants.dart';
+import '../utils/routes.dart';
+import '../utils/theme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +15,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> 
+class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -55,14 +55,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _checkAuthAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
-    
+
     final prefs = await SharedPreferences.getInstance();
     final isFirstLaunch = prefs.getBool(AppConstants.isFirstLaunch) ?? true;
-    
+
     if (isFirstLaunch) {
       Get.offNamed(AppRoutes.onboarding);
     } else {
-      final authController = Provider.of<AuthController>(context, listen: false);
+      final authController =
+          Provider.of<AuthController>(context, listen: false);
       if (authController.isAuthenticated) {
         Get.offNamed(AppRoutes.mainNavigation);
       } else {
@@ -98,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(flex: 2),
-                
+
                 // App Logo and Animation
                 AnimatedBuilder(
                   animation: _animationController,
@@ -133,9 +134,9 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ),
                             ),
-                            
+
                             const SizedBox(height: 30),
-                            
+
                             // App Name
                             const Text(
                               'SafeHer',
@@ -146,9 +147,9 @@ class _SplashScreenState extends State<SplashScreen>
                                 letterSpacing: 2,
                               ),
                             ),
-                            
+
                             const SizedBox(height: 10),
-                            
+
                             // App Tagline
                             const Text(
                               'Your Safety, Our Priority',
@@ -164,9 +165,9 @@ class _SplashScreenState extends State<SplashScreen>
                     );
                   },
                 ),
-                
+
                 const Spacer(flex: 2),
-                
+
                 // Loading Animation
                 AnimatedBuilder(
                   animation: _fadeAnimation,
@@ -185,9 +186,7 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                             ),
                           ),
-                          
                           const SizedBox(height: 20),
-                          
                           const Text(
                             'Initializing Safety Features...',
                             style: TextStyle(
@@ -200,7 +199,7 @@ class _SplashScreenState extends State<SplashScreen>
                     );
                   },
                 ),
-                
+
                 const SizedBox(height: 50),
               ],
             ),
