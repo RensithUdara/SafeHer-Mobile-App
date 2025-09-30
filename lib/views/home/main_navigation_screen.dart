@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/journey_controller.dart';
 import '../../utils/theme.dart';
+import '../../views/contacts/emergency_contacts_screen.dart';
 import '../../views/home/home_screen.dart';
 import '../../views/journey/journey_screen.dart';
-import '../../views/contacts/emergency_contacts_screen.dart';
 import '../../views/profile/profile_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class MainNavigationScreen extends StatefulWidget {
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
-class _MainNavigationScreenState extends State<MainNavigationScreen> 
+class _MainNavigationScreenState extends State<MainNavigationScreen>
     with TickerProviderStateMixin {
   int _currentIndex = 0;
   late PageController _pageController;
@@ -36,12 +36,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   void initState() {
     super.initState();
     _pageController = PageController();
-    
+
     _fabAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    
+
     _fabAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
@@ -88,22 +88,23 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                 },
                 children: _screens,
               ),
-              
+
               // Emergency Alert Banner (if active)
               if (emergencyController.isEmergencyActive)
                 _buildEmergencyBanner(emergencyController),
-              
+
               // Journey Status Banner (if active)
-              if (journeyController.hasActiveJourney && !emergencyController.isEmergencyActive)
+              if (journeyController.hasActiveJourney &&
+                  !emergencyController.isEmergencyActive)
                 _buildJourneyBanner(journeyController),
             ],
           );
         },
       ),
-      
+
       // Bottom Navigation Bar
       bottomNavigationBar: _buildBottomNavigationBar(),
-      
+
       // Emergency FAB
       floatingActionButton: _buildEmergencyFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -151,7 +152,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                   ),
                 ],
               ),
-              
+
               // Right Side Navigation Items
               Row(
                 children: [
@@ -184,14 +185,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     required int index,
   }) {
     final isActive = _currentIndex == index;
-    
+
     return GestureDetector(
       onTap: () => _onTabTapped(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+          color: isActive
+              ? AppColors.primary.withOpacity(0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -232,19 +235,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  emergencyController.isEmergencyActive 
-                      ? AppColors.error 
+                  emergencyController.isEmergencyActive
+                      ? AppColors.error
                       : AppColors.emergency,
-                  emergencyController.isEmergencyActive 
-                      ? AppColors.error.withOpacity(0.8) 
+                  emergencyController.isEmergencyActive
+                      ? AppColors.error.withOpacity(0.8)
                       : AppColors.emergencyLight,
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: (emergencyController.isEmergencyActive 
-                      ? AppColors.error 
-                      : AppColors.emergency).withOpacity(0.3),
+                  color: (emergencyController.isEmergencyActive
+                          ? AppColors.error
+                          : AppColors.emergency)
+                      .withOpacity(0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -254,12 +258,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
               color: Colors.transparent,
               child: InkWell(
                 borderRadius: BorderRadius.circular(32.5),
-                onTap: () => _showEmergencyBottomSheet(context, emergencyController),
+                onTap: () =>
+                    _showEmergencyBottomSheet(context, emergencyController),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   child: Icon(
-                    emergencyController.isEmergencyActive 
-                        ? Icons.stop 
+                    emergencyController.isEmergencyActive
+                        ? Icons.stop
                         : Icons.warning,
                     color: Colors.white,
                     size: 28,
@@ -427,7 +432,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     );
   }
 
-  void _showEmergencyBottomSheet(BuildContext context, EmergencyController emergencyController) {
+  void _showEmergencyBottomSheet(
+      BuildContext context, EmergencyController emergencyController) {
     if (emergencyController.isEmergencyActive) {
       // Show stop emergency dialog
       _showStopEmergencyDialog(context, emergencyController);
@@ -456,10 +462,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            
+
             // Title
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
                   Icon(
@@ -467,8 +473,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.emergency,
                     size: 24,
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
+                  SizedBox(width: 10),
+                  Text(
                     'Emergency Options',
                     style: TextStyle(
                       fontSize: 20,
@@ -479,9 +485,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Emergency Options
             Expanded(
               child: ListView(
@@ -494,10 +500,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.emergency,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(type: EmergencyType.sos);
+                      emergencyController.triggerEmergency(
+                          type: EmergencyType.sos);
                     },
                   ),
-                  
                   _buildEmergencyOption(
                     icon: Icons.local_hospital,
                     title: 'Medical Emergency',
@@ -505,10 +511,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.error,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(type: EmergencyType.medical);
+                      emergencyController.triggerEmergency(
+                          type: EmergencyType.medical);
                     },
                   ),
-                  
                   _buildEmergencyOption(
                     icon: Icons.local_police,
                     title: 'Police Assistance',
@@ -516,10 +522,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.info,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(type: EmergencyType.police);
+                      emergencyController.triggerEmergency(
+                          type: EmergencyType.police);
                     },
                   ),
-                  
                   _buildEmergencyOption(
                     icon: Icons.report_problem,
                     title: 'Harassment Alert',
@@ -527,13 +533,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.warning,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(type: EmergencyType.harassment);
+                      emergencyController.triggerEmergency(
+                          type: EmergencyType.harassment);
                     },
                   ),
                 ],
               ),
             ),
-            
+
             // Cancel Button
             Padding(
               padding: const EdgeInsets.all(20),
@@ -605,7 +612,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     ],
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.arrow_forward_ios,
                   color: AppColors.grey400,
                   size: 16,
@@ -618,7 +625,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     );
   }
 
-  void _showStopEmergencyDialog(BuildContext context, EmergencyController emergencyController) {
+  void _showStopEmergencyDialog(
+      BuildContext context, EmergencyController emergencyController) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
