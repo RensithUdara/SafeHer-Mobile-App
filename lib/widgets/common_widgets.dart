@@ -411,7 +411,7 @@ class AppLoadingIndicator extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               message!,
-              style: AppTextStyles.bodyText.copyWith(
+              style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
@@ -460,7 +460,7 @@ class AppEmptyState extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               title,
-              style: AppTextStyles.headlineSmall.copyWith(
+              style: AppTextStyles.h5.copyWith(
                 color: AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
@@ -469,7 +469,7 @@ class AppEmptyState extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 subtitle!,
-                style: AppTextStyles.bodyText.copyWith(
+                style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
                 textAlign: TextAlign.center,
@@ -520,7 +520,7 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               title,
-              style: AppTextStyles.headlineSmall.copyWith(
+              style: AppTextStyles.h5.copyWith(
                 color: AppColors.error,
               ),
               textAlign: TextAlign.center,
@@ -529,7 +529,7 @@ class AppErrorWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 subtitle!,
-                style: AppTextStyles.bodyText.copyWith(
+                style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
                 textAlign: TextAlign.center,
@@ -571,7 +571,7 @@ class AppDivider extends StatelessWidget {
       child: Divider(
         height: height ?? 1,
         thickness: thickness ?? 1,
-        color: color ?? AppColors.outline,
+        color: color ?? AppColors.border,
       ),
     );
   }
@@ -661,19 +661,20 @@ class _AppSearchBarState extends State<AppSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.grey100,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.outline),
+        border: Border.all(color: AppColors.border),
       ),
       child: TextField(
         controller: _controller,
         autofocus: widget.autofocus,
         onChanged: widget.onChanged,
         onSubmitted: widget.onSubmitted,
-        style: AppTextStyles.bodyText,
+        style: AppTextStyles.bodyMedium,
         decoration: InputDecoration(
           hintText: widget.hint ?? 'Search...',
-          hintStyle: AppTextStyles.hintText,
+          hintStyle:
+              AppTextStyles.bodySmall.copyWith(color: AppColors.textHint),
           prefixIcon: const Icon(
             Icons.search,
             color: AppColors.textSecondary,
