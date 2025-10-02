@@ -128,8 +128,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Full Name Field
                 AppTextField(
                   controller: _nameController,
-                  labelText: 'Full Name',
-                  prefixIcon: Icons.person_outline,
+                  label: 'Full Name',
+                  prefixIcon: const Icon(Icons.person_outline),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter your full name';
