@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/location_controller.dart';
@@ -16,15 +16,14 @@ class SOSScreen extends StatefulWidget {
   State<SOSScreen> createState() => _SOSScreenState();
 }
 
-class _SOSScreenState extends State<SOSScreen>
-    with TickerProviderStateMixin {
+class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
   late AnimationController _pulseController;
   late AnimationController _rippleController;
   late Animation<double> _pulseAnimation;
   late Animation<double> _rippleAnimation;
-  
-  bool _isCountdownActive = false;
-  int _countdown = 10;
+
+  final bool _isCountdownActive = false;
+  final int _countdown = 10;
 
   @override
   void initState() {
@@ -70,7 +69,7 @@ class _SOSScreenState extends State<SOSScreen>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
+
     return Scaffold(
       backgroundColor: AppColors.emergency,
       body: SafeArea(
@@ -80,20 +79,20 @@ class _SOSScreenState extends State<SOSScreen>
               children: [
                 // Header
                 _buildHeader(context, emergencyController),
-                
+
                 // Main SOS Button Area
                 Expanded(
                   child: _buildSOSButtonArea(
-                    context, 
-                    emergencyController, 
+                    context,
+                    emergencyController,
                     locationController,
                     size,
                   ),
                 ),
-                
+
                 // Emergency Options
                 _buildEmergencyOptions(context, emergencyController),
-                
+
                 // Bottom Section
                 _buildBottomSection(context, emergencyController),
               ],
@@ -104,7 +103,8 @@ class _SOSScreenState extends State<SOSScreen>
     );
   }
 
-  Widget _buildHeader(BuildContext context, EmergencyController emergencyController) {
+  Widget _buildHeader(
+      BuildContext context, EmergencyController emergencyController) {
     return Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -123,8 +123,8 @@ class _SOSScreenState extends State<SOSScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  emergencyController.isEmergencyActive 
-                      ? 'EMERGENCY ACTIVE' 
+                  emergencyController.isEmergencyActive
+                      ? 'EMERGENCY ACTIVE'
                       : 'EMERGENCY SOS',
                   style: const TextStyle(
                     color: Colors.white,
@@ -133,8 +133,8 @@ class _SOSScreenState extends State<SOSScreen>
                   ),
                 ),
                 Text(
-                  emergencyController.isEmergencyActive 
-                      ? 'Help is on the way' 
+                  emergencyController.isEmergencyActive
+                      ? 'Help is on the way'
                       : 'Tap the button if you need help',
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.8),
@@ -144,13 +144,13 @@ class _SOSScreenState extends State<SOSScreen>
               ],
             ),
           ),
-          
+
           // Status Indicator
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: emergencyController.isEmergencyActive 
-                  ? Colors.red 
+              color: emergencyController.isEmergencyActive
+                  ? Colors.red
                   : Colors.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(15),
             ),
@@ -208,7 +208,7 @@ class _SOSScreenState extends State<SOSScreen>
                 ],
               ),
             ),
-          
+
           // SOS Button with Ripple Effect
           Stack(
             alignment: Alignment.center,
@@ -237,25 +237,26 @@ class _SOSScreenState extends State<SOSScreen>
                   },
                 );
               }),
-              
+
               // Main SOS Button
               AnimatedBuilder(
                 animation: _pulseAnimation,
                 builder: (context, child) {
                   return Transform.scale(
-                    scale: emergencyController.isEmergencyActive 
-                        ? _pulseAnimation.value 
+                    scale: emergencyController.isEmergencyActive
+                        ? _pulseAnimation.value
                         : 1.0,
                     child: GestureDetector(
                       onTap: () => _handleSOSPress(emergencyController),
-                      onLongPress: () => _handleSOSLongPress(emergencyController),
+                      onLongPress: () =>
+                          _handleSOSLongPress(emergencyController),
                       child: Container(
                         width: size.width * 0.5,
                         height: size.width * 0.5,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: emergencyController.isEmergencyActive 
-                              ? Colors.red 
+                          color: emergencyController.isEmergencyActive
+                              ? Colors.red
                               : Colors.white,
                           boxShadow: [
                             BoxShadow(
@@ -275,8 +276,8 @@ class _SOSScreenState extends State<SOSScreen>
                                 style: TextStyle(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
-                                  color: emergencyController.isEmergencyActive 
-                                      ? Colors.white 
+                                  color: emergencyController.isEmergencyActive
+                                      ? Colors.white
                                       : AppColors.emergency,
                                 ),
                               ),
@@ -285,32 +286,32 @@ class _SOSScreenState extends State<SOSScreen>
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: emergencyController.isEmergencyActive 
-                                      ? Colors.white70 
+                                  color: emergencyController.isEmergencyActive
+                                      ? Colors.white70
                                       : AppColors.emergency,
                                 ),
                               ),
                             ] else ...[
                               // SOS Icon
                               Icon(
-                                emergencyController.isEmergencyActive 
-                                    ? Icons.stop 
+                                emergencyController.isEmergencyActive
+                                    ? Icons.stop
                                     : Icons.warning,
                                 size: 60,
-                                color: emergencyController.isEmergencyActive 
-                                    ? Colors.white 
+                                color: emergencyController.isEmergencyActive
+                                    ? Colors.white
                                     : AppColors.emergency,
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                emergencyController.isEmergencyActive 
-                                    ? 'STOP' 
+                                emergencyController.isEmergencyActive
+                                    ? 'STOP'
                                     : 'SOS',
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: emergencyController.isEmergencyActive 
-                                      ? Colors.white 
+                                  color: emergencyController.isEmergencyActive
+                                      ? Colors.white
                                       : AppColors.emergency,
                                 ),
                               ),
@@ -324,9 +325,9 @@ class _SOSScreenState extends State<SOSScreen>
               ),
             ],
           ),
-          
+
           const SizedBox(height: 30),
-          
+
           // Instructions
           Container(
             padding: const EdgeInsets.all(20),
@@ -346,8 +347,8 @@ class _SOSScreenState extends State<SOSScreen>
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        emergencyController.isEmergencyActive 
-                            ? 'Tap to stop emergency alert' 
+                        emergencyController.isEmergencyActive
+                            ? 'Tap to stop emergency alert'
                             : 'Tap to send emergency alert',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.9),
@@ -358,7 +359,6 @@ class _SOSScreenState extends State<SOSScreen>
                     ),
                   ],
                 ),
-                
                 if (!emergencyController.isEmergencyActive) ...[
                   const SizedBox(height: 10),
                   Row(
@@ -390,7 +390,8 @@ class _SOSScreenState extends State<SOSScreen>
     );
   }
 
-  Widget _buildEmergencyOptions(BuildContext context, EmergencyController emergencyController) {
+  Widget _buildEmergencyOptions(
+      BuildContext context, EmergencyController emergencyController) {
     if (emergencyController.isEmergencyActive) {
       return const SizedBox.shrink();
     }
@@ -467,7 +468,8 @@ class _SOSScreenState extends State<SOSScreen>
     );
   }
 
-  Widget _buildBottomSection(BuildContext context, EmergencyController emergencyController) {
+  Widget _buildBottomSection(
+      BuildContext context, EmergencyController emergencyController) {
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -500,7 +502,7 @@ class _SOSScreenState extends State<SOSScreen>
                 ],
               ),
             ),
-          
+
           if (emergencyController.emergencyContacts.isEmpty)
             Container(
               padding: const EdgeInsets.all(15),
@@ -542,16 +544,17 @@ class _SOSScreenState extends State<SOSScreen>
                 ],
               ),
             ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Cancel Button (if countdown is active)
           if (emergencyController.isCountdownActive)
             SizedBox(
               width: double.infinity,
               child: AppButton(
                 text: 'Cancel Emergency Call',
-                onPressed: () => emergencyController.cancelEmergencyCallCountdown(),
+                onPressed: () =>
+                    emergencyController.cancelEmergencyCallCountdown(),
                 backgroundColor: Colors.white.withOpacity(0.2),
                 textColor: Colors.white,
               ),
@@ -563,7 +566,7 @@ class _SOSScreenState extends State<SOSScreen>
 
   void _handleSOSPress(EmergencyController emergencyController) {
     HapticFeedback.heavyImpact();
-    
+
     if (emergencyController.isEmergencyActive) {
       _showStopEmergencyDialog(emergencyController);
     } else {
