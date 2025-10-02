@@ -108,9 +108,11 @@ class AuthController extends ChangeNotifier {
     }
 
     try {
-      final userCredential = await _authService.registerWithEmailPassword(
+      final userCredential = await _authService.signUpWithEmail(
         email: email,
         password: password,
+        name: name,
+        phone: phone,
       );
 
       if (userCredential?.user != null) {
@@ -153,7 +155,7 @@ class AuthController extends ChangeNotifier {
     _setError(null);
 
     try {
-      final userCredential = await _authService.loginWithEmailPassword(
+      final userCredential = await _authService.signInWithEmail(
         email: email,
         password: password,
       );
