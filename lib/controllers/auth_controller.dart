@@ -92,10 +92,27 @@ class AuthController extends ChangeNotifier {
     _setLoading(true);
     _setError(null);
 
-    try {
-      final userCredential = await _authService.registerWithEmailPassword(
+    // Alias method for registration
+    Future<bool> registerUser({
+      required String name,
+      required String email,
+      required String password,
+      String? phoneNumber,
+    }) async {
+      return await registerWithEmailPassword(
+        name: name,
         email: email,
         password: password,
+        phone: phoneNumber,
+      );
+    }
+
+    try {
+      final userCredential = await _authService.signUpWithEmail(
+        email: email,
+        password: password,
+        name: name,
+        phone: phone,
       );
 
       if (userCredential?.user != null) {
@@ -138,7 +155,7 @@ class AuthController extends ChangeNotifier {
     _setError(null);
 
     try {
-      final userCredential = await _authService.loginWithEmailPassword(
+      final userCredential = await _authService.signInWithEmail(
         email: email,
         password: password,
       );
