@@ -32,6 +32,20 @@ class AppConstants {
   static const String ambulanceNumber = '911';
   static const String fireNumber = '911';
 
+  // Emergency Contact Relations
+  static const List<String> contactRelations = [
+    'Family',
+    'Spouse/Partner',
+    'Parent',
+    'Sibling',
+    'Child',
+    'Friend',
+    'Colleague',
+    'Neighbor',
+    'Doctor',
+    'Other',
+  ];
+
   // Country-specific emergency numbers
   static const Map<String, Map<String, String>> emergencyNumbers = {
     'US': {
