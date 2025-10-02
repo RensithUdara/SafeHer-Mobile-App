@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../controllers/auth_controller.dart';
-import '../../controllers/location_controller.dart';
-import '../../widgets/common_widgets.dart';
+
 import '../../utils/theme.dart';
-import '../../utils/constants.dart';
+import '../../widgets/common_widgets.dart';
 
 class CommunityScreen extends StatefulWidget {
-  const CommunityScreen({Key? key}) : super(key: key);
+  const CommunityScreen({super.key});
 
   @override
   State<CommunityScreen> createState() => _CommunityScreenState();
@@ -37,7 +34,8 @@ class _CommunityScreenState extends State<CommunityScreen>
       'isAnonymous': false,
       'timestamp': DateTime.now().subtract(const Duration(hours: 2)),
       'category': 'Safety Alert',
-      'content': 'Avoid the area near Central Park after 9 PM. Poor lighting and suspicious activity reported.',
+      'content':
+          'Avoid the area near Central Park after 9 PM. Poor lighting and suspicious activity reported.',
       'location': 'Central Park Area',
       'likes': 15,
       'comments': 8,
@@ -50,7 +48,8 @@ class _CommunityScreenState extends State<CommunityScreen>
       'isAnonymous': true,
       'timestamp': DateTime.now().subtract(const Duration(hours: 4)),
       'category': 'Help Request',
-      'content': 'Looking for a safe escort from the library to parking lot around 10 PM. Anyone available?',
+      'content':
+          'Looking for a safe escort from the library to parking lot around 10 PM. Anyone available?',
       'location': 'University Library',
       'likes': 7,
       'comments': 12,
@@ -63,7 +62,8 @@ class _CommunityScreenState extends State<CommunityScreen>
       'isAnonymous': false,
       'timestamp': DateTime.now().subtract(const Duration(hours: 6)),
       'category': 'Safe Places',
-      'content': 'Highly recommend Café Luna on 5th Street. Well-lit, good security, and staff is very helpful. Great place to wait for rides.',
+      'content':
+          'Highly recommend Café Luna on 5th Street. Well-lit, good security, and staff is very helpful. Great place to wait for rides.',
       'location': '5th Street',
       'likes': 23,
       'comments': 5,
@@ -76,7 +76,8 @@ class _CommunityScreenState extends State<CommunityScreen>
       'isAnonymous': true,
       'timestamp': DateTime.now().subtract(const Duration(days: 1)),
       'category': 'Transportation',
-      'content': 'Anyone know reliable female taxi drivers in the downtown area? Prefer women drivers for late night rides.',
+      'content':
+          'Anyone know reliable female taxi drivers in the downtown area? Prefer women drivers for late night rides.',
       'location': 'Downtown',
       'likes': 11,
       'comments': 9,
@@ -131,7 +132,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                   ],
                 ),
                 const SizedBox(height: 16),
-                
+
                 // Category selection
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
@@ -160,7 +161,8 @@ class _CommunityScreenState extends State<CommunityScreen>
                   maxLines: 4,
                   decoration: const InputDecoration(
                     labelText: 'What\'s on your mind?',
-                    hintText: 'Share safety tips, ask for help, or alert the community...',
+                    hintText:
+                        'Share safety tips, ask for help, or alert the community...',
                     border: OutlineInputBorder(),
                     alignLabelWithHint: true,
                   ),
@@ -229,10 +231,10 @@ class _CommunityScreenState extends State<CommunityScreen>
   }
 
   Widget _buildPostCard(Map<String, dynamic> post) {
-    final priorityColor = post['priority'] == 'high' 
-        ? Colors.red 
-        : post['priority'] == 'medium' 
-            ? Colors.orange 
+    final priorityColor = post['priority'] == 'high'
+        ? Colors.red
+        : post['priority'] == 'medium'
+            ? Colors.orange
             : Colors.green;
 
     return Card(
@@ -250,8 +252,8 @@ class _CommunityScreenState extends State<CommunityScreen>
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: post['isAnonymous'] 
-                      ? Colors.grey[400] 
+                  backgroundColor: post['isAnonymous']
+                      ? Colors.grey[400]
                       : AppTheme.primaryColor,
                   child: Icon(
                     post['isAnonymous'] ? Icons.person : Icons.person,
@@ -344,7 +346,9 @@ class _CommunityScreenState extends State<CommunityScreen>
                   child: Row(
                     children: [
                       Icon(
-                        post['isLiked'] ? Icons.favorite : Icons.favorite_border,
+                        post['isLiked']
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         size: 20,
                         color: post['isLiked'] ? Colors.red : Colors.grey[600],
                       ),
@@ -465,7 +469,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                 subtitle: Text(
                   item['number'] ?? item['tip'] ?? item['address'] ?? '',
                 ),
-                trailing: item['number'] != null 
+                trailing: item['number'] != null
                     ? IconButton(
                         onPressed: () {
                           // TODO: Make phone call
