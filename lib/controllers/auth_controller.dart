@@ -92,6 +92,21 @@ class AuthController extends ChangeNotifier {
     _setLoading(true);
     _setError(null);
 
+  // Alias method for registration
+  Future<bool> registerUser({
+    required String name,
+    required String email,
+    required String password,
+    String? phoneNumber,
+  }) async {
+    return await registerWithEmailPassword(
+      name: name,
+      email: email,
+      password: password,
+      phone: phoneNumber,
+    );
+  }
+
     try {
       final userCredential = await _authService.registerWithEmailPassword(
         email: email,
