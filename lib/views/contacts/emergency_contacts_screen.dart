@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/emergency_controller.dart';
 import '../../models/emergency_contact_model.dart';
-import '../../widgets/common_widgets.dart';
-import '../../utils/theme.dart';
 import '../../utils/constants.dart';
+import '../../utils/theme.dart';
+import '../../widgets/common_widgets.dart';
 
 class EmergencyContactsScreen extends StatefulWidget {
-  const EmergencyContactsScreen({Key? key}) : super(key: key);
+  const EmergencyContactsScreen({super.key});
 
   @override
-  State<EmergencyContactsScreen> createState() => _EmergencyContactsScreenState();
+  State<EmergencyContactsScreen> createState() =>
+      _EmergencyContactsScreenState();
 }
 
 class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
@@ -108,7 +110,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
             AppButton(
               text: 'Add Contact',
               onPressed: () async {
-                if (_nameController.text.isNotEmpty && 
+                if (_nameController.text.isNotEmpty &&
                     _phoneController.text.isNotEmpty) {
                   final contact = EmergencyContact(
                     name: _nameController.text.trim(),
@@ -117,11 +119,12 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                     createdAt: DateTime.now(),
                   );
 
-                  await context.read<EmergencyController>()
+                  await context
+                      .read<EmergencyController>()
                       .addEmergencyContact(contact);
-                  
+
                   Navigator.pop(context);
-                  
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Emergency contact added successfully'),
@@ -203,11 +206,12 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                   relationship: _selectedRelation,
                 );
 
-                await context.read<EmergencyController>()
+                await context
+                    .read<EmergencyController>()
                     .updateEmergencyContact(updatedContact);
-                
+
                 Navigator.pop(context);
-                
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Contact updated successfully'),
@@ -242,11 +246,12 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
             text: 'Delete',
             backgroundColor: Colors.red,
             onPressed: () async {
-              await context.read<EmergencyController>()
+              await context
+                  .read<EmergencyController>()
                   .removeEmergencyContact(contact.id!);
-              
+
               Navigator.pop(context);
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Contact deleted successfully'),
@@ -380,7 +385,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                         leading: CircleAvatar(
                           backgroundColor: AppTheme.primaryColor,
                           child: Text(
-                            contact.name.isNotEmpty 
+                            contact.name.isNotEmpty
                                 ? contact.name[0].toUpperCase()
                                 : 'C',
                             style: const TextStyle(
@@ -431,9 +436,9 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                         trailing: PopupMenuButton(
                           icon: const Icon(Icons.more_vert),
                           itemBuilder: (context) => [
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               value: 'edit',
-                              child: const Row(
+                              child: Row(
                                 children: [
                                   Icon(Icons.edit, size: 18),
                                   SizedBox(width: 8),
@@ -441,13 +446,15 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                                 ],
                               ),
                             ),
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               value: 'delete',
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Icon(Icons.delete, size: 18, color: Colors.red),
+                                  Icon(Icons.delete,
+                                      size: 18, color: Colors.red),
                                   SizedBox(width: 8),
-                                  Text('Delete', style: TextStyle(color: Colors.red)),
+                                  Text('Delete',
+                                      style: TextStyle(color: Colors.red)),
                                 ],
                               ),
                             ),
