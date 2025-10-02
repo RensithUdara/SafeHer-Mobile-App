@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/auth_controller.dart';
-import '../../widgets/common_widgets.dart';
 import '../../utils/theme.dart';
-import '../../utils/constants.dart';
+import '../../widgets/common_widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -19,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _agreeToTerms = false;
@@ -51,11 +51,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       final success = await context.read<AuthController>().signUp(
-        name: _nameController.text.trim(),
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        phoneNumber: _phoneController.text.trim(),
-      );
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+            phoneNumber: _phoneController.text.trim(),
+          );
 
       if (success && mounted) {
         Navigator.of(context).pushReplacementNamed('/main');
@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Header
                 Center(
                   child: Column(
@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
 
                 // Full Name Field
@@ -140,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
 
                 // Email Field
@@ -153,13 +153,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(value!)) {
                       return 'Please enter a valid email address';
                     }
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
 
                 // Phone Number Field
@@ -178,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
 
                 // Password Field
@@ -194,7 +195,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       });
                     },
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                   ),
                   validator: (value) {
@@ -207,7 +210,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
 
                 // Confirm Password Field
@@ -223,7 +226,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       });
                     },
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                      _obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                   ),
                   validator: (value) {
@@ -236,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 24),
 
                 // Terms and Privacy Policy
@@ -291,21 +296,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 32),
 
                 // Register Button
                 Consumer<AuthController>(
                   builder: (context, authController, child) {
                     return AppButton(
-                      text: authController.isLoading ? 'Creating Account...' : 'Create Account',
+                      text: authController.isLoading
+                          ? 'Creating Account...'
+                          : 'Create Account',
                       onPressed: authController.isLoading ? null : _register,
                       width: double.infinity,
                       isLoading: authController.isLoading,
                     );
                   },
                 ),
-                
+
                 const SizedBox(height: 24),
 
                 // Divider
@@ -325,7 +332,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Expanded(child: Divider(color: Colors.grey[300])),
                   ],
                 ),
-                
+
                 const SizedBox(height: 24),
 
                 // Social Registration Buttons
@@ -374,7 +381,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 32),
 
                 // Sign In Link
@@ -403,7 +410,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
               ],
             ),
