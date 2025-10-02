@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/auth_controller.dart';
-import '../../controllers/location_controller.dart';
-import '../../widgets/common_widgets.dart';
 import '../../utils/theme.dart';
-import '../../utils/constants.dart';
+import '../../widgets/common_widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -17,13 +16,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emergencyMessageController = TextEditingController();
-  
+
   bool _locationSharing = true;
   bool _sosVibration = true;
   bool _sosSound = true;
   bool _nightMode = false;
   bool _autoSosTimer = true;
-  int _sosTimerDuration = 5;
+  final int _sosTimerDuration = 5;
 
   @override
   void initState() {
@@ -42,11 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _loadUserData() {
     final authController = context.read<AuthController>();
     final user = authController.currentUser;
-    
+
     if (user != null) {
       _nameController.text = user.name;
       _phoneController.text = user.phoneNumber ?? '';
-      _emergencyMessageController.text = user.emergencyMessage ?? 
+      _emergencyMessageController.text = user.emergencyMessage ??
           'I need help! This is an emergency. Please contact me immediately.';
     }
   }
@@ -282,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Consumer<AuthController>(
         builder: (context, authController, child) {
           final user = authController.currentUser;
-          
+
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -460,7 +459,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _buildSwitchTile(
                               icon: Icons.location_on,
                               title: 'Location Sharing',
-                              subtitle: 'Share location with emergency contacts',
+                              subtitle:
+                                  'Share location with emergency contacts',
                               value: _locationSharing,
                               onChanged: (value) {
                                 setState(() {
@@ -628,7 +628,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 // Privacy Settings Screen
 class PrivacySettingsScreen extends StatefulWidget {
-  const PrivacySettingsScreen({Key? key}) : super(key: key);
+  const PrivacySettingsScreen({super.key});
 
   @override
   State<PrivacySettingsScreen> createState() => _PrivacySettingsScreenState();
@@ -692,7 +692,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                 const Divider(height: 1),
                 SwitchListTile(
                   title: const Text('Location History'),
-                  subtitle: const Text('Store location data for journey tracking'),
+                  subtitle:
+                      const Text('Store location data for journey tracking'),
                   value: _locationHistory,
                   onChanged: (value) {
                     setState(() {
@@ -712,7 +713,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
 
 // Security Settings Screen
 class SecuritySettingsScreen extends StatefulWidget {
-  const SecuritySettingsScreen({Key? key}) : super(key: key);
+  const SecuritySettingsScreen({super.key});
 
   @override
   State<SecuritySettingsScreen> createState() => _SecuritySettingsScreenState();
