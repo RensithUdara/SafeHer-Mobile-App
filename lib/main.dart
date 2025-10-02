@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
@@ -16,22 +15,13 @@ import 'controllers/emergency_controller.dart';
 import 'controllers/journey_controller.dart';
 import 'controllers/location_controller.dart';
 import 'database/database_helper.dart';
-// Services
-import 'services/firebase_service.dart';
-import 'services/location_service.dart';
+import 'firebase_options.dart';
 import 'services/notification_service.dart';
-import 'utils/constants.dart';
 import 'utils/routes.dart';
 // Utils
 import 'utils/theme.dart';
-import 'views/auth/login_screen.dart';
 import 'views/auth/signup_screen.dart';
-import 'views/contacts/emergency_contacts_screen.dart';
 import 'views/emergency/emergency_screen.dart';
-import 'views/home/home_screen.dart';
-import 'views/journey/journey_screen.dart';
-import 'views/onboarding_screen.dart';
-import 'views/profile/profile_screen.dart';
 // Views
 import 'views/splash_screen.dart';
 
@@ -48,7 +38,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Initialize Firebase Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
