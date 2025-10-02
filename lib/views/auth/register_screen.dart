@@ -12,10 +12,11 @@ import '../../utils/theme.dart';import '../../controllers/auth_controller.dart';
 
 class RegisterScreen extends StatefulWidget {import '../../widgets/common_widgets.dart';
 
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
 import '../../utils/theme.dart';import '../../controllers/auth_controller.dart';
 
+  @override
   @override
 
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -26,23 +27,23 @@ class RegisterScreen extends StatefulWidget {import '../../widgets/common_widget
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
-  final _formKey = GlobalKey<FormState>();  const RegisterScreen({super.key});
+  final formKey = GlobalKey<FormState>();  const RegisterScreen({super.key});
 
-  final _nameController = TextEditingController();
+  final nameController = TextEditingController();
 
-  final _emailController = TextEditingController();import '../../utils/theme.dart';import '../../utils/theme.dart';
+  final emailController = TextEditingController();import '../../utils/theme.dart';import '../../utils/theme.dart';
 
-  final _phoneController = TextEditingController();
+  final phoneController = TextEditingController();
 
-  final _passwordController = TextEditingController();  @override
+  final passwordController = TextEditingController();  @override
 
-  final _confirmPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
     State<RegisterScreen> createState() => _RegisterScreenState();import '../../widgets/common_widgets.dart';
 
-  bool _obscurePassword = true;
+  bool obscurePassword = true;
 
-  bool _obscureConfirmPassword = true;}
+  bool obscureConfirmPassword = true;}
 
   bool _agreeToTerms = false;
 
@@ -402,7 +403,9 @@ class RegisterScreen extends StatefulWidget {
 
                   ),
 
-                  validator: (value) {                        ),
+                  validator
+
+  RegisterScreen({super.key});: (value) {                        ),
 
                     if (value?.isEmpty ?? true) {
 
@@ -498,9 +501,9 @@ class RegisterScreen extends StatefulWidget {
 
                     Checkbox(
 
-                      value: _agreeToTerms,                const SizedBox(height: 40),
+                      value = _agreeToTerms,                SizedBox(height = 40),
 
-                      onChanged: (value) {
+                      onChanged = (value) {
 
                         setState(() {      if (mounted) {    } catch (e) {
 
@@ -510,13 +513,13 @@ class RegisterScreen extends StatefulWidget {
 
                       },
 
-                      activeColor: AppColors.primary,                AppTextField(        ScaffoldMessenger.of(context).showSnackBar(      if (mounted) {
+                      activeColor = AppColors.primary,                Function(        ScaffoldMessenger.of(context) AppTextField.showSnackBar(      , {super.key}if (mounted) {
 
                     ),
 
-                    Expanded(                  controller: _nameController,
+                    Expanded(                  controller = _nameController,
 
-                      child: GestureDetector(
+                      child = GestureDetector(
 
                         onTap: () {                  label: 'Full Name',          SnackBar(        ScaffoldMessenger.of(context).showSnackBar(
 
@@ -562,7 +565,7 @@ class RegisterScreen extends StatefulWidget {
 
                                 TextSpan(
 
-                                  text: 'Privacy Policy',                  },
+                                  text = 'Privacy Policy',                  },
 
                                   style: TextStyle(
 
@@ -574,7 +577,7 @@ class RegisterScreen extends StatefulWidget {
 
                                   ),
 
-                                ),                const SizedBox(height: 16),  }    }
+                                ),                SizedBox(height = 16),  }    }
 
                               ],
 
@@ -594,7 +597,7 @@ class RegisterScreen extends StatefulWidget {
 
                 
 
-                const SizedBox(height: 32),                  label = 'Email Address',
+                SizedBox(height = 32),                  label = 'Email Address',
 
 
 
@@ -602,7 +605,7 @@ class RegisterScreen extends StatefulWidget {
 
                 Consumer<AuthController>(
 
-                  builder: (context, authController, child) {                  prefixIcon: const Icon(Icons.email_outlined),
+                  builder = (context, authController, child) {                  prefixIcon: const Icon(Icons.email_outlined),
 
                     return AppButton(
 
