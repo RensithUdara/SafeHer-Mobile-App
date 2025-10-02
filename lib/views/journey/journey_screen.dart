@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/journey_controller.dart';
 import '../../controllers/location_controller.dart';
@@ -68,15 +68,16 @@ class _JourneyScreenState extends State<JourneyScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Active Journey Card
-                  _buildActiveJourneyCard(journeyController, locationController),
-                  
+                  _buildActiveJourneyCard(
+                      journeyController, locationController),
+
                   const SizedBox(height: 20),
-                  
+
                   // Quick Actions
                   _buildQuickActions(journeyController, locationController),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Journey History
                   _buildJourneyHistory(journeyController),
                 ],
@@ -117,31 +118,32 @@ class _JourneyScreenState extends State<JourneyScreen>
           Row(
             children: [
               Icon(
-                journeyController.hasActiveJourney 
-                    ? Icons.navigation 
+                journeyController.hasActiveJourney
+                    ? Icons.navigation
                     : Icons.route,
-                color: journeyController.hasActiveJourney 
-                    ? Colors.white 
+                color: journeyController.hasActiveJourney
+                    ? Colors.white
                     : AppColors.textSecondary,
                 size: 24,
               ),
               const SizedBox(width: 10),
               Text(
-                journeyController.hasActiveJourney 
-                    ? 'Active Journey' 
+                journeyController.hasActiveJourney
+                    ? 'Active Journey'
                     : 'No Active Journey',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: journeyController.hasActiveJourney 
-                      ? Colors.white 
+                  color: journeyController.hasActiveJourney
+                      ? Colors.white
                       : AppColors.textPrimary,
                 ),
               ),
               const Spacer(),
               if (journeyController.hasActiveJourney)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
@@ -157,9 +159,7 @@ class _JourneyScreenState extends State<JourneyScreen>
                 ),
             ],
           ),
-          
           const SizedBox(height: 15),
-          
           if (journeyController.hasActiveJourney) ...[
             // Journey Details
             _buildJourneyDetail(
@@ -179,9 +179,9 @@ class _JourneyScreenState extends State<JourneyScreen>
               _formatTime(journeyController.activeJourney?.expectedArrivalTime),
               Icons.schedule,
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // Action Buttons
             Row(
               children: [
@@ -215,19 +215,18 @@ class _JourneyScreenState extends State<JourneyScreen>
               ],
             ),
           ] else ...[
-            Text(
+            const Text(
               'Start tracking your journey to keep your emergency contacts informed about your whereabouts.',
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
               ),
             ),
-            
             const SizedBox(height: 20),
-            
             AppButton(
               text: 'Start New Journey',
-              onPressed: () => _startNewJourney(journeyController, locationController),
+              onPressed: () =>
+                  _startNewJourney(journeyController, locationController),
               backgroundColor: AppColors.primary,
             ),
           ],
@@ -412,7 +411,6 @@ class _JourneyScreenState extends State<JourneyScreen>
           ],
         ),
         const SizedBox(height: 15),
-        
         if (journeyController.journeyHistory.isEmpty)
           Container(
             padding: const EdgeInsets.all(30),
@@ -427,14 +425,14 @@ class _JourneyScreenState extends State<JourneyScreen>
                 ),
               ],
             ),
-            child: Column(
+            child: const Column(
               children: [
                 Icon(
                   Icons.history,
                   size: 48,
                   color: AppColors.grey400,
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: 15),
                 Text(
                   'No journey history yet',
                   style: TextStyle(
@@ -443,7 +441,7 @@ class _JourneyScreenState extends State<JourneyScreen>
                     color: AppColors.textSecondary,
                   ),
                 ),
-                const SizedBox(height: 5),
+                SizedBox(height: 5),
                 Text(
                   'Your completed journeys will appear here',
                   style: TextStyle(
@@ -519,7 +517,7 @@ class _JourneyScreenState extends State<JourneyScreen>
                 ],
               ),
             );
-          }).toList(),
+          }),
       ],
     );
   }
@@ -533,7 +531,7 @@ class _JourneyScreenState extends State<JourneyScreen>
   String _formatJourneyDate(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays == 0) {
       return 'Today ${_formatTime(dateTime)}';
     } else if (difference.inDays == 1) {
@@ -723,11 +721,13 @@ class _JourneyScreenState extends State<JourneyScreen>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildTimeExtensionButton('15 min', () {
-                  journeyController.extendJourneyTime(const Duration(minutes: 15));
+                  journeyController
+                      .extendJourneyTime(const Duration(minutes: 15));
                   Navigator.of(context).pop();
                 }),
                 _buildTimeExtensionButton('30 min', () {
-                  journeyController.extendJourneyTime(const Duration(minutes: 30));
+                  journeyController
+                      .extendJourneyTime(const Duration(minutes: 30));
                   Navigator.of(context).pop();
                 }),
                 _buildTimeExtensionButton('1 hour', () {
@@ -818,13 +818,15 @@ class _JourneyScreenState extends State<JourneyScreen>
                 '2. Live Tracking',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text('Your location is tracked and shared with emergency contacts.'),
+              Text(
+                  'Your location is tracked and shared with emergency contacts.'),
               SizedBox(height: 10),
               Text(
                 '3. Safety Alerts',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text('Automatic alerts if you\'re overdue or deviate from route.'),
+              Text(
+                  'Automatic alerts if you\'re overdue or deviate from route.'),
               SizedBox(height: 10),
               Text(
                 '4. Complete Journey',
