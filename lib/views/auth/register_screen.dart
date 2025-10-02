@@ -95,19 +95,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: AppColors.primary.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.shield,
                           size: 60,
                           color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 24),
-                      Text(
+                      const Text(
                         'Create Account',
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 8),
