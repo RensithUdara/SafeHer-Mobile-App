@@ -12,7 +12,7 @@ import '../../widgets/common_widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
 
-  const RegisterScreen({Key? key}) : super(key: key);class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});class RegisterScreen extends StatefulWidget {
 
   const RegisterScreen({super.key});
 
@@ -20,7 +20,8 @@ class RegisterScreen extends StatefulWidget {
 
   State<RegisterScreen> createState() => _RegisterScreenState();  @override
 
-}  State<RegisterScreen> createState() => _RegisterScreenState();
+}  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
 
 }
 
@@ -28,57 +29,57 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _formKey = GlobalKey<FormState>();class _RegisterScreenState extends State<RegisterScreen> {
 
-  final _nameController = TextEditingController();  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();  final formKey = GlobalKey<FormState>();
 
-  final _emailController = TextEditingController();  final _nameController = TextEditingController();
+  final emailController = TextEditingController();  final nameController = TextEditingController();
 
-  final _phoneController = TextEditingController();  final _emailController = TextEditingController();
+  final phoneController = TextEditingController();  final emailController = TextEditingController();
 
-  final _passwordController = TextEditingController();  final _phoneController = TextEditingController();
+  final passwordController = TextEditingController();  final phoneController = TextEditingController();
 
-  final _confirmPasswordController = TextEditingController();  final _passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();  final passwordController = TextEditingController();
 
-    final _confirmPasswordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
 
-  bool _obscurePassword = true;
+  bool obscurePassword = true;
 
-  bool _obscureConfirmPassword = true;  bool _obscurePassword = true;
+  bool obscureConfirmPassword = true;  bool obscurePassword = true;
 
-  bool _agreeToTerms = false;  bool _obscureConfirmPassword = true;
+  bool agreeToTerms = false;  bool obscureConfirmPassword = true;
 
-  bool _agreeToTerms = false;
+  bool agreeToTerms = false;
 
   @override
 
   void dispose() {  @override
 
-    _nameController.dispose();  void dispose() {
+    nameController.dispose();  void dispose() {
 
-    _emailController.dispose();    _nameController.dispose();
+    emailController.dispose();    nameController.dispose();
 
-    _phoneController.dispose();    _emailController.dispose();
+    phoneController.dispose();    emailController.dispose();
 
-    _passwordController.dispose();    _phoneController.dispose();
+    passwordController.dispose();    phoneController.dispose();
 
-    _confirmPasswordController.dispose();    _passwordController.dispose();
+    confirmPasswordController.dispose();    passwordController.dispose();
 
-    super.dispose();    _confirmPasswordController.dispose();
+    super.dispose();    confirmPasswordController.dispose();
 
   }    super.dispose();
 
   }
 
-  void _register() async {
+  void register() async {
 
-    if (!_formKey.currentState!.validate()) {  void _register() async {
+    if (!formKey.currentState!.validate()) {  void register() async {
 
-      return;    if (!_formKey.currentState!.validate()) {
+      return;    if (!formKey.currentState!.validate()) {
 
     }      return;
 
     }
 
-    if (!_agreeToTerms) {
+    if (!agreeToTerms) {
 
       ScaffoldMessenger.of(context).showSnackBar(    if (!_agreeToTerms) {
 
@@ -320,7 +321,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                   },
 
-                const SizedBox(height: 16),                ),
+                SizedBox(height = 16),                ),
 
 
 
@@ -328,15 +329,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 AppTextField(
 
-                  controller: _phoneController,                // Phone Number Field
+                  controller = _phoneController,                // Phone Number Field
 
-                  label: 'Phone Number',                AppTextField(
+                  label = 'Phone Number',                AppTextField(
 
-                  prefixIcon: const Icon(Icons.phone_outlined),                  controller: _phoneController,
+                  prefixIcon = const Icon(Icons.phone_outlined),                  controller = _phoneController,
 
-                  keyboardType: TextInputType.phone,                  labelText: 'Phone Number',
+                  keyboardType = TextInputType.phone,                  labelText = 'Phone Number',
 
-                  validator: (value) {                  prefixIcon: Icons.phone_outlined,
+                  validator = (value) {                  prefixIcon: Icons.phone_outlined,
 
                     if (value?.isEmpty ?? true) {                  keyboardType: TextInputType.phone,
 
@@ -366,15 +367,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 AppTextField(
 
-                  controller: _passwordController,                // Password Field
+                  controller = _passwordController,                // Password Field
 
-                  label: 'Password',                AppTextField(
+                  label = 'Password',                AppTextField(
 
-                  prefixIcon: const Icon(Icons.lock_outline),                  controller: _passwordController,
+                  prefixIcon = const Icon(Icons.lock_outline),                  controller = _passwordController,
 
-                  obscureText: _obscurePassword,                  labelText: 'Password',
+                  obscureText = _obscurePassword,                  labelText = 'Password',
 
-                  suffixIcon: IconButton(                  prefixIcon: Icons.lock_outline,
+                  suffixIcon = IconButton(                  prefixIcon: Icons.lock_outline,
 
                     onPressed: () {                  obscureText: _obscurePassword,
 
@@ -390,11 +391,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       _obscurePassword ? Icons.visibility : Icons.visibility_off,                    },
 
-                    ),                    icon: Icon(
+                    ),                    icon = const Icon(
 
                   ),                      _obscurePassword
 
-                  validator: (value) {                          ? Icons.visibility
+                  validator = (value) {                          ? Icons.visibility
 
                     if (value?.isEmpty ?? true) {                          : Icons.visibility_off,
 
@@ -416,7 +417,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                     }
 
-                const SizedBox(height: 16),                    return null;
+                SizedBox(height = 16),                    return null;
 
                   },
 
@@ -424,15 +425,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 AppTextField(
 
-                  controller: _confirmPasswordController,                const SizedBox(height: 16),
+                  controller = _confirmPasswordController,                SizedBox(height = 16),
 
-                  label: 'Confirm Password',
+                  label = 'Confirm Password',
 
-                  prefixIcon: const Icon(Icons.lock_outline),                // Confirm Password Field
+                  prefixIcon = const Icon(Icons.lock_outline),                // Confirm Password Field
 
-                  obscureText: _obscureConfirmPassword,                AppTextField(
+                  obscureText = _obscureConfirmPassword,                AppTextField(
 
-                  suffixIcon: IconButton(                  controller: _confirmPasswordController,
+                  suffixIcon = IconButton(                  controller: _confirmPasswordController,
 
                     onPressed: () {                  labelText: 'Confirm Password',
 
@@ -584,7 +585,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                           ),
 
-                const SizedBox(height: 32),                        ),
+                SizedBox(height = 32),                        ),
 
                       ),
 
@@ -596,15 +597,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     return AppButton(
 
-                      text: authController.isLoading ? 'Creating Account...' : 'Create Account',                const SizedBox(height: 32),
+                      text = authController.isLoading ? 'Creating Account...' : 'Create Account',                SizedBox(height = 32),
 
-                      onPressed: authController.isLoading ? null : _register,
+                      onPressed = authController.isLoading ? null : _register,
 
-                      width: double.infinity,                // Register Button
+                      width = double.infinity,                // Register Button
 
-                      isLoading: authController.isLoading,                Consumer<AuthController>(
+                      isLoading = authController.isLoading,                Function<AuthController>(
 
-                    );                  builder: (context, authController, child) {
+                    ) Consumer;                  builder: (context, authController, child) {
 
                   },                    return AppButton(
 
@@ -718,11 +719,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   ],                    ),
 
-                ),                    const SizedBox(width: 16),
+                ),                    SizedBox(width = 16),
 
                                     Expanded(
 
-                const SizedBox(height: 32),                      child: OutlinedButton.icon(
+                SizedBox(height = 32),                      child = OutlinedButton.icon(
 
                         onPressed: () {
 
@@ -798,8 +799,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 }                        children: [
                           TextSpan(
-                            text: 'Sign In',
-                            style: TextStyle(
+                            text = 'Sign In',
+                            style = TextStyle(
                               color: AppTheme.primaryColor,
                               fontWeight: FontWeight.w600,
                             ),
@@ -810,7 +811,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height = 24),
               ],
             ),
           ),
