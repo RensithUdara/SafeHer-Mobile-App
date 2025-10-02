@@ -6,6 +6,7 @@ import '../../controllers/auth_controller.dart';
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/journey_controller.dart';
 import '../../utils/theme.dart';
+import '../../views/community/community_screen.dart';
 import '../../views/contacts/emergency_contacts_screen.dart';
 import '../../views/home/home_screen.dart';
 import '../../views/journey/journey_screen.dart';
@@ -28,6 +29,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   final List<Widget> _screens = [
     const HomeScreen(),
     const JourneyScreen(),
+    const CommunityScreen(),
     const EmergencyContactsScreen(),
     const ProfileScreen(),
   ];
@@ -157,17 +159,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
               Row(
                 children: [
                   _buildNavItem(
+                    icon: Icons.group_outlined,
+                    activeIcon: Icons.group,
+                    label: 'Community',
+                    index: 2,
+                  ),
+                  const SizedBox(width: 20),
+                  _buildNavItem(
                     icon: Icons.contacts_outlined,
                     activeIcon: Icons.contacts,
                     label: 'Contacts',
-                    index: 2,
+                    index: 3,
                   ),
-                  const SizedBox(width: 30),
+                  const SizedBox(width: 20),
                   _buildNavItem(
                     icon: Icons.person_outline,
                     activeIcon: Icons.person,
                     label: 'Profile',
-                    index: 3,
+                    index: 4,
                   ),
                 ],
               ),
