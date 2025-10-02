@@ -12,7 +12,7 @@ import '../../utils/theme.dart';import '../../controllers/auth_controller.dart';
 
 class RegisterScreen extends StatefulWidget {import '../../widgets/common_widgets.dart';import '../../controllers/auth_controller.dart';
 
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
 import '../../utils/theme.dart';import '../../utils/theme.dart';
 
@@ -23,28 +23,30 @@ import '../../utils/theme.dart';import '../../utils/theme.dart';
 }
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
-  final _formKey = GlobalKey<FormState>();  const RegisterScreen({super.key});class RegisterScreen extends StatefulWidget {
+  final formKey = GlobalKey<FormState>();  const RegisterScreen({super.key});class RegisterScreen extends StatefulWidget {
 
-  final _nameController = TextEditingController();
+  final nameController = TextEditingController();
 
-  final _emailController = TextEditingController();  const RegisterScreen({super.key});
+  final emailController = TextEditingController();  const RegisterScreen({super.key});
 
-  final _phoneController = TextEditingController();
+  final phoneController = TextEditingController();
 
-  final _passwordController = TextEditingController();  @override
+  final passwordController = TextEditingController();  @override
 
-  final _confirmPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
     State<RegisterScreen> createState() => _RegisterScreenState();  @override
 
-  bool _obscurePassword = true;
+  bool obscurePassword = true;
 
-  bool _obscureConfirmPassword = true;}  @override
+  bool obscureConfirmPassword = true;}  @override
 
-  bool _agreeToTerms = false;  State<RegisterScreen> createState() => _RegisterScreenState();
+  bool agreeToTerms = false;  State<RegisterScreen> createState() => _RegisterScreenState();
 
 
 
@@ -292,11 +294,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 AppTextField(
 
-                  controller: _emailController,  @override
+                  controller = _emailController,  @override
 
-                  label: 'Email Address',
+                  label = 'Email Address',
 
-                  hint: 'Enter your email',  Widget build(BuildContext context) {  @override
+                  hint = 'Enter your email',  Widget Function(BuildContext context) build {  @override
 
                   prefixIcon: const Icon(Icons.email_outlined),
 
@@ -416,7 +418,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     }
 
-                    return null;                        'Create Account',                      const Text(
+                    return null;                        'Create Account',                      Text(
 
                   },
 
@@ -424,7 +426,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 
 
-                const SizedBox(height: 16),                          fontSize: 28,                        style: TextStyle(
+                SizedBox(height = 16),                          fontSize = 28,                        style = TextStyle(
 
 
 
@@ -444,7 +446,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   suffixIcon: IconButton(
 
-                    onPressed: () {                      const SizedBox(height: 8),                      ),
+                    onPressed = () {                      const SizedBox(height: 8),                      ),
 
                       setState(() {
 
@@ -454,13 +456,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     },                        'Join SafeHer community and stay protected',                      Text(
 
-                    icon: Icon(
+                    icon = Icon(
 
                       _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,                        style: TextStyle(                        'Join SafeHer community and stay protected',
 
                     ),
 
-                  ),                          fontSize: 16,                        style: TextStyle(
+                  ),                          fontSize = 16,                        style = TextStyle(
 
                   validator: (value) {
 
@@ -468,7 +470,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       return 'Please confirm your password';
 
-                    }                        ),                          color: Colors.grey[600],
+                    }                        ),                          color = Colors.grey[600],
 
                     if (value != _passwordController.text) {
 
@@ -484,7 +486,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 
 
-                const SizedBox(height: 24),                  ),                    ],
+                SizedBox(height = 24),                  ),                    ],
 
 
 
@@ -492,15 +494,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 Row(
 
-                  crossAxisAlignment: CrossAxisAlignment.start,                                ),
+                  crossAxisAlignment = CrossAxisAlignment.start,                                ),
 
                   children: [
 
-                    Checkbox(                const SizedBox(height: 40),
+                    Checkbox(                SizedBox(height = 40),
 
-                      value: _agreeToTerms,
+                      value = _agreeToTerms,
 
-                      onChanged: (value) {                const SizedBox(height: 40),
+                      onChanged = (value) {                const SizedBox(height: 40),
 
                         setState(() {
 
@@ -510,13 +512,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       },                AppTextField(                // Full Name Field
 
-                      activeColor: AppColors.primary,
+                      activeColor = AppColors.primary,
 
-                    ),                  controller: _nameController,                AppTextField(
+                    ),                  controller = _nameController,                Function(
 
                     Expanded(
 
-                      child: GestureDetector(                  label: 'Full Name',                  controller: _nameController,
+                      child = GestureDetector(                  label: 'Full Name',                  controller: _nameController,
 
                         onTap: () {
 
@@ -580,9 +582,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                             ),
 
-                          ),                AppTextField(                // Email Field
+                          ) AppTextField,                Function(                // Email Field
 
-                        ),
+                        ) AppTextField,
 
                       ),                  controller: _emailController,                AppTextField(
 
@@ -592,15 +594,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 ),
 
-                                  prefixIcon: const Icon(Icons.email_outlined),                  labelText: 'Email Address',
+                                  prefixIcon: Icon(Icons.email_outlined),                  labelText: 'Email Address',
 
-                const SizedBox(height: 32),
+                SizedBox(height = 32),
 
                   keyboardType: TextInputType.emailAddress,                  prefixIcon: Icons.email_outlined,
 
                 // Register Button
 
-                Consumer<AuthController>(                  validator: (value) {                  keyboardType: TextInputType.emailAddress,
+                Consumer<AuthController>(                  validator = (value) {                  keyboardType: TextInputType.emailAddress,
 
                   builder: (context, authController, child) {
 
@@ -636,7 +638,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     Padding(
 
-                      padding: const EdgeInsets.symmetric(horizontal: 16),                ),                    return null;
+                      padding = const EdgeInsets.symmetric(horizontal: 16),                ),                    return null;
 
                       child: Text(
 
@@ -654,7 +656,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     ),                // Phone Number Field                const SizedBox(height: 16),
 
-                    Expanded(child: Divider(color: Colors.grey[300])),
+                    Expanded(child = Divider(color: Colors.grey[300])),
 
                   ],                AppTextField(
 
@@ -662,7 +664,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                   controller = _phoneController,                // Phone Number Field
 
-                const SizedBox(height: 24),
+                SizedBox(height = 24),
 
                   label = 'Phone Number',                AppTextField(
 
@@ -670,7 +672,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 Row(                  prefixIcon = const Icon(Icons.phone_outlined),                  controller = _phoneController,
 
-                  children: [
+                  children = [
 
                     Expanded(                  keyboardType = TextInputType.phone,                  labelText = 'Phone Number',
 
@@ -698,7 +700,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     ),                      return 'Please enter a valid phone number';                    }
 
-                    const SizedBox(width: 16),
+                    SizedBox(width = 16),
 
                     Expanded(                    }                    if (value!.length < 10) {
 
@@ -716,11 +718,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                         style: OutlinedButton.styleFrom(
 
-                          padding: const EdgeInsets.symmetric(vertical: 12),                                  },
+                          padding = const EdgeInsets.symmetric(vertical: 12),                                  },
 
                           side: BorderSide(color: Colors.grey[300]!),
 
-                        ),                const SizedBox(height: 16),                ),
+                        ),                SizedBox(height = 16),                ),
 
                       ),
 
@@ -732,7 +734,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 
 
-                const SizedBox(height: 32),                AppTextField(
+                SizedBox(height = 32),                AppTextField(
 
 
 
@@ -740,7 +742,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 Center(
 
-                  child: TextButton(                  label = 'Password',                AppTextField(
+                  child = TextButton(                  label = 'Password',                AppTextField(
 
                     onPressed: () {
 
@@ -788,7 +790,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 ),
 
-                                  ),                      _obscurePassword
+                                  ),                      obscurePassword
 
                 const SizedBox(height: 24),
 
@@ -802,7 +804,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       ),                      return 'Please enter a password';                    ),
 
-    );
+    )
 
   }                    }                  ),
 
