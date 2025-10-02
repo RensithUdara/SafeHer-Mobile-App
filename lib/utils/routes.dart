@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../views/auth/forgot_password_screen.dart';
 import '../views/auth/login_screen.dart';
+import '../views/auth/register_screen.dart';
 import '../views/auth/signup_screen.dart';
 import '../views/community/community_screen.dart';
 import '../views/community/report_incident_screen.dart';
