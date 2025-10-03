@@ -590,7 +590,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
                         ),
                         const Text(
