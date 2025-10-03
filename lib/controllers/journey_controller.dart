@@ -153,7 +153,8 @@ class JourneyController extends ChangeNotifier {
 
       // Save to database
       final db = await _databaseHelper.database;
-      final journeyId = await db.insert('journeys', journey.toMap());
+      final journeyId =
+          await db.insert('journey_history_table', journey.toMap());
 
       // Create journey with ID
       final journeyWithId = journey.copyWith(id: journeyId.toString());
