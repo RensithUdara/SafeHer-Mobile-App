@@ -98,7 +98,6 @@ class NotificationService {
         'Location Tracking',
         description: 'Background location tracking notifications',
         importance: Importance.low,
-        priority: Priority.low,
         enableVibration: false,
         playSound: false,
         showBadge: false,
