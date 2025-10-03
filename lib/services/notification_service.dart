@@ -118,8 +118,7 @@ class NotificationService {
         'community_alerts',
         'Community Alerts',
         description: 'Community safety alerts',
-        importance: Importance.default_,
-        priority: Priority.defaultPriority,
+        importance: Importance.defaultImportance,
         enableVibration: true,
         playSound: true,
       );
