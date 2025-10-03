@@ -65,6 +65,13 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  void _cancelCountdown() {
+    setState(() {
+      _isCountdownActive = false;
+      _countdown = 10;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
