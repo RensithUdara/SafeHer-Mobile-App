@@ -567,7 +567,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                         ),
                       ],
                     ),
-                    Column(
+                    const Column(
                       children: [
                         Text(
                           '450',
@@ -577,7 +577,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                             color: AppColors.primary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Posts Today',
                           style: TextStyle(fontSize: 12),
                         ),
