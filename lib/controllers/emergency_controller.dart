@@ -196,13 +196,9 @@ class EmergencyController extends ChangeNotifier {
       if (contact.isActive) {
         // Use notification service to show emergency resolved notification
         await _notificationService.showEmergencyNotification(
-          contact,
           'Emergency Resolved',
-          'Your emergency contact is now safe.',
-          data: {
-            'type': 'emergency_resolved',
-            'alert_id': _activeAlert?.id ?? '',
-          },
+          'Your emergency contact ${contact.contactName} is now safe.',
+          payload: 'emergency_resolved_${_activeAlert?.id ?? ''}',
         );
       }
     }
