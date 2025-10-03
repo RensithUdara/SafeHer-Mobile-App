@@ -739,7 +739,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          emergencyController.quickCallContact(contact),
+                          emergencyController.callEmergencyContact(contact),
                       child: CircleAvatar(
                         radius: 25,
                         backgroundColor: AppColors.primary,
