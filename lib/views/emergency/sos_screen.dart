@@ -268,10 +268,10 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (emergencyController.isCountdownActive) ...[
+                            if (_isCountdownActive) ...[
                               // Countdown Display
                               Text(
-                                '${emergencyController.emergencyCallCountdown}',
+                                '$_countdown',
                                 style: TextStyle(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
@@ -547,13 +547,12 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
           const SizedBox(height: 20),
 
           // Cancel Button (if countdown is active)
-          if (emergencyController.isCountdownActive)
+          if (_isCountdownActive)
             SizedBox(
               width: double.infinity,
               child: AppButton(
                 text: 'Cancel Emergency Call',
-                onPressed: () =>
-                    emergencyController.cancelEmergencyCallCountdown(),
+                onPressed: _cancelCountdown,
                 backgroundColor: Colors.white.withOpacity(0.2),
                 textColor: Colors.white,
               ),
