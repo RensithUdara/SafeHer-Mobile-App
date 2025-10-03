@@ -289,7 +289,7 @@ class EmergencyController extends ChangeNotifier {
         );
 
         _emergencyContacts = contacts
-            .map((contact) => EmergencyContactModel.fromLocalJson(contact))
+            .map((contact) => EmergencyContactModel.fromMap(contact))
             .toList();
 
         notifyListeners();
