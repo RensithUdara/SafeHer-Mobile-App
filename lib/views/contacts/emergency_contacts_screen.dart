@@ -102,7 +102,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(color: AppColors.secondary),
               ),
@@ -194,9 +194,9 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: const Text(
                 'Cancel',
-                style: TextStyle(color: AppTheme.secondaryColor),
+                style: TextStyle(color: AppColors.secondary),
               ),
             ),
             AppButton(
