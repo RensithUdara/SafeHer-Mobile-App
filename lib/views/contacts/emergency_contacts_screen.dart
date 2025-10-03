@@ -104,7 +104,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'Cancel',
-                style: TextStyle(color: AppTheme.secondaryColor),
+                style: TextStyle(color: AppColors.secondary),
               ),
             ),
             AppButton(
