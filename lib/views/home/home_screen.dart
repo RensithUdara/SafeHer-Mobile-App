@@ -859,7 +859,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              emergencyController.triggerEmergency();
+              emergencyController.activateEmergency();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.emergency,
