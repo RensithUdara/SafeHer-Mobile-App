@@ -82,9 +82,8 @@ class JourneyController extends ChangeNotifier {
         'journey_history_table',
         orderBy: 'start_time DESC',
       );
-      _journeyHistory = journeyMaps
-          .map((map) => JourneyModel.fromMap(map))
-          .toList();
+      _journeyHistory =
+          journeyMaps.map((map) => JourneyModel.fromMap(map)).toList();
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading journey history: $e');
@@ -144,20 +143,25 @@ class JourneyController extends ChangeNotifier {
 
       // Create new journey
       final journey = JourneyModel(
-        startLocation: startLocation,
-        endLocation: endLocation,
-        startTime: DateTime.now(),
-        expectedArrivalTime: expectedArrivalTime,
-        status: JourneyStatus.active.toString(),
-        journeyType: journeyType.toString(),
+        userId: userId,
+        title: startLocation,
         startLatitude: currentPosition.latitude,
         startLongitude: currentPosition.longitude,
-        routeCoordinates: [],
+        startAddress: startLocation,
+        endLatitude:
+            endLocation.isNotEmpty ? 0.0 : null, // You'll need to geocode this
+        endLongitude:
+            endLocation.isNotEmpty ? 0.0 : null, // You'll need to geocode this
+        endAddress: endLocation,
+        startTime: DateTime.now(),
+        estimatedArrival: expectedArrivalTime,
+        status: JourneyStatus.active,
+        routeCoordinates: const [],
         notes: notes,
       );
 
       // Save to database
-      await _databaseHelper.insertJourney(journey);
+      await _databaseHelper.insert('journey_history_table', journey.toMap());
 
       // Save to Firebase
       await _firebaseService.saveJourney(journey);
