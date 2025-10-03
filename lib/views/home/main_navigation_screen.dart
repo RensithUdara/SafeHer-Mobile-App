@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/auth_controller.dart';
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/journey_controller.dart';
 import '../../utils/theme.dart';
@@ -346,7 +344,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                 ),
               ),
               TextButton(
-                onPressed: () => emergencyController.stopEmergency(),
+                onPressed: () => emergencyController.deactivateEmergency(),
                 child: const Text(
                   'STOP',
                   style: TextStyle(
@@ -411,7 +409,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                       ),
                     ),
                     Text(
-                      'To: ${journeyController.activeJourney?.endLocation ?? 'Unknown'}',
+                      'To: ${journeyController.activeJourney?.endAddress ?? 'Unknown'}',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 12,
@@ -509,8 +507,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.emergency,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.sos);
+                      emergencyController.activateEmergency();
                     },
                   ),
                   _buildEmergencyOption(
@@ -520,8 +517,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.error,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.medical);
+                      emergencyController.activateEmergency();
                     },
                   ),
                   _buildEmergencyOption(
@@ -531,8 +527,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.info,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.police);
+                      emergencyController.activateEmergency();
                     },
                   ),
                   _buildEmergencyOption(
@@ -542,8 +537,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.warning,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.harassment);
+                      emergencyController.activateEmergency();
                     },
                   ),
                 ],
@@ -651,7 +645,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              emergencyController.stopEmergency();
+              emergencyController.deactivateEmergency();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.safe,

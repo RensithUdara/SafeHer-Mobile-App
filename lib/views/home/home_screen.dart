@@ -621,7 +621,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               const SizedBox(height: 10),
               Text(
-                'To: ${journeyController.activeJourney?.endLocation ?? 'Unknown'}',
+                'To: ${journeyController.activeJourney?.endAddress ?? 'Unknown'}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
@@ -739,7 +739,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          emergencyController.quickCallContact(contact),
+                          emergencyController.callEmergencyContact(contact),
                       child: CircleAvatar(
                         radius: 25,
                         backgroundColor: AppColors.primary,
@@ -839,7 +839,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       BuildContext context, EmergencyController emergencyController) {
     if (emergencyController.isEmergencyActive) {
       // Stop emergency
-      emergencyController.stopEmergency();
+      emergencyController.deactivateEmergency();
       return;
     }
 
@@ -859,7 +859,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              emergencyController.triggerEmergency();
+              emergencyController.activateEmergency();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.emergency,
