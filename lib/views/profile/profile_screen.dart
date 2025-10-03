@@ -45,7 +45,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (user != null) {
       _nameController.text = user.name;
       _phoneController.text = user.phone ?? '';
-      _emergencyMessageController.text = 'I need help! This is an emergency. Please contact me immediately.';
+      _emergencyMessageController.text =
+          'I need help! This is an emergency. Please contact me immediately.';
     }
   }
 
@@ -60,23 +61,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               AppTextField(
                 controller: _nameController,
-                labelText: 'Full Name',
-                prefixIcon: Icons.person,
+                label: 'Full Name',
+                prefixIcon: const Icon(Icons.person),
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _phoneController,
-                labelText: 'Phone Number',
-                prefixIcon: Icons.phone,
+                label: 'Phone Number',
+                prefixIcon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _emergencyMessageController,
-                labelText: 'Emergency Message',
-                prefixIcon: Icons.message,
+                label: 'Emergency Message',
+                prefixIcon: const Icon(Icons.message),
                 maxLines: 3,
-                hintText: 'Custom message sent during SOS alerts',
+                hint: 'Custom message sent during SOS alerts',
               ),
             ],
           ),
@@ -86,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: AppTheme.secondaryColor),
+              style: TextStyle(color: AppColors.secondaryColor),
             ),
           ),
           AppButton(
@@ -183,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: AppTheme.secondaryColor),
+              style: TextStyle(color: AppColors.secondaryColor),
             ),
           ),
           AppButton(
