@@ -226,7 +226,7 @@ class LocationController extends ChangeNotifier {
   // Stop location sharing
   Future<void> stopLocationSharing() async {
     try {
-      await _firebaseService.stopLocationSharing();
+      await _firebaseService.stopLocationSharingGeneric();
     } catch (e) {
       _setError('Failed to stop location sharing: ${e.toString()}');
     }
@@ -247,7 +247,12 @@ class LocationController extends ChangeNotifier {
         address: address,
         latitude: latitude ?? _currentPosition?.latitude ?? 0.0,
         longitude: longitude ?? _currentPosition?.longitude ?? 0.0,
-        placeType: placeType ?? 'safe_place',
+        placeType: placeType != null 
+          ? SafePlaceType.values.firstWhere(
+              (e) => e.toString().split('.').last == placeType,
+              orElse: () => SafePlaceType.other,
+            )
+          : SafePlaceType.other,
         savedAt: DateTime.now(),
       );
 
