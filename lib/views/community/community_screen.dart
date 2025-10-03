@@ -548,10 +548,10 @@ class _CommunityScreenState extends State<CommunityScreen>
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Column(
+                    Column(
                       children: [
                         Text(
                           '1.2K',
@@ -567,7 +567,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                         ),
                       ],
                     ),
-                    const Column(
+                    Column(
                       children: [
                         Text(
                           '450',
@@ -593,7 +593,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                             color: AppColors.primary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Safety Score',
                           style: TextStyle(fontSize: 12),
                         ),
