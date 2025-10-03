@@ -179,7 +179,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                           _isAnonymous = value!;
                         });
                       },
-                      activeColor: AppTheme.primaryColor,
+                      activeColor: AppColors.primary,
                     ),
                     const Text('Post anonymously'),
                     const SizedBox(width: 8),
@@ -198,9 +198,9 @@ class _CommunityScreenState extends State<CommunityScreen>
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text(
+                      child: const Text(
                         'Cancel',
-                        style: TextStyle(color: AppTheme.secondaryColor),
+                        style: TextStyle(color: AppColors.secondary),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -254,7 +254,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                 CircleAvatar(
                   backgroundColor: post['isAnonymous']
                       ? Colors.grey[400]
-                      : AppTheme.primaryColor,
+                      : AppColors.primary,
                   child: Icon(
                     post['isAnonymous'] ? Icons.person : Icons.person,
                     color: Colors.white,
@@ -449,7 +449,7 @@ class _CommunityScreenState extends State<CommunityScreen>
           ),
           child: ExpansionTile(
             leading: CircleAvatar(
-              backgroundColor: AppTheme.primaryColor,
+              backgroundColor: AppColors.primary,
               child: Icon(
                 resource['icon'] as IconData,
                 color: Colors.white,
@@ -475,7 +475,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                           // TODO: Make phone call
                         },
                         icon: const Icon(Icons.call),
-                        color: AppTheme.primaryColor,
+                        color: AppColors.primary,
                       )
                     : null,
               );
@@ -506,7 +506,7 @@ class _CommunityScreenState extends State<CommunityScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Community'),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 0,
         bottom: TabBar(
@@ -542,8 +542,8 @@ class _CommunityScreenState extends State<CommunityScreen>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppTheme.primaryColor.withOpacity(0.1),
-                      AppTheme.secondaryColor.withOpacity(0.1),
+                      AppColors.primary.withOpacity(0.1),
+                      AppColors.secondary.withOpacity(0.1),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -551,33 +551,33 @@ class _CommunityScreenState extends State<CommunityScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
+                    const Column(
                       children: [
                         Text(
                           '1.2K',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Active Users',
                           style: TextStyle(fontSize: 12),
                         ),
                       ],
                     ),
-                    Column(
+                    const Column(
                       children: [
                         Text(
                           '450',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Posts Today',
                           style: TextStyle(fontSize: 12),
                         ),
