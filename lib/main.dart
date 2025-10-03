@@ -20,8 +20,6 @@ import 'services/notification_service.dart';
 import 'utils/routes.dart';
 // Utils
 import 'utils/theme.dart';
-import 'views/auth/signup_screen.dart';
-import 'views/emergency/emergency_screen.dart';
 // Views
 import 'views/splash_screen.dart';
 
