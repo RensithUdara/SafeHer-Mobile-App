@@ -51,8 +51,8 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
               children: [
                 AppTextField(
                   controller: _nameController,
-                  labelText: 'Full Name',
-                  prefixIcon: Icons.person,
+                  label: 'Full Name',
+                  prefixIcon: const Icon(Icons.person),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter a name';
@@ -63,8 +63,8 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                 const SizedBox(height: 16),
                 AppTextField(
                   controller: _phoneController,
-                  labelText: 'Phone Number',
-                  prefixIcon: Icons.phone,
+                  label: 'Phone Number',
+                  prefixIcon: const Icon(Icons.phone),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
