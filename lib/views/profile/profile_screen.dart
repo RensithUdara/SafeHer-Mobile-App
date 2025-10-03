@@ -40,13 +40,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _loadUserData() {
     final authController = context.read<AuthController>();
-    final user = authController.currentUser;
+    final user = authController.currentUserModel;
 
     if (user != null) {
       _nameController.text = user.name;
-      _phoneController.text = user.phoneNumber ?? '';
-      _emergencyMessageController.text = user.emergencyMessage ??
-          'I need help! This is an emergency. Please contact me immediately.';
+      _phoneController.text = user.phone ?? '';
+      _emergencyMessageController.text = 'I need help! This is an emergency. Please contact me immediately.';
     }
   }
 
