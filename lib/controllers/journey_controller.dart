@@ -476,7 +476,7 @@ class JourneyController extends ChangeNotifier {
     try {
       final db = await _databaseHelper.database;
       await db.update(
-        'journeys',
+        'journey_history_table',
         journey.toMap(),
         where: 'id = ?',
         whereArgs: [journey.id],
