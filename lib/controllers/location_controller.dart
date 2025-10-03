@@ -289,7 +289,7 @@ class LocationController extends ChangeNotifier {
       await _databaseHelper.deleteSafePlace(placeId);
       await _firebaseService.deleteSafePlace(placeId.toString());
 
-      _safePlaces.removeWhere((place) => place.placeId == placeId);
+      _safePlaces.removeWhere((place) => place.id == placeId.toString());
       notifyListeners();
       return true;
     } catch (e) {
