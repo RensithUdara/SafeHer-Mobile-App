@@ -78,7 +78,13 @@ class JourneyController extends ChangeNotifier {
   // Load journey history
   Future<void> _loadJourneyHistory() async {
     try {
-      _journeyHistory = await _databaseHelper.getJourneyHistory();
+      final journeyMaps = await _databaseHelper.query(
+        'journey_history_table',
+        orderBy: 'start_time DESC',
+      );
+      _journeyHistory = journeyMaps
+          .map((map) => JourneyModel.fromMap(map))
+          .toList();
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading journey history: $e');
