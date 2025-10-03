@@ -102,9 +102,9 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: const Text(
                 'Cancel',
-                style: TextStyle(color: AppTheme.secondaryColor),
+                style: TextStyle(color: AppColors.secondary),
               ),
             ),
             AppButton(
@@ -194,16 +194,16 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: const Text(
                 'Cancel',
-                style: TextStyle(color: AppTheme.secondaryColor),
+                style: TextStyle(color: AppColors.secondary),
               ),
             ),
             AppButton(
               text: 'Update',
               onPressed: () async {
                 final updatedContact = contact.copyWith(
-                  name: _nameController.text.trim(),
+                  contactName: _nameController.text.trim(),
                   phoneNumber: _phoneController.text.trim(),
                   relationship: _selectedRelation,
                 );
