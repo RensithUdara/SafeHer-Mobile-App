@@ -509,8 +509,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.emergency,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.sos);
+                      emergencyController.activateEmergency();
                     },
                   ),
                   _buildEmergencyOption(
