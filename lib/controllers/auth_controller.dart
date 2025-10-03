@@ -216,8 +216,8 @@ class AuthController extends ChangeNotifier {
             updatedAt: DateTime.now(),
           );
 
-          await _firebaseService.saveUserData(userModel);
-          await _databaseHelper.insertUser(userModel);
+          await _firebaseService.saveUser(userModel);
+          await _databaseHelper.insert('users_table', userModel.toMap());
           _currentUserModel = userModel;
         }
 
@@ -263,8 +263,8 @@ class AuthController extends ChangeNotifier {
               updatedAt: DateTime.now(),
             );
 
-            await _firebaseService.saveUserData(userModel);
-            await _databaseHelper.insertUser(userModel);
+            await _firebaseService.saveUser(userModel);
+            await _databaseHelper.insert('users_table', userModel.toMap());
             _currentUserModel = userModel;
           }
 
