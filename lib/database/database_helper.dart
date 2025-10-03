@@ -5,6 +5,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../models/safe_place_model.dart';
+
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
@@ -12,6 +14,8 @@ class DatabaseHelper {
   DatabaseHelper._internal();
 
   factory DatabaseHelper() => _instance;
+
+  static DatabaseHelper get instance => _instance;
 
   Future<Database> get database async {
     _database ??= await _initDatabase();
@@ -355,5 +359,20 @@ class DatabaseHelper {
     } catch (e) {
       return false;
     }
+  }
+
+  // Safe Places operations
+  Future<void> insertSafePlace(SafePlaceModel safePlace) async {
+    await insert('safe_places_table', safePlace.toMap());
+  }
+
+  Future<List<SafePlaceModel>> getSafePlaces() async {
+    final results = await query('safe_places_table', orderBy: 'saved_at DESC');
+    return results.map((map) => SafePlaceModel.fromMap(map)).toList();
+  }
+
+  Future<void> deleteSafePlace(int placeId) async {
+    await delete('safe_places_table',
+        where: 'id = ?', whereArgs: [placeId.toString()]);
   }
 }

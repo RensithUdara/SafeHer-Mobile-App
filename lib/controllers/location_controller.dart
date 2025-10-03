@@ -154,11 +154,13 @@ class LocationController extends ChangeNotifier {
       _isTracking = true;
       notifyListeners();
 
-      await _locationService.startLocationTracking((position) {
-        _currentPosition = position;
-        _getAddressFromCoordinates(position.latitude, position.longitude);
-        notifyListeners();
-      });
+      await _locationService.startLocationTracking(
+        onLocationUpdate: (position) {
+          _currentPosition = position;
+          _getAddressFromCoordinates(position.latitude, position.longitude);
+          notifyListeners();
+        },
+      );
 
       return true;
     } catch (e) {
