@@ -164,7 +164,7 @@ class _JourneyScreenState extends State<JourneyScreen>
             // Journey Details
             _buildJourneyDetail(
               'Destination',
-              journeyController.activeJourney?.endLocation ?? 'Unknown',
+              journeyController.activeJourney?.endAddress ?? 'Unknown',
               Icons.location_on,
             ),
             const SizedBox(height: 10),
@@ -176,7 +176,7 @@ class _JourneyScreenState extends State<JourneyScreen>
             const SizedBox(height: 10),
             _buildJourneyDetail(
               'Expected Arrival',
-              _formatTime(journeyController.activeJourney?.expectedArrivalTime),
+              _formatTime(journeyController.activeJourney?.estimatedArrival),
               Icons.schedule,
             ),
 
@@ -488,7 +488,7 @@ class _JourneyScreenState extends State<JourneyScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          journey.endLocation,
+                          journey.endAddress ?? 'Unknown destination',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -541,14 +541,16 @@ class _JourneyScreenState extends State<JourneyScreen>
     }
   }
 
-  Color _getStatusColor(String status) {
+  Color _getStatusColor(JourneyStatus status) {
     switch (status) {
-      case 'completed':
+      case JourneyStatus.completed:
         return AppColors.safe;
-      case 'cancelled':
+      case JourneyStatus.cancelled:
         return AppColors.error;
-      case 'overdue':
+      case JourneyStatus.overdue:
         return AppColors.warning;
+      case JourneyStatus.alert:
+        return AppColors.error;
       default:
         return AppColors.info;
     }
