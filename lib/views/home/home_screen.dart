@@ -621,7 +621,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               const SizedBox(height: 10),
               Text(
-                'To: ${journeyController.activeJourney?.endLocation ?? 'Unknown'}',
+                'To: ${journeyController.activeJourney?.endAddress ?? 'Unknown'}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
