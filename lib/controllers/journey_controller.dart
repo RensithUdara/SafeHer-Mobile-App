@@ -6,9 +6,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../database/database_helper.dart';
 import '../models/journey_model.dart';
-import '../services/firebase_service.dart';
 import '../services/location_service.dart';
-import '../services/notification_service.dart';
 
 enum JourneyType { walking, driving, publicTransport, cycling, other }
 
