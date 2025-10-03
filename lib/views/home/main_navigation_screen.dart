@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/auth_controller.dart';
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/journey_controller.dart';
 import '../../utils/theme.dart';
@@ -539,8 +537,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.warning,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.harassment);
+                      emergencyController.activateEmergency();
                     },
                   ),
                 ],
