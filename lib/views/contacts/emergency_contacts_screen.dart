@@ -203,7 +203,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
               text: 'Update',
               onPressed: () async {
                 final updatedContact = contact.copyWith(
-                  name: _nameController.text.trim(),
+                  contactName: _nameController.text.trim(),
                   phoneNumber: _phoneController.text.trim(),
                   relationship: _selectedRelation,
                 );
