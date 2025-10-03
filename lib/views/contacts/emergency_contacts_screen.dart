@@ -158,14 +158,14 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
               children: [
                 AppTextField(
                   controller: _nameController,
-                  labelText: 'Full Name',
-                  prefixIcon: Icons.person,
+                  label: 'Full Name',
+                  prefixIcon: const Icon(Icons.person),
                 ),
                 const SizedBox(height: 16),
                 AppTextField(
                   controller: _phoneController,
-                  labelText: 'Phone Number',
-                  prefixIcon: Icons.phone,
+                  label: 'Phone Number',
+                  prefixIcon: const Icon(Icons.phone),
                   keyboardType: TextInputType.phone,
                 ),
                 const SizedBox(height: 16),
