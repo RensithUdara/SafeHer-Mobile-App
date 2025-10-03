@@ -108,8 +108,7 @@ class NotificationService {
         'journey_tracking',
         'Journey Tracking',
         description: 'Safe journey tracking notifications',
-        importance: Importance.default_,
-        priority: Priority.defaultPriority,
+        importance: Importance.defaultImportance,
         enableVibration: true,
         playSound: true,
       );
