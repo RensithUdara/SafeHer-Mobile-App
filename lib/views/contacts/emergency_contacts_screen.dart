@@ -112,11 +112,13 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
               onPressed: () async {
                 if (_nameController.text.isNotEmpty &&
                     _phoneController.text.isNotEmpty) {
-                  final contact = EmergencyContact(
-                    name: _nameController.text.trim(),
+                  final contact = EmergencyContactModel(
+                    userId: '', // This should be set from the current user
+                    contactName: _nameController.text.trim(),
                     phoneNumber: _phoneController.text.trim(),
                     relationship: _selectedRelation,
                     createdAt: DateTime.now(),
+                    updatedAt: DateTime.now(),
                   );
 
                   await context
@@ -140,8 +142,8 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
     );
   }
 
-  void _showEditContactDialog(EmergencyContact contact) {
-    _nameController.text = contact.name;
+  void _showEditContactDialog(EmergencyContactModel contact) {
+    _nameController.text = contact.contactName;
     _phoneController.text = contact.phoneNumber;
     _selectedRelation = contact.relationship;
 
@@ -226,13 +228,13 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
     );
   }
 
-  void _confirmDeleteContact(EmergencyContact contact) {
+  void _confirmDeleteContact(EmergencyContactModel contact) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Contact'),
         content: Text(
-          'Are you sure you want to delete ${contact.name} from your emergency contacts?',
+          'Are you sure you want to delete ${contact.contactName} from your emergency contacts?',
         ),
         actions: [
           TextButton(
@@ -248,7 +250,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
             onPressed: () async {
               await context
                   .read<EmergencyController>()
-                  .removeEmergencyContact(contact.id!);
+                  .deleteEmergencyContact(contact.id!);
 
               Navigator.pop(context);
 
@@ -385,8 +387,8 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                         leading: CircleAvatar(
                           backgroundColor: AppTheme.primaryColor,
                           child: Text(
-                            contact.name.isNotEmpty
-                                ? contact.name[0].toUpperCase()
+                            contact.contactName.isNotEmpty
+                                ? contact.contactName[0].toUpperCase()
                                 : 'C',
                             style: const TextStyle(
                               color: Colors.white,
@@ -395,7 +397,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                           ),
                         ),
                         title: Text(
-                          contact.name,
+                          contact.contactName,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
