@@ -645,7 +645,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              emergencyController.stopEmergency();
+              emergencyController.deactivateEmergency();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.safe,
