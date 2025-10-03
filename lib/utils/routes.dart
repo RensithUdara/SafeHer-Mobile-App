@@ -1,25 +1,15 @@
 import 'package:get/get.dart';
 
-import '../views/auth/forgot_password_screen.dart';
 import '../views/auth/login_screen.dart';
 import '../views/auth/register_screen.dart';
-import '../views/auth/signup_screen.dart';
 import '../views/community/community_screen.dart';
-import '../views/community/report_incident_screen.dart';
-import '../views/contacts/add_contact_screen.dart';
 import '../views/contacts/emergency_contacts_screen.dart';
-import '../views/emergency/emergency_screen.dart';
 import '../views/emergency/sos_screen.dart';
 import '../views/home/home_screen.dart';
 import '../views/home/main_navigation_screen.dart';
 import '../views/journey/journey_screen.dart';
-import '../views/journey/journey_tracking_screen.dart';
 import '../views/onboarding_screen.dart';
 import '../views/profile/profile_screen.dart';
-import '../views/profile/settings_screen.dart';
-import '../views/safety/nearby_places_screen.dart';
-import '../views/safety/safety_resources_screen.dart';
-// Views
 import '../views/splash_screen.dart';
 
 class AppRoutes {
