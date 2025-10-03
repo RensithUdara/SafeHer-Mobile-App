@@ -548,10 +548,10 @@ class _CommunityScreenState extends State<CommunityScreen>
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Column(
+                    Column(
                       children: [
                         Text(
                           '1.2K',
@@ -567,7 +567,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                         ),
                       ],
                     ),
-                    const Column(
+                    Column(
                       children: [
                         Text(
                           '450',
@@ -590,10 +590,10 @@ class _CommunityScreenState extends State<CommunityScreen>
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Safety Score',
                           style: TextStyle(fontSize: 12),
                         ),
@@ -622,7 +622,7 @@ class _CommunityScreenState extends State<CommunityScreen>
       floatingActionButton: _tabController.index == 0
           ? FloatingActionButton(
               onPressed: _showCreatePostDialog,
-              backgroundColor: AppTheme.primaryColor,
+              backgroundColor: AppColors.primary,
               child: const Icon(Icons.add, color: Colors.white),
             )
           : null,
