@@ -247,7 +247,7 @@ class NotificationService {
       'journey_tracking',
       'Journey Tracking',
       channelDescription: 'Safe journey tracking notifications',
-      importance: Importance.default_,
+      importance: Importance.defaultImportance,
       priority: Priority.defaultPriority,
       enableVibration: true,
       playSound: true,
