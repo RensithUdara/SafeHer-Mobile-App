@@ -578,10 +578,7 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
   void _handleSOSLongPress(EmergencyController emergencyController) {
     if (!emergencyController.isEmergencyActive) {
       HapticFeedback.heavyImpact();
-      emergencyController.triggerEmergency(
-        type: EmergencyType.sos,
-        autoCall: true,
-      );
+      emergencyController.activateEmergency();
     }
   }
 
