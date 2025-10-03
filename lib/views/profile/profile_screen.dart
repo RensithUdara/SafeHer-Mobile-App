@@ -22,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _sosSound = true;
   bool _nightMode = false;
   bool _autoSosTimer = true;
-  final int _sosTimerDuration = 5;
 
   @override
   void initState() {
@@ -40,12 +39,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _loadUserData() {
     final authController = context.read<AuthController>();
-    final user = authController.currentUser;
+    final user = authController.currentUserModel;
 
     if (user != null) {
       _nameController.text = user.name;
-      _phoneController.text = user.phoneNumber ?? '';
-      _emergencyMessageController.text = user.emergencyMessage ??
+      _phoneController.text = user.phone ?? '';
+      _emergencyMessageController.text =
           'I need help! This is an emergency. Please contact me immediately.';
     }
   }
@@ -61,23 +60,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               AppTextField(
                 controller: _nameController,
-                labelText: 'Full Name',
-                prefixIcon: Icons.person,
+                label: 'Full Name',
+                prefixIcon: const Icon(Icons.person),
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _phoneController,
-                labelText: 'Phone Number',
-                prefixIcon: Icons.phone,
+                label: 'Phone Number',
+                prefixIcon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _emergencyMessageController,
-                labelText: 'Emergency Message',
-                prefixIcon: Icons.message,
+                label: 'Emergency Message',
+                prefixIcon: const Icon(Icons.message),
                 maxLines: 3,
-                hintText: 'Custom message sent during SOS alerts',
+                hint: 'Custom message sent during SOS alerts',
               ),
             ],
           ),
@@ -85,9 +84,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'Cancel',
-              style: TextStyle(color: AppTheme.secondaryColor),
+              style: TextStyle(color: AppColors.secondary),
             ),
           ),
           AppButton(
@@ -131,30 +130,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('About SafeHer'),
-        content: Column(
+        content: const Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.shield,
               size: 64,
-              color: AppTheme.primaryColor,
+              color: AppColors.primary,
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'SafeHer v1.0.0',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'Your personal safety companion. Stay safe, stay connected.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 14),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               '© 2024 SafeHer App. All rights reserved.',
               style: TextStyle(
                 fontSize: 12,
@@ -182,9 +181,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'Cancel',
-              style: TextStyle(color: AppTheme.secondaryColor),
+              style: TextStyle(color: AppColors.secondary),
             ),
           ),
           AppButton(
@@ -211,10 +210,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: (iconColor ?? AppTheme.primaryColor).withOpacity(0.1),
+        backgroundColor: (iconColor ?? AppColors.primary).withOpacity(0.1),
         child: Icon(
           icon,
-          color: iconColor ?? AppTheme.primaryColor,
+          color: iconColor ?? AppColors.primary,
           size: 20,
         ),
       ),
@@ -240,10 +239,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+        backgroundColor: AppColors.primary.withOpacity(0.1),
         child: Icon(
           icon,
-          color: AppTheme.primaryColor,
+          color: AppColors.primary,
           size: 20,
         ),
       ),
@@ -258,7 +257,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeColor: AppTheme.primaryColor,
+        activeColor: AppColors.primary,
       ),
     );
   }
@@ -268,7 +267,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -280,7 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Consumer<AuthController>(
         builder: (context, authController, child) {
-          final user = authController.currentUser;
+          final user = authController.currentUserModel;
 
           return SingleChildScrollView(
             child: Column(
@@ -294,8 +293,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        AppTheme.primaryColor,
-                        AppTheme.primaryColor.withOpacity(0.8),
+                        AppColors.primary,
+                        AppColors.primary.withOpacity(0.8),
                       ],
                     ),
                   ),
@@ -304,20 +303,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.white,
-                        child: user?.profileImageUrl != null
+                        child: user?.profilePhotoPath != null
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Image.network(
-                                  user!.profileImageUrl!,
+                                  user!.profilePhotoPath!,
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : Icon(
+                            : const Icon(
                                 Icons.person,
                                 size: 60,
-                                color: AppTheme.primaryColor,
+                                color: AppColors.primary,
                               ),
                       ),
                       const SizedBox(height: 16),
@@ -380,12 +379,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'SOS Settings',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -443,12 +442,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Privacy & Security',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -497,12 +496,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'App Settings',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -554,12 +553,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Support & About',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -645,7 +644,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Privacy Settings'),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
       body: ListView(
@@ -663,7 +662,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                       _dataSharing = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
@@ -675,7 +674,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                       _analyticsCollection = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
@@ -687,7 +686,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                       _crashReporting = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
@@ -700,7 +699,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                       _locationHistory = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
               ],
             ),
@@ -729,7 +728,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Security Settings'),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
       body: ListView(
@@ -747,7 +746,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                       _biometricAuth = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
@@ -759,7 +758,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                       _pinRequired = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
@@ -771,7 +770,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                       _twoFactorAuth = value;
                     });
                   },
-                  activeColor: AppTheme.primaryColor,
+                  activeColor: AppColors.primary,
                 ),
               ],
             ),
