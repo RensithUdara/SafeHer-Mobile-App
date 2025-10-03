@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/journey_controller.dart';
 import '../../controllers/location_controller.dart';
+import '../../models/journey_model.dart';
 import '../../utils/theme.dart';
 import '../../widgets/common_widgets.dart';
 
@@ -164,7 +165,7 @@ class _JourneyScreenState extends State<JourneyScreen>
             // Journey Details
             _buildJourneyDetail(
               'Destination',
-              journeyController.activeJourney?.endLocation ?? 'Unknown',
+              journeyController.activeJourney?.endAddress ?? 'Unknown',
               Icons.location_on,
             ),
             const SizedBox(height: 10),
@@ -176,7 +177,7 @@ class _JourneyScreenState extends State<JourneyScreen>
             const SizedBox(height: 10),
             _buildJourneyDetail(
               'Expected Arrival',
-              _formatTime(journeyController.activeJourney?.expectedArrivalTime),
+              _formatTime(journeyController.activeJourney?.estimatedArrival),
               Icons.schedule,
             ),
 
@@ -488,7 +489,7 @@ class _JourneyScreenState extends State<JourneyScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          journey.endLocation,
+                          journey.endAddress ?? 'Unknown destination',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -541,42 +542,52 @@ class _JourneyScreenState extends State<JourneyScreen>
     }
   }
 
-  Color _getStatusColor(String status) {
+  Color _getStatusColor(JourneyStatus status) {
     switch (status) {
-      case 'completed':
+      case JourneyStatus.completed:
         return AppColors.safe;
-      case 'cancelled':
+      case JourneyStatus.cancelled:
         return AppColors.error;
-      case 'overdue':
+      case JourneyStatus.overdue:
         return AppColors.warning;
+      case JourneyStatus.alert:
+        return AppColors.error;
       default:
         return AppColors.info;
     }
   }
 
-  IconData _getStatusIcon(String status) {
+  IconData _getStatusIcon(JourneyStatus status) {
     switch (status) {
-      case 'completed':
+      case JourneyStatus.completed:
         return Icons.check_circle;
-      case 'cancelled':
+      case JourneyStatus.cancelled:
         return Icons.cancel;
-      case 'overdue':
+      case JourneyStatus.overdue:
         return Icons.warning;
+      case JourneyStatus.alert:
+        return Icons.warning_amber;
       default:
         return Icons.navigation;
     }
   }
 
-  String _getStatusText(String status) {
+  String _getStatusText(JourneyStatus status) {
     switch (status) {
-      case 'completed':
+      case JourneyStatus.completed:
         return 'Completed';
-      case 'cancelled':
+      case JourneyStatus.cancelled:
         return 'Cancelled';
-      case 'overdue':
+      case JourneyStatus.overdue:
         return 'Overdue';
-      default:
+      case JourneyStatus.alert:
+        return 'Alert';
+      case JourneyStatus.active:
         return 'Active';
+      case JourneyStatus.planned:
+        return 'Planned';
+      default:
+        return 'Unknown';
     }
   }
 
