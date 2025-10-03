@@ -21,8 +21,8 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
   late Animation<double> _pulseAnimation;
   late Animation<double> _rippleAnimation;
 
-  final bool _isCountdownActive = false;
-  final int _countdown = 10;
+  bool _isCountdownActive = false;
+  int _countdown = 10;
 
   @override
   void initState() {
