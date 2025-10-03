@@ -241,7 +241,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: AppTheme.secondaryColor),
+              style: TextStyle(color: AppColors.secondary),
             ),
           ),
           AppButton(
@@ -272,7 +272,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Emergency Contacts'),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 0,
       ),
