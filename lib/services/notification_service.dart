@@ -181,12 +181,11 @@ class NotificationService {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      criticalAlert: true,
       sound: 'emergency_alarm.aiff',
       interruptionLevel: InterruptionLevel.critical,
     );
 
-    const notificationDetails = NotificationDetails(
+    final notificationDetails = NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
