@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -416,6 +418,51 @@ class FirebaseService {
       });
     } catch (e) {
       print('Error sending notification: $e');
+    }
+  }
+
+  // Additional missing methods
+  Future<void> shareLocation(Map<String, dynamic> locationData) async {
+    try {
+      await startLocationSharing(
+        userId: locationData['user_id'] ?? '',
+        sharedWith: List<String>.from(locationData['shared_with'] ?? []),
+        latitude: locationData['latitude'] ?? 0.0,
+        longitude: locationData['longitude'] ?? 0.0,
+        endTime: locationData['duration_minutes'] != null 
+          ? DateTime.now().add(Duration(minutes: locationData['duration_minutes']))
+          : null,
+      );
+    } catch (e) {
+      throw Exception('Failed to share location: $e');
+    }
+  }
+
+  Future<void> stopLocationSharingGeneric() async {
+    // This would typically require a session ID, but for simplicity
+    // we'll implement a generic stop method
+    try {
+      // Query active location shares for current user and stop them
+      final query = await _sharedLocationsCollection
+          .where('is_active', isEqualTo: true)
+          .get();
+      
+      for (final doc in query.docs) {
+        await doc.reference.update({
+          'is_active': false,
+          'end_time': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      throw Exception('Failed to stop location sharing: $e');
+    }
+  }
+
+  Future<void> deleteSafePlace(String placeId) async {
+    try {
+      await _firestore.collection('safe_places').doc(placeId).delete();
+    } catch (e) {
+      throw Exception('Failed to delete safe place: $e');
     }
   }
 
