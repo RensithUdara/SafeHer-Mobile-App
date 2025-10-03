@@ -201,8 +201,8 @@ class JourneyController extends ChangeNotifier {
   // Start location tracking
   Future<void> _startLocationTracking() async {
     try {
-      _positionStream = (await _locationService.startLocationTracking(
-        onLocationUpdate: (Position position) {
+      // TODO: Fix location tracking implementation
+      // _positionStream = _locationService.getPositionStream()?.listen(
         (Position position) {
           _routeCoordinates.add(position);
           _updateJourneyLocation(position);
@@ -217,7 +217,7 @@ class JourneyController extends ChangeNotifier {
         onError: (error) {
           debugPrint('Location tracking error: $error');
         },
-      );
+      )
     } catch (e) {
       debugPrint('Error starting location tracking: $e');
     }
