@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/emergency_controller.dart';
@@ -577,10 +576,7 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
   void _handleSOSLongPress(EmergencyController emergencyController) {
     if (!emergencyController.isEmergencyActive) {
       HapticFeedback.heavyImpact();
-      emergencyController.triggerEmergency(
-        type: EmergencyType.sos,
-        autoCall: true,
-      );
+      emergencyController.activateEmergency();
     }
   }
 
@@ -607,7 +603,7 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              emergencyController.triggerEmergency(type: EmergencyType.sos);
+              emergencyController.activateEmergency();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.emergency,
@@ -641,7 +637,7 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              emergencyController.stopEmergency();
+              emergencyController.deactivateEmergency();
               Navigator.of(context).pop(); // Go back to previous screen
             },
             style: ElevatedButton.styleFrom(
