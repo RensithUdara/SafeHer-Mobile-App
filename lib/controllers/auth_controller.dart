@@ -172,8 +172,37 @@ class AuthController extends ChangeNotifier {
         await _loadUserModel();
         return true;
       }
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
+      switch (e.code) {
+        case 'user-not-found':
+          _setError('No account found with this email address.');
+          break;
+        case 'wrong-password':
+          _setError('Incorrect password. Please try again.');
+          break;
+        case 'invalid-email':
+          _setError('Invalid email address format.');
+          break;
+        case 'user-disabled':
+          _setError('This account has been disabled.');
+          break;
+        case 'too-many-requests':
+          _setError('Too many failed attempts. Please try again later.');
+          break;
+        case 'network-request-failed':
+          _setError('Network error. Please check your internet connection.');
+          break;
+        default:
+          _setError('Sign in failed: ${e.message}');
+      }
     } catch (e) {
-      _setError(e.toString());
+      debugPrint('Login Error: $e');
+      String errorMessage = e.toString();
+      if (errorMessage.startsWith('Exception: ')) {
+        errorMessage = errorMessage.substring(11);
+      }
+      _setError(errorMessage);
     } finally {
       _setLoading(false);
     }
@@ -186,11 +215,24 @@ class AuthController extends ChangeNotifier {
     _setError(null);
 
     try {
+      // First sign out any existing Google Sign In session
+      await GoogleSignIn().signOut();
+      
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return false;
+      if (googleUser == null) {
+        _setLoading(false);
+        return false;
+      }
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
+      
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        _setError('Failed to get Google authentication tokens');
+        _setLoading(false);
+        return false;
+      }
+
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -198,6 +240,7 @@ class AuthController extends ChangeNotifier {
 
       final userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
+      
       if (userCredential.user != null) {
         _currentUser = userCredential.user;
 
@@ -208,7 +251,7 @@ class AuthController extends ChangeNotifier {
         if (_currentUserModel == null) {
           final userModel = UserModel(
             id: _currentUser!.uid,
-            name: _currentUser!.displayName ?? '',
+            name: _currentUser!.displayName ?? 'Unknown User',
             email: _currentUser!.email ?? '',
             phone: _currentUser!.phoneNumber,
             profilePhotoPath: _currentUser!.photoURL,
@@ -224,8 +267,31 @@ class AuthController extends ChangeNotifier {
         notifyListeners();
         return true;
       }
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
+      switch (e.code) {
+        case 'account-exists-with-different-credential':
+          _setError('An account already exists with a different sign-in method.');
+          break;
+        case 'invalid-credential':
+          _setError('Invalid credentials. Please try again.');
+          break;
+        case 'user-disabled':
+          _setError('This account has been disabled.');
+          break;
+        default:
+          _setError('Sign in failed: ${e.message}');
+      }
     } catch (e) {
-      _setError(e.toString());
+      debugPrint('Google Sign In Error: $e');
+      if (e.toString().contains('PigeonUserDetails')) {
+        // Handle the specific type casting error
+        _setError('Google Sign In is temporarily unavailable. Please try email login instead.');
+      } else if (e.toString().contains('network_error')) {
+        _setError('Network error. Please check your internet connection.');
+      } else {
+        _setError('Sign in failed. Please try again.');
+      }
     } finally {
       _setLoading(false);
     }
@@ -240,7 +306,7 @@ class AuthController extends ChangeNotifier {
     try {
       final LoginResult result = await FacebookAuth.instance.login();
 
-      if (result.status == LoginStatus.success) {
+      if (result.status == LoginStatus.success && result.accessToken != null) {
         final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(result.accessToken!.token);
 
@@ -255,7 +321,7 @@ class AuthController extends ChangeNotifier {
           if (_currentUserModel == null) {
             final userModel = UserModel(
               id: _currentUser!.uid,
-              name: _currentUser!.displayName ?? '',
+              name: _currentUser!.displayName ?? 'Facebook User',
               email: _currentUser!.email ?? '',
               phone: _currentUser!.phoneNumber,
               profilePhotoPath: _currentUser!.photoURL,
@@ -271,9 +337,30 @@ class AuthController extends ChangeNotifier {
           notifyListeners();
           return true;
         }
+      } else if (result.status == LoginStatus.cancelled) {
+        // User cancelled the login
+        return false;
+      } else {
+        _setError('Facebook login failed: ${result.message ?? 'Unknown error'}');
+      }
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
+      switch (e.code) {
+        case 'account-exists-with-different-credential':
+          _setError('An account already exists with a different sign-in method.');
+          break;
+        case 'invalid-credential':
+          _setError('Invalid Facebook credentials. Please try again.');
+          break;
+        case 'user-disabled':
+          _setError('This account has been disabled.');
+          break;
+        default:
+          _setError('Facebook sign in failed: ${e.message}');
       }
     } catch (e) {
-      _setError(e.toString());
+      debugPrint('Facebook Sign In Error: $e');
+      _setError('Facebook sign in failed. Please try again.');
     } finally {
       _setLoading(false);
     }
