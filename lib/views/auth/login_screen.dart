@@ -69,8 +69,6 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -78,12 +76,10 @@ class _LoginScreenState extends State<LoginScreen>
           builder: (context, authController, child) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(24),
-              child: SizedBox(
-                height: size.height - MediaQuery.of(context).padding.top - 48,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 40),
 
                     // Logo and Title Section
                     FadeTransition(
@@ -372,7 +368,7 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                     ),
 
-                    const Spacer(),
+                    const SizedBox(height: 50),
 
                     // Sign Up Link
                     FadeTransition(
@@ -405,8 +401,7 @@ class _LoginScreenState extends State<LoginScreen>
                     const SizedBox(height: 20),
                   ],
                 ),
-              ),
-            );
+              );
           },
         ),
       ),
