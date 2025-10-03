@@ -17,7 +17,7 @@ class JourneyController extends ChangeNotifier {
   final LocationService _locationService = LocationService();
   final FirebaseService _firebaseService = FirebaseService();
   final NotificationService _notificationService = NotificationService();
-  final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
 
   JourneyModel? _activeJourney;
   List<JourneyModel> _journeyHistory = [];
