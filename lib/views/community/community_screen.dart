@@ -622,7 +622,7 @@ class _CommunityScreenState extends State<CommunityScreen>
       floatingActionButton: _tabController.index == 0
           ? FloatingActionButton(
               onPressed: _showCreatePostDialog,
-              backgroundColor: AppTheme.primaryColor,
+              backgroundColor: AppColors.primary,
               child: const Icon(Icons.add, color: Colors.white),
             )
           : null,
