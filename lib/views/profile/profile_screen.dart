@@ -87,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Cancel',
-              style: TextStyle(color: AppColors.secondaryColor),
+              style: TextStyle(color: AppColors.secondary),
             ),
           ),
           AppButton(
