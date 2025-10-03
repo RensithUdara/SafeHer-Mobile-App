@@ -179,7 +179,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                           _isAnonymous = value!;
                         });
                       },
-                      activeColor: AppTheme.primaryColor,
+                      activeColor: AppColors.primary,
                     ),
                     const Text('Post anonymously'),
                     const SizedBox(width: 8),
@@ -200,7 +200,7 @@ class _CommunityScreenState extends State<CommunityScreen>
                       onPressed: () => Navigator.pop(context),
                       child: Text(
                         'Cancel',
-                        style: TextStyle(color: AppTheme.secondaryColor),
+                        style: TextStyle(color: AppColors.secondary),
                       ),
                     ),
                     const SizedBox(width: 8),
