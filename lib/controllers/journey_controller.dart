@@ -74,7 +74,7 @@ class JourneyController extends ChangeNotifier {
     try {
       final db = await _databaseHelper.database;
       final journeyMaps = await db.query(
-        'journeys',
+        'journey_history_table',
         orderBy: 'start_time DESC',
       );
       _journeyHistory =
