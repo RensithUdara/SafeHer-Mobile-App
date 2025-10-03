@@ -12,7 +12,7 @@ import '../services/firebase_service.dart';
 class AuthController extends ChangeNotifier {
   final AuthService _authService = AuthService();
   final FirebaseService _firebaseService = FirebaseService();
-  final DatabaseHelper _databaseHelper = DatabaseHelper.instance;
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
 
   User? _currentUser;
   UserModel? _currentUserModel;
@@ -67,14 +67,21 @@ class AuthController extends ChangeNotifier {
 
     try {
       // First try to load from Firestore
-      final userData = await _firebaseService.getUserData(_currentUser!.uid);
+      final userData = await _firebaseService.getUser(_currentUser!.uid);
       if (userData != null) {
-        _currentUserModel = UserModel.fromJson(userData);
+        _currentUserModel = userData;
         // Save to local database
-        await _databaseHelper.insertUser(_currentUserModel!);
+        await _databaseHelper.insert('users_table', _currentUserModel!.toMap());
       } else {
         // Try to load from local database
-        _currentUserModel = await _databaseHelper.getUser(_currentUser!.uid);
+        final userMap = await _databaseHelper.queryFirst(
+          'users_table',
+          where: 'id = ?',
+          whereArgs: [_currentUser!.uid],
+        );
+        if (userMap != null) {
+          _currentUserModel = UserModel.fromMap(userMap);
+        }
       }
       notifyListeners();
     } catch (e) {
