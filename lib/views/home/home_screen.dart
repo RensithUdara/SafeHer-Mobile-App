@@ -839,7 +839,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       BuildContext context, EmergencyController emergencyController) {
     if (emergencyController.isEmergencyActive) {
       // Stop emergency
-      emergencyController.stopEmergency();
+      emergencyController.deactivateEmergency();
       return;
     }
 
