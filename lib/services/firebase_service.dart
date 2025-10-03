@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/emergency_alert_model.dart';
-import '../models/emergency_contact_model.dart';
 import '../models/journey_model.dart';
 import '../models/safe_place_model.dart';
 import '../models/user_model.dart';
@@ -429,9 +428,10 @@ class FirebaseService {
         sharedWith: List<String>.from(locationData['shared_with'] ?? []),
         latitude: locationData['latitude'] ?? 0.0,
         longitude: locationData['longitude'] ?? 0.0,
-        endTime: locationData['duration_minutes'] != null 
-          ? DateTime.now().add(Duration(minutes: locationData['duration_minutes']))
-          : null,
+        endTime: locationData['duration_minutes'] != null
+            ? DateTime.now()
+                .add(Duration(minutes: locationData['duration_minutes']))
+            : null,
       );
     } catch (e) {
       throw Exception('Failed to share location: $e');
@@ -446,7 +446,7 @@ class FirebaseService {
       final query = await _sharedLocationsCollection
           .where('is_active', isEqualTo: true)
           .get();
-      
+
       for (final doc in query.docs) {
         await doc.reference.update({
           'is_active': false,
