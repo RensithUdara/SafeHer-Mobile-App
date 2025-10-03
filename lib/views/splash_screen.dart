@@ -127,10 +127,12 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(30),
-                                child: const Icon(
-                                  Icons.shield_outlined,
-                                  size: 60,
-                                  color: AppColors.primary,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Image.asset(
+                                    'assets/icons/safeher_logo.png',
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             ),
