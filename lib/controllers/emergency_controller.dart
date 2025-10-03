@@ -306,7 +306,7 @@ class EmergencyController extends ChangeNotifier {
 
       // Save to local database
       final db = await DatabaseHelper().database;
-      await db.insert('emergency_contacts_table', contact.toLocalJson());
+      await db.insert('emergency_contacts_table', contact.toMap());
 
       // Save to Firestore
       await _firestore
@@ -337,7 +337,7 @@ class EmergencyController extends ChangeNotifier {
       final db = await DatabaseHelper().database;
       await db.update(
         'emergency_contacts_table',
-        contact.toLocalJson(),
+        contact.toMap(),
         where: 'id = ?',
         whereArgs: [contact.id],
       );
@@ -400,7 +400,12 @@ class EmergencyController extends ChangeNotifier {
 
   // Fake Call Feature
   Future<void> triggerFakeCall() async {
-    await _notificationService.showFakeCallNotification();
+    await _notificationService.showEmergencyNotification(
+      'Incoming Call',
+      'Unknown Number',
+      payload: 'fake_call',
+      ongoing: true,
+    );
   }
 
   // Shake Detection for Emergency
