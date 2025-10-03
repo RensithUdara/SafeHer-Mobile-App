@@ -158,23 +158,23 @@ class NotificationService {
     bool ongoing = true,
     bool autoCancel = false,
   }) async {
-    const androidDetails = AndroidNotificationDetails(
+    final androidDetails = AndroidNotificationDetails(
       'emergency_alerts',
       'Emergency Alerts',
       channelDescription: 'Critical emergency notifications',
       importance: Importance.max,
       priority: Priority.high,
-      ongoing: true,
-      autoCancel: false,
+      ongoing: ongoing,
+      autoCancel: autoCancel,
       fullScreenIntent: true,
       category: AndroidNotificationCategory.alarm,
       visibility: NotificationVisibility.public,
-      color: Color.fromARGB(255, 255, 0, 0), // Red color
+      color: const Color.fromARGB(255, 255, 0, 0), // Red color
       colorized: true,
       enableVibration: true,
       vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
       playSound: true,
-      sound: RawResourceAndroidNotificationSound('emergency_alarm'),
+      sound: const RawResourceAndroidNotificationSound('emergency_alarm'),
     );
 
     const iosDetails = DarwinNotificationDetails(
