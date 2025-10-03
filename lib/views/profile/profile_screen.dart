@@ -304,11 +304,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.white,
-                        child: user?.profileImageUrl != null
+                        child: user?.profilePhotoPath != null
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Image.network(
-                                  user!.profileImageUrl!,
+                                  user!.profilePhotoPath!,
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.cover,
