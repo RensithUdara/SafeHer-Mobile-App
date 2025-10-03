@@ -414,10 +414,14 @@ class AuthController extends ChangeNotifier {
       final userId = _currentUser!.uid;
 
       // Delete user data from Firestore
-      await _firebaseService.deleteUserData(userId);
+      await _firebaseService.deleteUser(userId);
 
       // Delete from local database
-      await _databaseHelper.deleteUser(userId);
+      await _databaseHelper.delete(
+        'users_table',
+        where: 'id = ?',
+        whereArgs: [userId],
+      );
 
       // Delete Firebase Auth account
       await _currentUser!.delete();
