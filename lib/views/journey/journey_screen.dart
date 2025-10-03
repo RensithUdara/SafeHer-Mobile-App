@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/journey_controller.dart';
 import '../../controllers/location_controller.dart';
+import '../../models/journey_model.dart';
 import '../../utils/theme.dart';
 import '../../widgets/common_widgets.dart';
 
@@ -556,29 +557,37 @@ class _JourneyScreenState extends State<JourneyScreen>
     }
   }
 
-  IconData _getStatusIcon(String status) {
+  IconData _getStatusIcon(JourneyStatus status) {
     switch (status) {
-      case 'completed':
+      case JourneyStatus.completed:
         return Icons.check_circle;
-      case 'cancelled':
+      case JourneyStatus.cancelled:
         return Icons.cancel;
-      case 'overdue':
+      case JourneyStatus.overdue:
         return Icons.warning;
+      case JourneyStatus.alert:
+        return Icons.warning_amber;
       default:
         return Icons.navigation;
     }
   }
 
-  String _getStatusText(String status) {
+  String _getStatusText(JourneyStatus status) {
     switch (status) {
-      case 'completed':
+      case JourneyStatus.completed:
         return 'Completed';
-      case 'cancelled':
+      case JourneyStatus.cancelled:
         return 'Cancelled';
-      case 'overdue':
+      case JourneyStatus.overdue:
         return 'Overdue';
-      default:
+      case JourneyStatus.alert:
+        return 'Alert';
+      case JourneyStatus.active:
         return 'Active';
+      case JourneyStatus.planned:
+        return 'Planned';
+      default:
+        return 'Unknown';
     }
   }
 
