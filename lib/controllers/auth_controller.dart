@@ -115,15 +115,17 @@ class AuthController extends ChangeNotifier {
     _setError(null);
 
     try {
-      final userCredential = await _authService.signUpWithEmail(
-        email: email,
+      // Direct Firebase Auth call to avoid AuthService complications
+      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.trim(),
         password: password,
-        name: name,
-        phone: phone,
       );
 
-      if (userCredential?.user != null) {
-        _currentUser = userCredential!.user;
+      if (userCredential.user != null) {
+        _currentUser = userCredential.user;
+
+        // Update display name
+        await _currentUser!.updateDisplayName(name);
 
         // Create user model
         final userModel = UserModel(
@@ -145,8 +147,39 @@ class AuthController extends ChangeNotifier {
         notifyListeners();
         return true;
       }
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
+      switch (e.code) {
+        case 'weak-password':
+          _setError('Password is too weak. Please choose a stronger password.');
+          break;
+        case 'email-already-in-use':
+          _setError('An account already exists with this email address.');
+          break;
+        case 'invalid-email':
+          _setError('Invalid email address format.');
+          break;
+        case 'operation-not-allowed':
+          _setError('Email/password accounts are not enabled.');
+          break;
+        case 'network-request-failed':
+          _setError('Network error. Please check your internet connection.');
+          break;
+        default:
+          _setError('Registration failed: ${e.message}');
+      }
     } catch (e) {
-      _setError(e.toString());
+      debugPrint('Registration Error: $e');
+      // Handle the specific PigeonUserDetails error
+      if (e.toString().contains('PigeonUserDetails')) {
+        _setError('Authentication service temporarily unavailable. Please try again.');
+      } else {
+        String errorMessage = e.toString();
+        if (errorMessage.startsWith('Exception: ')) {
+          errorMessage = errorMessage.substring(11);
+        }
+        _setError(errorMessage);
+      }
     } finally {
       _setLoading(false);
     }
@@ -162,13 +195,14 @@ class AuthController extends ChangeNotifier {
     _setError(null);
 
     try {
-      final userCredential = await _authService.signInWithEmail(
-        email: email,
+      // Direct Firebase Auth call to avoid AuthService complications
+      final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.trim(),
         password: password,
       );
 
-      if (userCredential?.user != null) {
-        _currentUser = userCredential!.user;
+      if (userCredential.user != null) {
+        _currentUser = userCredential.user;
         await _loadUserModel();
         return true;
       }
@@ -193,16 +227,24 @@ class AuthController extends ChangeNotifier {
         case 'network-request-failed':
           _setError('Network error. Please check your internet connection.');
           break;
+        case 'invalid-credential':
+          _setError('Invalid email or password. Please check your credentials.');
+          break;
         default:
           _setError('Sign in failed: ${e.message}');
       }
     } catch (e) {
       debugPrint('Login Error: $e');
-      String errorMessage = e.toString();
-      if (errorMessage.startsWith('Exception: ')) {
-        errorMessage = errorMessage.substring(11);
+      // Handle the specific PigeonUserDetails error
+      if (e.toString().contains('PigeonUserDetails')) {
+        _setError('Authentication service temporarily unavailable. Please try again.');
+      } else {
+        String errorMessage = e.toString();
+        if (errorMessage.startsWith('Exception: ')) {
+          errorMessage = errorMessage.substring(11);
+        }
+        _setError(errorMessage);
       }
-      _setError(errorMessage);
     } finally {
       _setLoading(false);
     }
