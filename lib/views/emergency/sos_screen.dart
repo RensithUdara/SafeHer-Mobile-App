@@ -21,8 +21,8 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
   late Animation<double> _pulseAnimation;
   late Animation<double> _rippleAnimation;
 
-  final bool _isCountdownActive = false;
-  final int _countdown = 10;
+  bool _isCountdownActive = false;
+  int _countdown = 10;
 
   @override
   void initState() {
@@ -63,6 +63,13 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
     _pulseController.dispose();
     _rippleController.dispose();
     super.dispose();
+  }
+
+  void _cancelCountdown() {
+    setState(() {
+      _isCountdownActive = false;
+      _countdown = 10;
+    });
   }
 
   @override
@@ -268,10 +275,10 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (emergencyController.isCountdownActive) ...[
+                            if (_isCountdownActive) ...[
                               // Countdown Display
                               Text(
-                                '${emergencyController.emergencyCallCountdown}',
+                                '$_countdown',
                                 style: TextStyle(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
@@ -547,13 +554,12 @@ class _SOSScreenState extends State<SOSScreen> with TickerProviderStateMixin {
           const SizedBox(height: 20),
 
           // Cancel Button (if countdown is active)
-          if (emergencyController.isCountdownActive)
+          if (_isCountdownActive)
             SizedBox(
               width: double.infinity,
               child: AppButton(
                 text: 'Cancel Emergency Call',
-                onPressed: () =>
-                    emergencyController.cancelEmergencyCallCountdown(),
+                onPressed: _cancelCountdown,
                 backgroundColor: Colors.white.withOpacity(0.2),
                 textColor: Colors.white,
               ),
