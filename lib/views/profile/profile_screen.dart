@@ -22,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _sosSound = true;
   bool _nightMode = false;
   bool _autoSosTimer = true;
-  final int _sosTimerDuration = 5;
 
   @override
   void initState() {
