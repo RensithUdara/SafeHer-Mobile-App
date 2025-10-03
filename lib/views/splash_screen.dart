@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       final authController =
           Provider.of<AuthController>(context, listen: false);
-      if (authController.isAuthenticated) {
+      if (authController.isLoggedIn) {
         Get.offNamed(AppRoutes.mainNavigation);
       } else {
         Get.offNamed(AppRoutes.login);
