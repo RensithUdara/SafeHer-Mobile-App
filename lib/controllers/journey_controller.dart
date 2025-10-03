@@ -203,21 +203,21 @@ class JourneyController extends ChangeNotifier {
     try {
       // TODO: Fix location tracking implementation
       // _positionStream = _locationService.getPositionStream()?.listen(
-      //     (Position position) {
-      //       _routeCoordinates.add(position);
-      //       _updateJourneyLocation(position);
-      //
-      //       // Check for route deviation
-      //       if (_enableRouteDeviation) {
-      //         _checkRouteDeviation(position);
-      //       }
-      //
-      //       notifyListeners();
-      //     },
-      //     onError: (error) {
-      //       debugPrint('Location tracking error: $error');
-      //     },
-      // );
+        (Position position) {
+          _routeCoordinates.add(position);
+          _updateJourneyLocation(position);
+
+          // Check for route deviation
+          if (_enableRouteDeviation) {
+            _checkRouteDeviation(position);
+          }
+
+          notifyListeners();
+        },
+        onError: (error) {
+          debugPrint('Location tracking error: $error');
+        },
+      )
     } catch (e) {
       debugPrint('Error starting location tracking: $e');
     }
