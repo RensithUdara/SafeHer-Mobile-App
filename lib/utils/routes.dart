@@ -1,6 +1,11 @@
-import 'package:get/get.dart';
-
-import '../views/auth/login_screen.dart';
+import 'package:get  static const String signup = '/signup';
+  static const String home = '/home';
+  static const String mainNavigation = '/mainNavigation';
+  static const String sos = '/sos';
+  static const String journey = '/journey';
+  static const String emergencyContacts = '/emergencyContacts';
+  static const String profile = '/profile';
+  static const String community = '/community';mport '../views/auth/login_screen.dart';
 import '../views/auth/register_screen.dart';
 import '../views/community/community_screen.dart';
 import '../views/contacts/emergency_contacts_screen.dart';
