@@ -77,7 +77,6 @@ class NotificationService {
         'Emergency Alerts',
         description: 'Critical emergency notifications',
         importance: Importance.max,
-        priority: Priority.high,
         enableVibration: true,
         playSound: true,
         showBadge: true,
@@ -89,7 +88,6 @@ class NotificationService {
         'Safety Notifications',
         description: 'General safety notifications',
         importance: Importance.high,
-        priority: Priority.high,
         enableVibration: true,
         playSound: true,
       );
