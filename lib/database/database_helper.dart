@@ -14,7 +14,7 @@ class DatabaseHelper {
   DatabaseHelper._internal();
 
   factory DatabaseHelper() => _instance;
-  
+
   static DatabaseHelper get instance => _instance;
 
   Future<Database> get database async {
@@ -365,13 +365,14 @@ class DatabaseHelper {
   Future<void> insertSafePlace(SafePlaceModel safePlace) async {
     await insert('safe_places_table', safePlace.toMap());
   }
-  
+
   Future<List<SafePlaceModel>> getSafePlaces() async {
     final results = await query('safe_places_table', orderBy: 'saved_at DESC');
     return results.map((map) => SafePlaceModel.fromMap(map)).toList();
   }
-  
+
   Future<void> deleteSafePlace(int placeId) async {
-    await delete('safe_places_table', where: 'id = ?', whereArgs: [placeId.toString()]);
+    await delete('safe_places_table',
+        where: 'id = ?', whereArgs: [placeId.toString()]);
   }
 }
