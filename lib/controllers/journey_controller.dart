@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -8,8 +9,6 @@ import '../models/journey_model.dart';
 import '../services/firebase_service.dart';
 import '../services/location_service.dart';
 import '../services/notification_service.dart';
-
-enum JourneyStatus { notStarted, active, completed, cancelled, alert, overdue }
 
 enum JourneyType { walking, driving, publicTransport, cycling, other }
 
@@ -143,7 +142,7 @@ class JourneyController extends ChangeNotifier {
 
       // Create new journey
       final journey = JourneyModel(
-        userId: userId,
+        userId: FirebaseAuth.instance.currentUser?.uid ?? '',
         title: startLocation,
         startLatitude: currentPosition.latitude,
         startLongitude: currentPosition.longitude,
