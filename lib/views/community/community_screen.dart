@@ -551,17 +551,17 @@ class _CommunityScreenState extends State<CommunityScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
+                    const Column(
                       children: [
                         Text(
                           '1.2K',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Active Users',
                           style: TextStyle(fontSize: 12),
                         ),
