@@ -198,7 +198,7 @@ class JourneyController extends ChangeNotifier {
   // Start location tracking
   Future<void> _startLocationTracking() async {
     try {
-      await _locationService.startLocationTracking(
+      _positionStream = await _locationService.startLocationTracking(
         onLocationUpdate: (Position position) {
           _routeCoordinates.add(position);
           _updateJourneyLocation(position);
