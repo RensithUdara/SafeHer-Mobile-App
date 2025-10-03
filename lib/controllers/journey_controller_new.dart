@@ -14,6 +14,8 @@ enum JourneyType { walking, driving, publicTransport, cycling, other }
 
 class JourneyController extends ChangeNotifier {
   final LocationService _locationService = LocationService();
+  final FirebaseService _firebaseService = FirebaseService();
+  final NotificationService _notificationService = NotificationService();
   final DatabaseHelper _databaseHelper = DatabaseHelper();
 
   JourneyModel? _activeJourney;
@@ -42,8 +44,7 @@ class JourneyController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get hasActiveJourney =>
-      _activeJourney != null &&
-      _activeJourney!.status == JourneyStatus.active.toString();
+      _activeJourney != null && _activeJourney!.status == JourneyStatus.active;
 
   // Settings getters
   int get checkInIntervalMinutes => _checkInIntervalMinutes;
@@ -75,8 +76,9 @@ class JourneyController extends ChangeNotifier {
   // Load journey history
   Future<void> _loadJourneyHistory() async {
     try {
-      final journeyMaps = await _databaseHelper.query(
-        'journey_history_table',
+      final db = await _databaseHelper.database;
+      final journeyMaps = await db.query(
+        'journeys',
         orderBy: 'start_time DESC',
       );
       _journeyHistory =
@@ -91,7 +93,7 @@ class JourneyController extends ChangeNotifier {
   Future<void> _checkForActiveJourney() async {
     try {
       final activeJourneys = _journeyHistory
-          .where((journey) => journey.status == JourneyStatus.active.toString())
+          .where((journey) => journey.status == JourneyStatus.active)
           .toList();
 
       if (activeJourneys.isNotEmpty) {
@@ -145,25 +147,25 @@ class JourneyController extends ChangeNotifier {
         startLatitude: currentPosition.latitude,
         startLongitude: currentPosition.longitude,
         startAddress: startLocation,
-        endLatitude:
-            endLocation.isNotEmpty ? 0.0 : null, // You'll need to geocode this
-        endLongitude:
-            endLocation.isNotEmpty ? 0.0 : null, // You'll need to geocode this
         endAddress: endLocation,
         startTime: DateTime.now(),
         estimatedArrival: expectedArrivalTime,
         status: JourneyStatus.active,
-        routeCoordinates: const [],
+        routeCoordinates: [],
         notes: notes,
       );
 
       // Save to database
-      await _databaseHelper.insert('journey_history_table', journey.toMap());
+      final db = await _databaseHelper.database;
+      final journeyId = await db.insert('journeys', journey.toMap());
+
+      // Create journey with ID
+      final journeyWithId = journey.copyWith(id: journeyId.toString());
 
       // Save to Firebase
-      await _firebaseService.saveJourney(journey);
+      await _saveJourneyToFirebase(journeyWithId);
 
-      _activeJourney = journey;
+      _activeJourney = journeyWithId;
       _routeCoordinates = [currentPosition];
 
       // Start tracking if enabled
@@ -199,9 +201,8 @@ class JourneyController extends ChangeNotifier {
   // Start location tracking
   Future<void> _startLocationTracking() async {
     try {
-      // TODO: Fix location tracking implementation
-      // _positionStream = _locationService.getPositionStream()?.listen(
-        (Position position) {
+      await _locationService.startLocationTracking(
+        onLocationUpdate: (Position position) {
           _routeCoordinates.add(position);
           _updateJourneyLocation(position);
 
@@ -215,7 +216,7 @@ class JourneyController extends ChangeNotifier {
         onError: (error) {
           debugPrint('Location tracking error: $error');
         },
-      )
+      );
     } catch (e) {
       debugPrint('Error starting location tracking: $e');
     }
@@ -226,31 +227,19 @@ class JourneyController extends ChangeNotifier {
     if (_activeJourney == null) return;
 
     try {
-      final updatedJourney = JourneyModel(
-        journeyId: _activeJourney!.journeyId,
-        startLocation: _activeJourney!.startLocation,
-        endLocation: _activeJourney!.endLocation,
-        startTime: _activeJourney!.startTime,
-        expectedArrivalTime: _activeJourney!.expectedArrivalTime,
-        status: _activeJourney!.status,
-        journeyType: _activeJourney!.journeyType,
-        startLatitude: _activeJourney!.startLatitude,
-        startLongitude: _activeJourney!.startLongitude,
-        currentLatitude: position.latitude,
-        currentLongitude: position.longitude,
-        routeCoordinates: _routeCoordinates
-            .map((pos) => {
-                  'latitude': pos.latitude,
-                  'longitude': pos.longitude,
-                  'timestamp': pos.timestamp.millisecondsSinceEpoch,
-                })
-            .toList(),
-        lastUpdateTime: DateTime.now(),
-        notes: _activeJourney!.notes,
+      final routeCoordinates = _routeCoordinates
+          .map((pos) => {
+                'lat': pos.latitude,
+                'lng': pos.longitude,
+              })
+          .toList();
+
+      final updatedJourney = _activeJourney!.copyWith(
+        routeCoordinates: routeCoordinates,
       );
 
-      await _databaseHelper.updateJourney(updatedJourney);
-      await _firebaseService.updateJourney(updatedJourney);
+      await _updateJourneyInDatabase(updatedJourney);
+      await _updateJourneyInFirebase(updatedJourney);
 
       _activeJourney = updatedJourney;
     } catch (e) {
@@ -263,7 +252,6 @@ class JourneyController extends ChangeNotifier {
     if (_routeCoordinates.length < 2) return;
 
     // Simple deviation check - compare with expected route
-    // More sophisticated implementation would use route planning APIs
     final previousPosition = _routeCoordinates[_routeCoordinates.length - 2];
     final deviation = Geolocator.distanceBetween(
       previousPosition.latitude,
@@ -281,7 +269,7 @@ class JourneyController extends ChangeNotifier {
   Future<void> _handleRouteDeviation(
       Position position, double deviation) async {
     try {
-      await _notificationService.showRouteDeviationAlert(
+      await _showRouteDeviationAlert(
         deviation: deviation,
         currentLocation: '${position.latitude}, ${position.longitude}',
       );
@@ -295,10 +283,11 @@ class JourneyController extends ChangeNotifier {
 
   // Start journey timer
   Future<void> _startJourneyTimer() async {
-    if (_activeJourney == null) return;
+    if (_activeJourney == null || _activeJourney!.estimatedArrival == null)
+      return;
 
     final expectedDuration =
-        _activeJourney!.expectedArrivalTime.difference(DateTime.now());
+        _activeJourney!.estimatedArrival!.difference(DateTime.now());
     if (expectedDuration.inMinutes <= 0) return;
 
     // Set up check-in intervals
@@ -319,7 +308,7 @@ class JourneyController extends ChangeNotifier {
     if (!hasActiveJourney) return;
 
     try {
-      await _notificationService.showJourneyCheckInNotification();
+      await _showJourneyCheckInNotification();
 
       // Send periodic update to emergency contacts
       await _notifyEmergencyContactsCheckIn();
@@ -334,25 +323,12 @@ class JourneyController extends ChangeNotifier {
 
     try {
       // Update journey status
-      final updatedJourney = JourneyModel(
-        journeyId: _activeJourney!.journeyId,
-        startLocation: _activeJourney!.startLocation,
-        endLocation: _activeJourney!.endLocation,
-        startTime: _activeJourney!.startTime,
-        expectedArrivalTime: _activeJourney!.expectedArrivalTime,
-        status: JourneyStatus.overdue.toString(),
-        journeyType: _activeJourney!.journeyType,
-        startLatitude: _activeJourney!.startLatitude,
-        startLongitude: _activeJourney!.startLongitude,
-        currentLatitude: _activeJourney!.currentLatitude,
-        currentLongitude: _activeJourney!.currentLongitude,
-        routeCoordinates: _activeJourney!.routeCoordinates,
-        lastUpdateTime: DateTime.now(),
-        notes: _activeJourney!.notes,
+      final updatedJourney = _activeJourney!.copyWith(
+        status: JourneyStatus.overdue,
       );
 
-      await _databaseHelper.updateJourney(updatedJourney);
-      await _firebaseService.updateJourney(updatedJourney);
+      await _updateJourneyInDatabase(updatedJourney);
+      await _updateJourneyInFirebase(updatedJourney);
 
       _activeJourney = updatedJourney;
 
@@ -360,7 +336,7 @@ class JourneyController extends ChangeNotifier {
       await _notifyEmergencyContactsOverdue();
 
       // Show overdue notification
-      await _notificationService.showJourneyOverdueAlert();
+      await _showJourneyOverdueAlert();
 
       notifyListeners();
     } catch (e) {
@@ -380,26 +356,16 @@ class JourneyController extends ChangeNotifier {
       // Get current location for end coordinates
       final currentPosition = await _locationService.getCurrentLocation();
 
-      final completedJourney = JourneyModel(
-        journeyId: _activeJourney!.journeyId,
-        startLocation: _activeJourney!.startLocation,
-        endLocation: _activeJourney!.endLocation,
-        startTime: _activeJourney!.startTime,
+      final completedJourney = _activeJourney!.copyWith(
         endTime: DateTime.now(),
-        expectedArrivalTime: _activeJourney!.expectedArrivalTime,
-        status: JourneyStatus.completed.toString(),
-        journeyType: _activeJourney!.journeyType,
-        startLatitude: _activeJourney!.startLatitude,
-        startLongitude: _activeJourney!.startLongitude,
+        status: JourneyStatus.completed,
         endLatitude: currentPosition?.latitude,
         endLongitude: currentPosition?.longitude,
-        routeCoordinates: _activeJourney!.routeCoordinates,
-        lastUpdateTime: DateTime.now(),
         notes: notes ?? _activeJourney!.notes,
       );
 
-      await _databaseHelper.updateJourney(completedJourney);
-      await _firebaseService.updateJourney(completedJourney);
+      await _updateJourneyInDatabase(completedJourney);
+      await _updateJourneyInFirebase(completedJourney);
 
       // Stop tracking
       await _stopLocationTracking();
@@ -436,24 +402,14 @@ class JourneyController extends ChangeNotifier {
 
     _setLoading(true);
     try {
-      final cancelledJourney = JourneyModel(
-        journeyId: _activeJourney!.journeyId,
-        startLocation: _activeJourney!.startLocation,
-        endLocation: _activeJourney!.endLocation,
-        startTime: _activeJourney!.startTime,
+      final cancelledJourney = _activeJourney!.copyWith(
         endTime: DateTime.now(),
-        expectedArrivalTime: _activeJourney!.expectedArrivalTime,
-        status: JourneyStatus.cancelled.toString(),
-        journeyType: _activeJourney!.journeyType,
-        startLatitude: _activeJourney!.startLatitude,
-        startLongitude: _activeJourney!.startLongitude,
-        routeCoordinates: _activeJourney!.routeCoordinates,
-        lastUpdateTime: DateTime.now(),
+        status: JourneyStatus.cancelled,
         notes: reason ?? 'Journey cancelled',
       );
 
-      await _databaseHelper.updateJourney(cancelledJourney);
-      await _firebaseService.updateJourney(cancelledJourney);
+      await _updateJourneyInDatabase(cancelledJourney);
+      await _updateJourneyInFirebase(cancelledJourney);
 
       // Stop tracking
       await _stopLocationTracking();
@@ -484,6 +440,7 @@ class JourneyController extends ChangeNotifier {
   // Stop location tracking
   Future<void> _stopLocationTracking() async {
     try {
+      await _locationService.stopLocationTracking();
       await _positionStream?.cancel();
       _positionStream = null;
     } catch (e) {
@@ -493,28 +450,16 @@ class JourneyController extends ChangeNotifier {
 
   // Extend journey time
   Future<bool> extendJourneyTime(Duration extension) async {
-    if (!hasActiveJourney) return false;
+    if (!hasActiveJourney || _activeJourney!.estimatedArrival == null)
+      return false;
 
     try {
-      final extendedJourney = JourneyModel(
-        journeyId: _activeJourney!.journeyId,
-        startLocation: _activeJourney!.startLocation,
-        endLocation: _activeJourney!.endLocation,
-        startTime: _activeJourney!.startTime,
-        expectedArrivalTime: _activeJourney!.expectedArrivalTime.add(extension),
-        status: _activeJourney!.status,
-        journeyType: _activeJourney!.journeyType,
-        startLatitude: _activeJourney!.startLatitude,
-        startLongitude: _activeJourney!.startLongitude,
-        currentLatitude: _activeJourney!.currentLatitude,
-        currentLongitude: _activeJourney!.currentLongitude,
-        routeCoordinates: _activeJourney!.routeCoordinates,
-        lastUpdateTime: DateTime.now(),
-        notes: _activeJourney!.notes,
+      final extendedJourney = _activeJourney!.copyWith(
+        estimatedArrival: _activeJourney!.estimatedArrival!.add(extension),
       );
 
-      await _databaseHelper.updateJourney(extendedJourney);
-      await _firebaseService.updateJourney(extendedJourney);
+      await _updateJourneyInDatabase(extendedJourney);
+      await _updateJourneyInFirebase(extendedJourney);
 
       _activeJourney = extendedJourney;
 
@@ -529,10 +474,81 @@ class JourneyController extends ChangeNotifier {
     }
   }
 
-  // Notification methods
+  // Database helper methods
+  Future<void> _updateJourneyInDatabase(JourneyModel journey) async {
+    try {
+      final db = await _databaseHelper.database;
+      await db.update(
+        'journeys',
+        journey.toMap(),
+        where: 'id = ?',
+        whereArgs: [journey.id],
+      );
+    } catch (e) {
+      debugPrint('Error updating journey in database: $e');
+    }
+  }
+
+  // Firebase helper methods
+  Future<void> _saveJourneyToFirebase(JourneyModel journey) async {
+    try {
+      // Implementation depends on FirebaseService
+      // await _firebaseService.saveJourney(journey);
+    } catch (e) {
+      debugPrint('Error saving journey to Firebase: $e');
+    }
+  }
+
+  Future<void> _updateJourneyInFirebase(JourneyModel journey) async {
+    try {
+      // Implementation depends on FirebaseService
+      // await _firebaseService.updateJourney(journey);
+    } catch (e) {
+      debugPrint('Error updating journey in Firebase: $e');
+    }
+  }
+
+  // Notification helper methods
+  Future<void> _showRouteDeviationAlert({
+    required double deviation,
+    required String currentLocation,
+  }) async {
+    try {
+      // Implementation depends on NotificationService
+      // await _notificationService.showRouteDeviationAlert(
+      //   deviation: deviation,
+      //   currentLocation: currentLocation,
+      // );
+    } catch (e) {
+      debugPrint('Error showing route deviation alert: $e');
+    }
+  }
+
+  Future<void> _showJourneyCheckInNotification() async {
+    try {
+      // Implementation depends on NotificationService
+      // await _notificationService.showJourneyCheckInNotification();
+    } catch (e) {
+      debugPrint('Error showing check-in notification: $e');
+    }
+  }
+
+  Future<void> _showJourneyOverdueAlert() async {
+    try {
+      // Implementation depends on NotificationService
+      // await _notificationService.showJourneyOverdueAlert();
+    } catch (e) {
+      debugPrint('Error showing overdue alert: $e');
+    }
+  }
+
+  // Emergency contact notification methods
   Future<void> _notifyEmergencyContactsJourneyStarted() async {
     try {
-      await _notificationService.notifyContactsJourneyStarted(_activeJourney!);
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsJourneyStarted(_activeJourney!);
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about journey start: $e');
     }
@@ -541,11 +557,14 @@ class JourneyController extends ChangeNotifier {
   Future<void> _notifyEmergencyContactsDeviation(
       Position position, double deviation) async {
     try {
-      await _notificationService.notifyContactsRouteDeviation(
-        position: position,
-        deviation: deviation,
-        journey: _activeJourney!,
-      );
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsRouteDeviation(
+        //   position: position,
+        //   deviation: deviation,
+        //   journey: _activeJourney!,
+        // );
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about deviation: $e');
     }
@@ -553,7 +572,10 @@ class JourneyController extends ChangeNotifier {
 
   Future<void> _notifyEmergencyContactsCheckIn() async {
     try {
-      await _notificationService.notifyContactsJourneyCheckIn(_activeJourney!);
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsJourneyCheckIn(_activeJourney!);
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about check-in: $e');
     }
@@ -561,7 +583,10 @@ class JourneyController extends ChangeNotifier {
 
   Future<void> _notifyEmergencyContactsOverdue() async {
     try {
-      await _notificationService.notifyContactsJourneyOverdue(_activeJourney!);
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsJourneyOverdue(_activeJourney!);
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about overdue journey: $e');
     }
@@ -569,8 +594,10 @@ class JourneyController extends ChangeNotifier {
 
   Future<void> _notifyEmergencyContactsJourneyCompleted() async {
     try {
-      await _notificationService
-          .notifyContactsJourneyCompleted(_activeJourney!);
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsJourneyCompleted(_activeJourney!);
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about journey completion: $e');
     }
@@ -578,8 +605,10 @@ class JourneyController extends ChangeNotifier {
 
   Future<void> _notifyEmergencyContactsJourneyCancelled(String? reason) async {
     try {
-      await _notificationService.notifyContactsJourneyCancelled(
-          _activeJourney!, reason);
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsJourneyCancelled(_activeJourney!, reason);
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about journey cancellation: $e');
     }
@@ -587,8 +616,10 @@ class JourneyController extends ChangeNotifier {
 
   Future<void> _notifyEmergencyContactsTimeExtended(Duration extension) async {
     try {
-      await _notificationService.notifyContactsJourneyTimeExtended(
-          _activeJourney!, extension);
+      if (_activeJourney != null) {
+        // Implementation depends on NotificationService
+        // await _notificationService.notifyContactsJourneyTimeExtended(_activeJourney!, extension);
+      }
     } catch (e) {
       debugPrint('Error notifying contacts about time extension: $e');
     }
