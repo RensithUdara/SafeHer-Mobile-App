@@ -347,6 +347,18 @@ class LocationService {
     }
   }
 
+  // Enable high accuracy mode
+  Future<void> enableHighAccuracyMode() async {
+    // This method would set the location accuracy to the highest available
+    // For now, it's a placeholder that could be used to optimize location settings
+    try {
+      // Could implement device-specific high accuracy settings here
+      print('High accuracy mode enabled');
+    } catch (e) {
+      print('Error enabling high accuracy mode: $e');
+    }
+  }
+
   // Dispose resources
   void dispose() {
     _positionStreamSubscription?.cancel();
