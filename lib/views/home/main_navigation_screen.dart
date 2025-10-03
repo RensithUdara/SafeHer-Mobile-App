@@ -411,7 +411,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                       ),
                     ),
                     Text(
-                      'To: ${journeyController.activeJourney?.endLocation ?? 'Unknown'}',
+                      'To: ${journeyController.activeJourney?.endAddress ?? 'Unknown'}',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 12,
