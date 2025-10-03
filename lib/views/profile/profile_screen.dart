@@ -280,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Consumer<AuthController>(
         builder: (context, authController, child) {
-          final user = authController.currentUser;
+          final user = authController.currentUserModel;
 
           return SingleChildScrollView(
             child: Column(
