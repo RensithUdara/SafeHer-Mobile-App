@@ -178,42 +178,27 @@ class EmergencyController extends ChangeNotifier {
   Future<void> sendEmergencyAlertsToContacts() async {
     if (_emergencyContacts.isEmpty || _currentPosition == null) return;
 
-    for (final contact in _emergencyContacts) {
-      if (contact.isActive) {
-        // Send SMS
-        await _emergencyService.sendEmergencySMS(
-          contact.phoneNumber,
-          _currentPosition!,
-        );
-
-        // Send push notification if they have the app
-        await _notificationService.sendPushNotificationToContact(
-          contact,
-          'Emergency Alert',
-          'Your emergency contact needs help! Check their location.',
-          data: {
-            'type': 'emergency_alert',
-            'alert_id': _activeAlert?.id ?? '',
-            'location':
-                '${_currentPosition!.latitude},${_currentPosition!.longitude}',
-          },
-        );
-      }
-    }
+    // Use the EmergencyService's triggerSOS method which handles notifications
+    await _emergencyService.triggerSOS(
+      userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+      customMessage: 'Emergency Alert - I need immediate help!',
+      sendToContacts: true,
+      callPolice: false,
+      startAlarm: true,
+      enableFlashlight: true,
+      vibrate: true,
+    );
   }
 
   // Send Resolved Notification to Contacts
   Future<void> sendResolvedNotificationToContacts() async {
     for (final contact in _emergencyContacts) {
       if (contact.isActive) {
-        await _notificationService.sendPushNotificationToContact(
-          contact,
+        // Use notification service to show emergency resolved notification
+        await _notificationService.showEmergencyNotification(
           'Emergency Resolved',
-          'Your emergency contact is now safe.',
-          data: {
-            'type': 'emergency_resolved',
-            'alert_id': _activeAlert?.id ?? '',
-          },
+          'Your emergency contact ${contact.contactName} is now safe.',
+          payload: 'emergency_resolved_${_activeAlert?.id ?? ''}',
         );
       }
     }
@@ -304,7 +289,7 @@ class EmergencyController extends ChangeNotifier {
         );
 
         _emergencyContacts = contacts
-            .map((contact) => EmergencyContactModel.fromLocalJson(contact))
+            .map((contact) => EmergencyContactModel.fromMap(contact))
             .toList();
 
         notifyListeners();
