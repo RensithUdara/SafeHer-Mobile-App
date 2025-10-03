@@ -239,7 +239,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'Cancel',
               style: TextStyle(color: AppColors.secondary),
             ),
@@ -333,35 +333,35 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                 margin: const EdgeInsets.all(16),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
+                  color: AppColors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppTheme.primaryColor.withOpacity(0.3),
+                    color: AppColors.primary.withOpacity(0.3),
                   ),
                 ),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: AppTheme.primaryColor,
+                          color: AppColors.primary,
                           size: 20,
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Text(
                           'Emergency Contacts Info',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: AppColors.primary,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       'These contacts will be automatically notified with your location when you trigger an SOS alert.',
                       style: TextStyle(fontSize: 14),
                     ),
@@ -385,7 +385,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(16),
                         leading: CircleAvatar(
-                          backgroundColor: AppTheme.primaryColor,
+                          backgroundColor: AppColors.primary,
                           child: Text(
                             contact.contactName.isNotEmpty
                                 ? contact.contactName[0].toUpperCase()
@@ -421,14 +421,14 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withOpacity(0.1),
+                                color: AppColors.primary.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 contact.relationship,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
-                                  color: AppTheme.primaryColor,
+                                  color: AppColors.primary,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -480,7 +480,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddContactDialog,
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
