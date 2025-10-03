@@ -217,7 +217,7 @@ class AuthController extends ChangeNotifier {
     try {
       // First sign out any existing Google Sign In session
       await GoogleSignIn().signOut();
-      
+
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
         _setLoading(false);
@@ -226,7 +226,7 @@ class AuthController extends ChangeNotifier {
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      
+
       if (googleAuth.accessToken == null || googleAuth.idToken == null) {
         _setError('Failed to get Google authentication tokens');
         _setLoading(false);
@@ -240,7 +240,7 @@ class AuthController extends ChangeNotifier {
 
       final userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      
+
       if (userCredential.user != null) {
         _currentUser = userCredential.user;
 
@@ -271,7 +271,8 @@ class AuthController extends ChangeNotifier {
       debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
       switch (e.code) {
         case 'account-exists-with-different-credential':
-          _setError('An account already exists with a different sign-in method.');
+          _setError(
+              'An account already exists with a different sign-in method.');
           break;
         case 'invalid-credential':
           _setError('Invalid credentials. Please try again.');
@@ -286,7 +287,8 @@ class AuthController extends ChangeNotifier {
       debugPrint('Google Sign In Error: $e');
       if (e.toString().contains('PigeonUserDetails')) {
         // Handle the specific type casting error
-        _setError('Google Sign In is temporarily unavailable. Please try email login instead.');
+        _setError(
+            'Google Sign In is temporarily unavailable. Please try email login instead.');
       } else if (e.toString().contains('network_error')) {
         _setError('Network error. Please check your internet connection.');
       } else {
@@ -341,13 +343,15 @@ class AuthController extends ChangeNotifier {
         // User cancelled the login
         return false;
       } else {
-        _setError('Facebook login failed: ${result.message ?? 'Unknown error'}');
+        _setError(
+            'Facebook login failed: ${result.message ?? 'Unknown error'}');
       }
     } on FirebaseAuthException catch (e) {
       debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
       switch (e.code) {
         case 'account-exists-with-different-credential':
-          _setError('An account already exists with a different sign-in method.');
+          _setError(
+              'An account already exists with a different sign-in method.');
           break;
         case 'invalid-credential':
           _setError('Invalid Facebook credentials. Please try again.');
