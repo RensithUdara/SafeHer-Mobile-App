@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';                  children: [
-                    SizedBox(height = 20),
-
-                    // Logo and Title Sectionport 'package:get/get.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
