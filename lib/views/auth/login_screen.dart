@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lotti                    const SizedBox(height: 30),
-
-                    // Login Formottie.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/auth_controller.dart';
@@ -90,11 +88,11 @@ class _LoginScreenState extends State<LoginScreen>
                       children: [
                         // Logo
                         Container(
-                          width: 120,
-                          height: 120,
+                          width: 100,
+                          height: 100,
                           decoration: BoxDecoration(
                             color: AppColors.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Lottie.asset(
                             'assets/animations/shield_protection.json',
@@ -102,32 +100,32 @@ class _LoginScreenState extends State<LoginScreen>
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
                                 Icons.shield,
-                                size: 60,
+                                size: 50,
                                 color: AppColors.primary,
                               );
                             },
                           ),
                         ),
 
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
 
                         // App Name
                         const Text(
                           'SafeHer',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: AppColors.primary,
                           ),
                         ),
 
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
 
                         // Subtitle
                         const Text(
                           'Your Safety, Our Priority',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: AppColors.textSecondary,
                           ),
                         ),
@@ -135,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
 
                   // Login Form
                   SlideTransition(
@@ -149,25 +147,25 @@ class _LoginScreenState extends State<LoginScreen>
                           const Text(
                             'Welcome Back',
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                               color: AppColors.textPrimary,
                             ),
                             textAlign: TextAlign.center,
                           ),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
 
                           const Text(
                             'Sign in to continue',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: AppColors.textSecondary,
                             ),
                             textAlign: TextAlign.center,
                           ),
 
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 30),
 
                           // Email Field
                           AppTextField(
@@ -188,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen>
                             },
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
 
                           // Password Field
                           AppTextField(
@@ -222,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen>
                             },
                             onSubmitted: (_) => _handleLogin(authController),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 12),
 
                           // Remember Me & Forgot Password
                           Row(
@@ -231,8 +229,8 @@ class _LoginScreenState extends State<LoginScreen>
                               Row(
                                 children: [
                                   SizedBox(
-                                    width: 24,
-                                    height: 24,
+                                    width: 20,
+                                    height: 20,
                                     child: Checkbox(
                                       value: _rememberMe,
                                       onChanged: (value) {
@@ -242,7 +240,8 @@ class _LoginScreenState extends State<LoginScreen>
                                       },
                                       activeColor: AppColors.primary,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius:
+                                            BorderRadius.circular(4),
                                       ),
                                     ),
                                   ),
@@ -250,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   const Text(
                                     'Remember me',
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       color: AppColors.textSecondary,
                                     ),
                                   ),
@@ -262,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 child: const Text(
                                   'Forgot Password?',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -271,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen>
                             ],
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 24),
 
                           // Login Button
                           AppButton(
@@ -282,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                           // Error Message
                           if (authController.errorMessage != null) ...[
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 12),
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
@@ -297,15 +296,15 @@ class _LoginScreenState extends State<LoginScreen>
                                   const Icon(
                                     Icons.error_outline,
                                     color: AppColors.error,
-                                    size: 20,
+                                    size: 18,
                                   ),
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       authController.errorMessage!,
                                       style: const TextStyle(
                                         color: AppColors.error,
-                                        fontSize: 14,
+                                        fontSize: 13,
                                       ),
                                     ),
                                   ),
@@ -314,7 +313,7 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ],
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 24),
 
                           // Divider
                           const Row(
@@ -327,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 child: Text(
                                   'Or continue with',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     color: AppColors.textSecondary,
                                   ),
                                 ),
@@ -338,7 +337,7 @@ class _LoginScreenState extends State<LoginScreen>
                             ],
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 24),
 
                           // Social Login Buttons
                           Row(
@@ -369,7 +368,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 40),
 
                   // Sign Up Link
                   FadeTransition(
@@ -416,7 +415,7 @@ class _LoginScreenState extends State<LoginScreen>
     required bool isLoading,
   }) {
     return Container(
-      height: 50,
+      height: 48,
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.grey300),
         borderRadius: BorderRadius.circular(12),
@@ -431,12 +430,12 @@ class _LoginScreenState extends State<LoginScreen>
             children: [
               Image.asset(
                 icon,
-                width: 20,
-                height: 20,
+                width: 18,
+                height: 18,
                 errorBuilder: (context, error, stackTrace) {
                   return Icon(
                     label == 'Google' ? Icons.g_mobiledata : Icons.facebook,
-                    size: 20,
+                    size: 18,
                     color: AppColors.primary,
                   );
                 },
@@ -445,7 +444,7 @@ class _LoginScreenState extends State<LoginScreen>
               Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textPrimary,
                 ),
