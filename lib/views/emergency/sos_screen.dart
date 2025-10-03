@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/emergency_controller.dart';
 import '../../controllers/location_controller.dart';
+import '../../models/emergency_alert_model.dart';
 import '../../utils/theme.dart';
 import '../../widgets/common_widgets.dart';
 
