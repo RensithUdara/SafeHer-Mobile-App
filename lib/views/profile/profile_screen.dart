@@ -85,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'Cancel',
               style: TextStyle(color: AppColors.secondary),
             ),
@@ -182,9 +182,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'Cancel',
-              style: TextStyle(color: AppColors.secondaryColor),
+              style: TextStyle(color: AppColors.secondary),
             ),
           ),
           AppButton(
