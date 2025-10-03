@@ -322,10 +322,15 @@ class AuthController extends ChangeNotifier {
       );
 
       // Update in Firestore
-      await _firebaseService.saveUserData(updatedUser);
+      await _firebaseService.updateUser(updatedUser);
 
       // Update in local database
-      await _databaseHelper.updateUser(updatedUser);
+      await _databaseHelper.update(
+        'users_table',
+        updatedUser.toMap(),
+        where: 'id = ?',
+        whereArgs: [updatedUser.id],
+      );
 
       _currentUserModel = updatedUser;
       notifyListeners();
@@ -355,8 +360,13 @@ class AuthController extends ChangeNotifier {
         isActive: _currentUserModel!.isActive,
       );
 
-      await _firebaseService.saveUserData(updatedUser);
-      await _databaseHelper.updateUser(updatedUser);
+      await _firebaseService.updateUser(updatedUser);
+      await _databaseHelper.update(
+        'users_table',
+        updatedUser.toMap(),
+        where: 'id = ?',
+        whereArgs: [updatedUser.id],
+      );
 
       _currentUserModel = updatedUser;
       notifyListeners();
