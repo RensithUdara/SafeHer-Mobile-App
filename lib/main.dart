@@ -51,7 +51,7 @@ void main() async {
   await DatabaseHelper().database;
 
   // Initialize notification service
-  await NotificationService.initialize();
+  await NotificationService().initialize();
 
   // Initialize background work manager
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
