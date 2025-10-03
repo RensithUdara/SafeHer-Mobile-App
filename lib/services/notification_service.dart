@@ -285,7 +285,7 @@ class NotificationService {
       'community_alerts',
       'Community Alerts',
       channelDescription: 'Community safety alerts',
-      importance: Importance.default_,
+      importance: Importance.defaultImportance,
       priority: Priority.defaultPriority,
       enableVibration: true,
       playSound: true,
