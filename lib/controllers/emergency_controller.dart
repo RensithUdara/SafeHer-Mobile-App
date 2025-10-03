@@ -50,7 +50,7 @@ class EmergencyController extends ChangeNotifier {
 
   Future<void> _initializeEmergencyService() async {
     await loadEmergencyContacts();
-    await _locationService.checkLocationPermission();
+    await _locationService.checkLocationPermissions();
   }
 
   // SOS/Panic Button Activation
@@ -68,11 +68,10 @@ class EmergencyController extends ChangeNotifier {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         userId: FirebaseAuth.instance.currentUser?.uid ?? '',
         alertType: EmergencyAlertType.sos,
-        location: _currentPosition != null
-            ? GeoPoint(_currentPosition!.latitude, _currentPosition!.longitude)
-            : null,
+        latitude: _currentPosition?.latitude ?? 0.0,
+        longitude: _currentPosition?.longitude ?? 0.0,
         timestamp: DateTime.now(),
-        status: EmergencyAlertStatus.active,
+        status: AlertStatus.active,
       );
 
       // Save to Firestore
@@ -83,7 +82,7 @@ class EmergencyController extends ChangeNotifier {
 
       // Save to local database
       final db = await DatabaseHelper().database;
-      await db.insert('emergency_alerts_table', _activeAlert!.toLocalJson());
+      await db.insert('emergency_alerts_table', _activeAlert!.toMap());
 
       // Start emergency sequence
       await _startEmergencySequence();
@@ -129,7 +128,7 @@ class EmergencyController extends ChangeNotifier {
       if (_activeAlert != null) {
         // Update alert status
         _activeAlert = _activeAlert!.copyWith(
-          status: EmergencyAlertStatus.resolved,
+          status: AlertStatus.resolved,
           resolvedAt: DateTime.now(),
         );
 
