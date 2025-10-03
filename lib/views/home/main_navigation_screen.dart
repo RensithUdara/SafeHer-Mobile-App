@@ -519,8 +519,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.error,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.medical);
+                      emergencyController.activateEmergency();
                     },
                   ),
                   _buildEmergencyOption(
@@ -530,8 +529,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     color: AppColors.info,
                     onTap: () {
                       Navigator.pop(context);
-                      emergencyController.triggerEmergency(
-                          type: EmergencyType.police);
+                      emergencyController.activateEmergency();
                     },
                   ),
                   _buildEmergencyOption(
