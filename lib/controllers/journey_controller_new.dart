@@ -158,7 +158,7 @@ class JourneyController extends ChangeNotifier {
       // Save to database
       final db = await _databaseHelper.database;
       final journeyId = await db.insert('journeys', journey.toMap());
-      
+
       // Create journey with ID
       final journeyWithId = journey.copyWith(id: journeyId.toString());
 
@@ -283,7 +283,8 @@ class JourneyController extends ChangeNotifier {
 
   // Start journey timer
   Future<void> _startJourneyTimer() async {
-    if (_activeJourney == null || _activeJourney!.estimatedArrival == null) return;
+    if (_activeJourney == null || _activeJourney!.estimatedArrival == null)
+      return;
 
     final expectedDuration =
         _activeJourney!.estimatedArrival!.difference(DateTime.now());
@@ -449,7 +450,8 @@ class JourneyController extends ChangeNotifier {
 
   // Extend journey time
   Future<bool> extendJourneyTime(Duration extension) async {
-    if (!hasActiveJourney || _activeJourney!.estimatedArrival == null) return false;
+    if (!hasActiveJourney || _activeJourney!.estimatedArrival == null)
+      return false;
 
     try {
       final extendedJourney = _activeJourney!.copyWith(
