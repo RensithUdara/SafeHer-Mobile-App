@@ -346,7 +346,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                 ),
               ),
               TextButton(
-                onPressed: () => emergencyController.stopEmergency(),
+                onPressed: () => emergencyController.deactivateEmergency(),
                 child: const Text(
                   'STOP',
                   style: TextStyle(
