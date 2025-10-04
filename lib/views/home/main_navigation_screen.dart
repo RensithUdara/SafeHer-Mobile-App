@@ -115,70 +115,81 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+            spreadRadius: 1,
           ),
         ],
       ),
-      child: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8,
-        color: Colors.white,
-        elevation: 0,
-        child: Container(
-          height: 60,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Left Side Navigation Items
-              Row(
-                children: [
-                  _buildNavItem(
-                    icon: Icons.home_outlined,
-                    activeIcon: Icons.home,
-                    label: 'Home',
-                    index: 0,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+        child: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          color: Colors.transparent,
+          elevation: 0,
+          child: Container(
+            height: 70,
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Left Side Navigation Items
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildNavItem(
+                        icon: Icons.home_outlined,
+                        activeIcon: Icons.home_rounded,
+                        label: 'Home',
+                        index: 0,
+                      ),
+                      _buildNavItem(
+                        icon: Icons.route_outlined,
+                        activeIcon: Icons.route_rounded,
+                        label: 'Journey',
+                        index: 1,
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 30),
-                  _buildNavItem(
-                    icon: Icons.route_outlined,
-                    activeIcon: Icons.route,
-                    label: 'Journey',
-                    index: 1,
-                  ),
-                ],
-              ),
+                ),
 
-              // Right Side Navigation Items
-              Row(
-                children: [
-                  _buildNavItem(
-                    icon: Icons.group_outlined,
-                    activeIcon: Icons.group,
-                    label: 'Community',
-                    index: 2,
+                // Center space for FAB
+                const SizedBox(width: 80),
+
+                // Right Side Navigation Items
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildNavItem(
+                        icon: Icons.groups_outlined,
+                        activeIcon: Icons.groups_rounded,
+                        label: 'Community',
+                        index: 2,
+                      ),
+                      _buildNavItem(
+                        icon: Icons.contacts_outlined,
+                        activeIcon: Icons.contacts_rounded,
+                        label: 'Contacts',
+                        index: 3,
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  _buildNavItem(
-                    icon: Icons.contacts_outlined,
-                    activeIcon: Icons.contacts,
-                    label: 'Contacts',
-                    index: 3,
-                  ),
-                  const SizedBox(width: 20),
-                  _buildNavItem(
-                    icon: Icons.person_outline,
-                    activeIcon: Icons.person,
-                    label: 'Profile',
-                    index: 4,
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -195,35 +206,71 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
 
     return GestureDetector(
       onTap: () => _onTabTapped(index),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.primary.withOpacity(0.1)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isActive ? activeIcon : icon,
-              color: isActive ? AppColors.primary : AppColors.grey600,
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 200),
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? AppColors.primary : AppColors.grey600,
+      child: TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 300),
+        tween: Tween(begin: 0.0, end: isActive ? 1.0 : 0.0),
+        curve: Curves.easeOutCubic,
+        builder: (context, value, child) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Color.lerp(
+                Colors.transparent,
+                AppColors.primary.withOpacity(0.12),
+                value,
               ),
-              child: Text(label),
+              borderRadius: BorderRadius.circular(25),
             ),
-          ],
-        ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icon with bounce animation
+                Transform.scale(
+                  scale: 1.0 + (value * 0.1),
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Color.lerp(
+                        Colors.transparent,
+                        AppColors.primary.withOpacity(0.1),
+                        value,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isActive ? activeIcon : icon,
+                      color: Color.lerp(
+                        AppColors.grey600,
+                        AppColors.primary,
+                        value,
+                      ),
+                      size: 26,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                // Label with fade and slide animation
+                Transform.translate(
+                  offset: Offset(0, -2 * value),
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                      color: Color.lerp(
+                        AppColors.grey600,
+                        AppColors.primary,
+                        value,
+                      ),
+                      letterSpacing: 0.3,
+                    ),
+                    child: Text(label),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
