@@ -185,19 +185,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                         label: 'Contacts',
                         index: 3,
                       ),
+                      _buildNavItem(
+                        icon: Icons.person_outline_rounded,
+                        activeIcon: Icons.person_rounded,
+                        label: 'Profile',
+                        index: 4,
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          
-          // Profile icon positioned at top right
-          Positioned(
-            top: 8,
-            right: 16,
-            child: _buildProfileNavItem(),
-          ),
               ],
             ),
           ),
