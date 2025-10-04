@@ -85,79 +85,104 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               emergencyController, child) {
             return CustomScrollView(
               slivers: [
-                // App Bar
+                // Modern App Bar with Glass Morphism
                 SliverAppBar(
-                  expandedHeight: 200,
+                  expandedHeight: 220,
                   floating: false,
                   pinned: true,
-                  backgroundColor: AppColors.primary,
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
                             AppColors.primary,
+                            AppColors.primary.withOpacity(0.9),
                             AppColors.primaryDark,
                           ],
+                          stops: const [0.0, 0.6, 1.0],
                         ),
                       ),
                       child: Stack(
                         children: [
-                          // Background Pattern
+                          // Animated background particles/circles
                           Positioned.fill(
-                            child: Opacity(
-                              opacity: 0.1,
-                              child: Image.asset(
-                                'assets/images/pattern_bg.png',
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Container(),
+                            child: CustomPaint(
+                              painter: _BackgroundPatternPainter(),
+                            ),
+                          ),
+
+                          // Glassmorphism overlay
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.white.withOpacity(0.1),
+                                    Colors.transparent,
+                                  ],
+                                ),
                               ),
                             ),
                           ),
 
-                          // Content
+                          // Main Content
                           Padding(
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                // Top Row - Profile & Notification
                                 Row(
                                   children: [
-                                    // Profile Picture
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor: Colors.white,
-                                      child: authController.currentUserModel
-                                                  ?.profilePhotoPath !=
-                                              null
-                                          ? CachedNetworkImage(
-                                              imageUrl: authController
-                                                  .currentUserModel!
-                                                  .profilePhotoPath!,
-                                              imageBuilder:
-                                                  (context, imageProvider) =>
-                                                      Container(
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
+                                    // Enhanced Profile Picture
+                                    Container(
+                                      padding: const EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.white.withOpacity(0.3),
+                                            Colors.white.withOpacity(0.1),
+                                          ],
+                                        ),
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 28,
+                                        backgroundColor: Colors.white,
+                                        child: authController.currentUserModel
+                                                    ?.profilePhotoPath !=
+                                                null
+                                            ? CachedNetworkImage(
+                                                imageUrl: authController
+                                                    .currentUserModel!
+                                                    .profilePhotoPath!,
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Container(
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                          : const Icon(Icons.person,
-                                              color: AppColors.primary,
-                                              size: 30),
+                                              )
+                                            : Icon(Icons.person_rounded,
+                                                color: AppColors.primary,
+                                                size: 34),
+                                      ),
                                     ),
 
-                                    const SizedBox(width: 15),
+                                    const SizedBox(width: 20),
 
-                                    // Greeting
+                                    // Enhanced Greeting Section
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -165,71 +190,125 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         children: [
                                           Text(
                                             _getGreeting(),
-                                            style: const TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 14,
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(0.9),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                              letterSpacing: 0.5,
                                             ),
                                           ),
+                                          const SizedBox(height: 4),
                                           Text(
                                             authController
                                                     .currentUserModel?.name ??
                                                 'User',
                                             style: const TextStyle(
                                               color: Colors.white,
-                                              fontSize: 18,
+                                              fontSize: 22,
                                               fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.3,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
 
-                                    // Notification Bell
-                                    IconButton(
-                                      onPressed: () {
-                                        // Navigate to notifications
-                                      },
-                                      icon: const Icon(
-                                        Icons.notifications_outlined,
-                                        color: Colors.white,
-                                        size: 24,
+                                    // Enhanced Notification Bell
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white.withOpacity(0.15),
+                                        border: Border.all(
+                                          color: Colors.white.withOpacity(0.2),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          // Navigate to notifications
+                                        },
+                                        icon: Icon(
+                                          Icons.notifications_none_rounded,
+                                          color: Colors.white,
+                                          size: 26,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
 
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 20),
 
-                                // Location Status
-                                Row(
-                                  children: [
-                                    Icon(
-                                      locationController
-                                              .locationPermissionGranted
-                                          ? Icons.location_on
-                                          : Icons.location_off,
-                                      color: locationController
-                                              .locationPermissionGranted
-                                          ? AppColors.safe
-                                          : AppColors.warning,
-                                      size: 16,
+                                // Enhanced Location Status Card
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white.withOpacity(0.15),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.2),
+                                      width: 1,
                                     ),
-                                    const SizedBox(width: 5),
-                                    Expanded(
-                                      child: Text(
-                                        locationController
-                                                .currentAddress.isNotEmpty
-                                            ? locationController.currentAddress
-                                            : 'Location unavailable',
-                                        style: const TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 12,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: (locationController
+                                                  .locationPermissionGranted
+                                              ? AppColors.safe
+                                              : AppColors.warning)
+                                              .withOpacity(0.2),
                                         ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                        child: Icon(
+                                          locationController
+                                                  .locationPermissionGranted
+                                              ? Icons.location_on_rounded
+                                              : Icons.location_off_rounded,
+                                          color: locationController
+                                                  .locationPermissionGranted
+                                              ? AppColors.safe
+                                              : AppColors.warning,
+                                          size: 18,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              locationController
+                                                      .locationPermissionGranted
+                                                  ? 'Current Location'
+                                                  : 'Location Access Needed',
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(0.9),
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            Text(
+                                              locationController
+                                                      .currentAddress.isNotEmpty
+                                                  ? locationController.currentAddress
+                                                  : 'Enable location for better safety',
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(0.7),
+                                                fontSize: 11,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
