@@ -191,9 +191,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
               ],
             ),
           ),
+          
+          // Profile icon positioned at top right
+          Positioned(
+            top: 8,
+            right: 16,
+            child: _buildProfileNavItem(),
+          ),
+              ],
+            ),
+          ),
         ),
       ),
-    );
+    )
   }
 
   Widget _buildNavItem({
