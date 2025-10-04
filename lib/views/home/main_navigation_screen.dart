@@ -185,6 +185,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                         label: 'Contacts',
                         index: 3,
                       ),
+                      _buildNavItem(
+                        icon: Icons.person_outline_rounded,
+                        activeIcon: Icons.person_rounded,
+                        label: 'Profile',
+                        index: 4,
+                      ),
                     ],
                   ),
                 ),
@@ -278,54 +284,113 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   Widget _buildEmergencyFAB() {
     return Consumer<EmergencyController>(
       builder: (context, emergencyController, child) {
+        final isActive = emergencyController.isEmergencyActive;
+
         return ScaleTransition(
           scale: _fabAnimation,
-          child: Container(
-            width: 65,
-            height: 65,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  emergencyController.isEmergencyActive
-                      ? AppColors.error
-                      : AppColors.emergency,
-                  emergencyController.isEmergencyActive
-                      ? AppColors.error.withOpacity(0.8)
-                      : AppColors.emergencyLight,
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: (emergencyController.isEmergencyActive
-                          ? AppColors.error
-                          : AppColors.emergency)
-                      .withOpacity(0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Pulsing ring animation when active
+              if (isActive)
+                TweenAnimationBuilder<double>(
+                  duration: const Duration(seconds: 2),
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  builder: (context, value, child) {
+                    return Transform.scale(
+                      scale: 1.0 + (value * 0.5),
+                      child: Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.emergency
+                                .withOpacity(0.3 - (value * 0.3)),
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(32.5),
-                onTap: () =>
-                    _showEmergencyBottomSheet(context, emergencyController),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(
-                    emergencyController.isEmergencyActive
-                        ? Icons.stop
-                        : Icons.warning,
-                    color: Colors.white,
-                    size: 28,
+
+              // Main FAB
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: isActive
+                        ? [AppColors.error, const Color(0xFFB71C1C)]
+                        : [AppColors.emergency, const Color(0xFFB71C1C)],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (isActive ? AppColors.error : AppColors.emergency)
+                          .withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                      spreadRadius: 2,
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(35),
+                    onTap: () =>
+                        _showEmergencyBottomSheet(context, emergencyController),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            isActive
+                                ? Icons.stop_rounded
+                                : Icons.warning_rounded,
+                            key: ValueKey(isActive),
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+
+              // Subtle inner glow
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.white.withOpacity(0.1),
+                      Colors.transparent,
+                    ],
+                    stops: const [0.0, 0.7],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
