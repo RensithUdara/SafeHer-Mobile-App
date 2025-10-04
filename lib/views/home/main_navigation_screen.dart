@@ -279,7 +279,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     return Consumer<EmergencyController>(
       builder: (context, emergencyController, child) {
         final isActive = emergencyController.isEmergencyActive;
-        
+
         return ScaleTransition(
           scale: _fabAnimation,
           child: Stack(
@@ -299,7 +299,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.emergency.withOpacity(0.3 - (value * 0.3)),
+                            color: AppColors.emergency
+                                .withOpacity(0.3 - (value * 0.3)),
                             width: 2,
                           ),
                         ),
@@ -307,7 +308,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                     );
                   },
                 ),
-              
+
               // Main FAB
               Container(
                 width: 70,
@@ -340,7 +341,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(35),
-                    onTap: () => _showEmergencyBottomSheet(context, emergencyController),
+                    onTap: () =>
+                        _showEmergencyBottomSheet(context, emergencyController),
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -353,7 +355,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
                           child: Icon(
-                            isActive ? Icons.stop_rounded : Icons.warning_rounded,
+                            isActive
+                                ? Icons.stop_rounded
+                                : Icons.warning_rounded,
                             key: ValueKey(isActive),
                             color: Colors.white,
                             size: 32,
@@ -364,7 +368,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                   ),
                 ),
               ),
-              
+
               // Subtle inner glow
               Container(
                 width: 70,
