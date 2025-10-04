@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               )
-                                            : Icon(Icons.person_rounded,
+                                            : const Icon(Icons.person_rounded,
                                                 color: AppColors.primary,
                                                 size: 34),
                                       ),
@@ -191,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           Text(
                                             _getGreeting(),
                                             style: TextStyle(
-                                              color: Colors.white.withOpacity(0.9),
+                                              color:
+                                                  Colors.white.withOpacity(0.9),
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500,
                                               letterSpacing: 0.5,
@@ -227,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         onPressed: () {
                                           // Navigate to notifications
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.notifications_none_rounded,
                                           color: Colors.white,
                                           size: 26,
@@ -258,9 +259,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: (locationController
-                                                  .locationPermissionGranted
-                                              ? AppColors.safe
-                                              : AppColors.warning)
+                                                      .locationPermissionGranted
+                                                  ? AppColors.safe
+                                                  : AppColors.warning)
                                               .withOpacity(0.2),
                                         ),
                                         child: Icon(
@@ -287,7 +288,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   ? 'Current Location'
                                                   : 'Location Access Needed',
                                               style: TextStyle(
-                                                color: Colors.white.withOpacity(0.9),
+                                                color: Colors.white
+                                                    .withOpacity(0.9),
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -295,10 +297,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             Text(
                                               locationController
                                                       .currentAddress.isNotEmpty
-                                                  ? locationController.currentAddress
+                                                  ? locationController
+                                                      .currentAddress
                                                   : 'Enable location for better safety',
                                               style: TextStyle(
-                                                color: Colors.white.withOpacity(0.7),
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
                                                 fontSize: 11,
                                               ),
                                               maxLines: 1,
