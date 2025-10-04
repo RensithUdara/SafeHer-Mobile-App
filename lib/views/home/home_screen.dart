@@ -974,19 +974,19 @@ class _BackgroundPatternPainter extends CustomPainter {
       30,
       paint,
     );
-    
+
     canvas.drawCircle(
       Offset(size.width * 0.8, size.height * 0.1),
       20,
       paint,
     );
-    
+
     canvas.drawCircle(
       Offset(size.width * 0.9, size.height * 0.6),
       25,
       paint,
     );
-    
+
     canvas.drawCircle(
       Offset(size.width * 0.2, size.height * 0.8),
       15,
