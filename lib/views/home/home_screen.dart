@@ -959,3 +959,49 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Get.toNamed('/fake-call');
   }
 }
+
+// Custom painter for modern background pattern
+class _BackgroundPatternPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.05)
+      ..style = PaintingStyle.fill;
+
+    // Draw floating circles with different sizes and positions
+    canvas.drawCircle(
+      Offset(size.width * 0.1, size.height * 0.2),
+      30,
+      paint,
+    );
+    
+    canvas.drawCircle(
+      Offset(size.width * 0.8, size.height * 0.1),
+      20,
+      paint,
+    );
+    
+    canvas.drawCircle(
+      Offset(size.width * 0.9, size.height * 0.6),
+      25,
+      paint,
+    );
+    
+    canvas.drawCircle(
+      Offset(size.width * 0.2, size.height * 0.8),
+      15,
+      paint,
+    );
+
+    // Draw some subtle geometric shapes
+    final path = Path();
+    path.moveTo(size.width * 0.6, size.height * 0.3);
+    path.lineTo(size.width * 0.7, size.height * 0.2);
+    path.lineTo(size.width * 0.8, size.height * 0.4);
+    path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
